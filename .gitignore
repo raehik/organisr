@@ -1,2 +1,5 @@
+# QtCreator user project file
+*.pro.user
+
 # QtCreator backup files
 *.autosave
