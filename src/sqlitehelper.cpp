@@ -5,10 +5,6 @@
 std::string SQLiteHelper::db_name = "test.db";
 sqlite3 * SQLiteHelper::db;
 
-/** \class SQLiteHelper
- *
- * A wrapper for SQLite functions.
- */
 SQLiteHelper::SQLiteHelper() {
     int rc;
 
