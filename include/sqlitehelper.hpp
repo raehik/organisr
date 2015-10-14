@@ -5,8 +5,8 @@
 #include <string>
 
 
-/** A wrapper for SQLite functions.
- *
+/**
+ * A wrapper for SQLite functions.
  */
 class SQLiteHelper {
     public:
@@ -15,9 +15,9 @@ class SQLiteHelper {
         int init_sqlite_db();
 
     private:
-        static std::string db_name;
-        static sqlite3 *db;
-        static int callback(void *NotUsed, int argc, char **argv, char **azColName);
+        std::string db_name;
+        sqlite3 *db;
+        static int callback(void *unused, int argc, char **argv, char **az_col_name);
         void log_msg(std::string message);
         void log_err(std::string message);
         bool file_exists(std::string filename);
