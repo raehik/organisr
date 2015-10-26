@@ -17,9 +17,13 @@ INCLUDEPATH += $$PWD/include
 
 
 SOURCES += src/main.cpp \
-    src/sqlitehelper.cpp
+    src/sqlitehelper.cpp \
+    src/datahandler.cpp \
+    src/appointment.cpp
 
 HEADERS  += \
-    include/sqlitehelper.hpp
+    include/datahandler.h \
+    include/appointment.h \
+    include/sqlitehelper.h
 
 FORMS    +=

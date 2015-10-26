@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QPushButton>
-#include "sqlitehelper.hpp"
+#include "datahandler.h"
 
 int main(int argc, char *argv[]) {
     int w_x = 400;
@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
 
     window.show();
 
-    SQLiteHelper db_helper = SQLiteHelper("test.db");
+    DataHandler db = DataHandler();
     //db_helper.add_appt("Appt. title", "Long appointment description, including keywords");
 
     return app.exec();
