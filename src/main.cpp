@@ -19,7 +19,8 @@ int main(int argc, char *argv[]) {
 
     window.show();
 
-    SQLiteHelper db_helper = SQLiteHelper();
+    SQLiteHelper db_helper = SQLiteHelper("test.db");
+    //db_helper.add_appt("Appt. title", "Long appointment description, including keywords");
 
     return app.exec();
 }
