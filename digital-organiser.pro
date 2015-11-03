@@ -32,4 +32,5 @@ HEADERS  += \
     include/guihandler.h \
     include/layouthandler.h
 
-FORMS    +=
+FORMS    += \
+    src/mainwindow.ui
