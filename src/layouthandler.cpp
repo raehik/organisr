@@ -17,10 +17,11 @@ LayoutHandler::LayoutHandler() {
 }
 
 void LayoutHandler::init_layout() {
-    QPushButton *button = new QPushButton("ayy lmao", &main_win);
+    // add a button
     int b_x = 80;
     int b_y = 30;
     int y_offset = 10;
+    QPushButton *button = new QPushButton("ayy lmao", &main_win);
     button->setGeometry((initial_win_x - b_x)/2,
                         initial_win_y - y_offset - b_y,
                         b_x,
@@ -39,4 +40,5 @@ void LayoutHandler::init_layout() {
     // show the main window
     main_win.setFixedSize(initial_win_x, initial_win_y);
     main_win.show();
+    main_win.setLayout(grid);
 }
