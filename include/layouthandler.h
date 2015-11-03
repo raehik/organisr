@@ -3,18 +3,17 @@
 
 #include <QWidget>
 
-class LayoutHandler
-{
-public:
-    LayoutHandler();
+class LayoutHandler {
+    public:
+        LayoutHandler();
 
-    void init_layout();
+        void init_layout();
 
-    static int initial_win_x;
-    static int initial_win_y;
+        static int initial_win_x;
+        static int initial_win_y;
 
-private:
-    QWidget main_win;
+    private:
+        QWidget main_win;
 };
 
 #endif // LAYOUTHANDLER_H

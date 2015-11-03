@@ -4,12 +4,11 @@
 #include <string>
 
 
-class Appointment
-{
-public:
-    Appointment(std::string title, std::string description);
-    std::string title;
-    std::string description;
+class Appointment {
+    public:
+        Appointment(std::string title, std::string description);
+        std::string title;
+        std::string description;
 };
 
 #endif // APPOINTMENT_H
