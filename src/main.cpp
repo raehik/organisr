@@ -3,6 +3,8 @@
 #include "datahandler.h"
 
 int main(int argc, char *argv[]) {
+    GuiHandler gui;
+    gui.start();
     int w_x = 400;
     int w_y = 300;
     int y_offset = 10;
