@@ -1,8 +1,6 @@
-#include <QApplication>
-#include <QPushButton>
-#include "datahandler.h"
+#include "guihandler.h"
 
 int main(int argc, char *argv[]) {
     GuiHandler gui;
-    gui.init();
+    return gui.init(argc, argv);
 }
