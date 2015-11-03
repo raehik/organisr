@@ -21,13 +21,15 @@ SOURCES += src/main.cpp \
     src/datahandler.cpp \
     src/appointment.cpp \
     src/dbhelper.cpp \
-    src/guihandler.cpp
+    src/guihandler.cpp \
+    src/layouthandler.cpp
 
 HEADERS  += \
     include/datahandler.h \
     include/appointment.h \
     include/sqlitehelper.h \
     include/dbhelper.h \
-    include/guihandler.h
+    include/guihandler.h \
+    include/layouthandler.h
 
 FORMS    +=
