@@ -13,9 +13,7 @@ std::string SQLiteHelper::db_appt = "appointments";
  *
  * @param db_file    The name of the SQLite database file to use.
  */
-SQLiteHelper::SQLiteHelper(std::string db_file) {
-    this->db_file = db_file;
-
+SQLiteHelper::SQLiteHelper(std::string db_file) : DBHelper(db_file) {
     // check if database file exists
     if (file_exists(this->db_file)) {
         log_msg("Database file exists -- not initialising");
@@ -29,9 +27,6 @@ SQLiteHelper::SQLiteHelper(std::string db_file) {
 
     // connect to database
     open_db();
-
-    // run some tests
-    step_api_test();
 }
 
 SQLiteHelper::~SQLiteHelper() {
@@ -93,11 +88,9 @@ int SQLiteHelper::init_sqlite_db() {
 
     // form SQL statement
     sql_init = "create table appointments(" \
-            "id          int  primary key not null," \
-            "title       text             not null," \
+            "id          integer  primary key," \
+            "title       text     not null," \
             "description text);";
-
-    //log_msg(sql_init);
 
     // now run it
     rc = exec_sql(sql_init);
@@ -131,7 +124,7 @@ int SQLiteHelper::exec_sql(std::string statements) {
     char * err_msg = 0;
     int rc;
 
-    rc = sqlite3_exec(db, statements.c_str(), callback, 0, &err_msg);
+    rc = sqlite3_exec(db, statements.c_str(), NULL, 0, &err_msg);
     if (rc != SQLITE_OK) {
         log_err("SQL error: " + std::string(err_msg));
         sqlite3_free(err_msg);
@@ -140,20 +133,7 @@ int SQLiteHelper::exec_sql(std::string statements) {
         log_msg("exec_sql: operation successful");
     }
 
-    log_msg("exec_sql: finished");
-    return 0;
-}
-
-/**
- * SELECT callback function for sqlite3_exec().
- */
-int SQLiteHelper::callback(void *unused, int argc, char **argv, char **az_col_name) {
-    log_msg("CALLBACK START");
-    for (int i = 0; i < argc; i++) {
-        std::cout << az_col_name[i] << " = " << std::endl << argv[i] ? argv[i] : "null";
-    }
-    std::cout << std::endl;
-    log_msg("CALLBACK END");
+    log_msg("exec_sql: finished successfully");
     return 0;
 }
 
@@ -161,12 +141,81 @@ void SQLiteHelper::print_db() {
     log_msg("Database");
 }
 
-void SQLiteHelper::step_api_test() {
+void SQLiteHelper::insert_rows(
+        std::string table_name,
+        std::vector<std::string> table_cols,
+        std::vector< std::vector<std::string> > rows)
+{
     char *err_msg;
     sqlite3_stmt *stmt;
-    std::string *pzTest;
+    char *pzTest;
+    std::string cols_str;
+    std::vector<std::string> cur_row;
 
-    std::string sql = "select * from " + db_appt;
+    // see http://stackoverflow.com/q/452859/2246637
+    if (rows.size() > 1000) {
+        log_msg("ERROR: too many rows");
+        // TODO: throw an exception
+    }
+
+    std::string sql = "insert into " + table_name + "(";
+    for (std::vector<std::string>::size_type i = 0; i != table_cols.size(); i++) {
+        if (i != 0) {
+            cols_str += ",";
+        }
+        cols_str += table_cols[i];
+    }
+    sql += cols_str + ") values";
+
+    // TODO: parameterise instead of inserting blindly
+    for (std::vector< std::vector<std::string> >::size_type i = 0; i != rows.size(); i++) {
+        if (i != 0) {
+            sql += ",";
+        }
+        sql += "(";
+        cur_row = rows[i];
+        for (std::vector<std::string>::size_type j = 0; j != cur_row.size(); j++) {
+            if (j != 0) {
+                sql += ",";
+            }
+            sql += "\"" + cur_row[j] + "\"";
+        }
+        sql += ")";
+    }
+
+    log_msg(sql);
+    exec_sql(sql);
+}
+
+std::vector< std::vector<std::string> > SQLiteHelper::select_columns_where(
+        std::string table_name,
+        std::vector<std::string> cols,
+        std::string sql_where)
+{
+    char *err_msg;
+    sqlite3_stmt *stmt;
+    char *pzTest;
+    std::string cols_str;
+    std::vector<std::string> cur_record;
+    std::vector< std::vector<std::string> > records;
+
+    std::string sql;
+
+    sql = "select ";
+
+    for (std::vector<std::string>::size_type i = 0; i != cols.size(); i++) {
+        if (i != 0) {
+            sql += ",";
+        }
+        sql += cols[i];
+    }
+
+    sql += " from " + table_name;
+
+    if (sql_where != "") {
+        // TODO: parameterise
+        sql += " where " + sql_where;
+    }
 
     int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
     if (rc != SQLITE_OK) {
@@ -177,14 +226,20 @@ void SQLiteHelper::step_api_test() {
     }
     log_msg("statement prepared successfully");
 
+    // package up all output info
+    std::string tmp_str;
     do {
         rc = sqlite3_step(stmt);
         if (rc == SQLITE_ROW) {
-            log_msg(to_string(sqlite3_column_text(stmt, 0)));
-            log_msg(to_string(sqlite3_column_text(stmt, 1)));
-            log_msg(to_string(sqlite3_column_text(stmt, 2)));
+            for (int i = 0; i != cols.size(); i++) {
+                tmp_str = to_string(sqlite3_column_text(stmt, i));
+                log_msg("col: " + tmp_str);
+                cur_record.push_back(tmp_str);
+            }
+            records.push_back(cur_record);
         }
     } while (rc == SQLITE_ROW);
 
     sqlite3_finalize(stmt);
+    return records;
 }

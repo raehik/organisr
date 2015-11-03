@@ -20,7 +20,9 @@ int main(int argc, char *argv[]) {
     window.show();
 
     DataHandler db = DataHandler();
-    //db_helper.add_appt("Appt. title", "Long appointment description, including keywords");
+    std::vector<Appointment> appts;
+    appts.push_back(Appointment("test title 1", "test desc 1"));
+    db.insert_appts(appts);
 
     return app.exec();
 }

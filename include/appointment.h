@@ -7,7 +7,7 @@
 class Appointment
 {
 public:
-    Appointment();
+    Appointment(std::string title, std::string description);
     std::string title;
     std::string description;
 };
