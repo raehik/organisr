@@ -22,7 +22,9 @@ SOURCES += src/main.cpp \
     src/appointment.cpp \
     src/dbhelper.cpp \
     src/guihandler.cpp \
-    src/layouthandler.cpp
+    src/layouthandler.cpp \
+    src/dialogaddtodo.cpp \
+    src/mainwindow.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -30,7 +32,11 @@ HEADERS  += \
     include/sqlitehelper.h \
     include/dbhelper.h \
     include/guihandler.h \
-    include/layouthandler.h
+    include/layouthandler.h \
+    src/dialogaddtodo.h \
+    src/mainwindow.h
 
 FORMS    += \
-    src/mainwindow.ui
+    src/dialog-add-appt.ui \
+    src/main-window.ui \
+    src/dialogaddtodo.ui

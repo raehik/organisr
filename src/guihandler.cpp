@@ -1,6 +1,8 @@
 #include <QApplication>
 #include "guihandler.h"
 #include "layouthandler.h"
+#include "ui_main-window.h"
+#include "datahandler.h"
 
 GuiHandler::GuiHandler() {
 }
@@ -14,8 +16,20 @@ GuiHandler::GuiHandler() {
 int GuiHandler::init(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    LayoutHandler layout;
-    layout.init_layout();
+    // start GUI
+    QMainWindow *main_win = new QMainWindow;
+    Ui::MainWindow ui;
+    ui.setupUi(main_win);
+    main_win->show();
+
+    // do logic stuff
+    DataHandler db = DataHandler();
+    std::vector<Appointment> appts;
+    appts.push_back(Appointment("test title 1", "test desc 1"));
+    db.insert_appts(appts);
+
+    //LayoutHandler layout;
+    //layout.init_layout();
 
     return app.exec();
 }
