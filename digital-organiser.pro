@@ -33,10 +33,10 @@ HEADERS  += \
     include/dbhelper.h \
     include/guihandler.h \
     include/layouthandler.h \
-    src/dialogaddtodo.h \
-    src/mainwindow.h
+    include/dialogaddtodo.h \
+    include/mainwindow.h
 
 FORMS    += \
-    src/dialog-add-appt.ui \
-    src/main-window.ui \
+    src/dialogaddappt.ui \
+    src/mainwindow.ui \
     src/dialogaddtodo.ui
