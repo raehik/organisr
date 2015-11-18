@@ -1,7 +1,6 @@
 #include <QApplication>
 #include "guihandler.h"
-#include "layouthandler.h"
-#include "ui_main-window.h"
+#include "ui_mainwindow.h"
 #include "datahandler.h"
 
 GuiHandler::GuiHandler() {

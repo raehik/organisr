@@ -112,8 +112,8 @@
   <connection>
    <sender>actionAdd_appointment</sender>
    <signal>triggered()</signal>
-   <receiver>actionAdd_appointment</receiver>
-   <slot>trigger()</slot>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
