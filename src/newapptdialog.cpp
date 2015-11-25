@@ -1,37 +1,53 @@
 #include "newapptdialog.h"
 #include <iostream>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
 #include <QFormLayout>
+#include <QPushButton>
 #include <QLabel>
 #include <QLineEdit>
 #include <QTextEdit>
+#include <QString>
 #include "log.h"
 
-NewApptDialog::NewApptDialog(QWidget *parent) : QWidget(parent){
+NewApptDialog::NewApptDialog(QWidget *parent) : QDialog(parent){
     init_window();
-    this->show();
 }
 
 void NewApptDialog::init_window() {
-    // set hints (makes windows floating on certain Linux window managers)
-    this->setWindowFlags(Qt::Dialog);
+    QVBoxLayout *layout = new QVBoxLayout;
+    QFormLayout *form = new QFormLayout;
+    QHBoxLayout *buttons = new QHBoxLayout;
 
-    QFormLayout *layout = new QFormLayout;
-
+    // form layout
     QLabel *label_title = new QLabel("Title");
-    QLineEdit *field_title = new QLineEdit;
+    field_title = new QLineEdit;
     QLabel *label_desc = new QLabel("Description");
-    QTextEdit *field_desc = new QTextEdit;
+    field_desc = new QTextEdit;
 
-    layout->addRow(label_title, field_title);
-    layout->addRow(label_desc, field_desc);
+    form->addRow(label_title, field_title);
+    form->addRow(label_desc, field_desc);
+
+    // buttons layout
+    QPushButton *b_confirm = new QPushButton("Confirm");
+    QPushButton *b_cancel = new QPushButton("Cancel");
+
+    buttons->addWidget(b_confirm, 0, Qt::AlignRight);
+    buttons->addWidget(b_cancel, 1, Qt::AlignRight);
+
+    // slots & signals
+    connect(b_confirm, SIGNAL(clicked(bool)), this, SLOT(accept()));
+    connect(b_cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
+
+    // put layouts together
+    layout->addLayout(form);
+    layout->addLayout(buttons);
 
     this->setLayout(layout);
 }
 
-void NewApptDialog::accepted() {
-    log("Accepted");
-}
-
-void NewApptDialog::cancelled() {
-    log("Cancelled");
+void NewApptDialog::get_details(QString *title_ptr, QString *desc_ptr) {
+    // POINTERS BITCH
+    *title_ptr = field_title->text();
+    *desc_ptr = field_desc->toPlainText();
 }

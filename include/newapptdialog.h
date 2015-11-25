@@ -3,8 +3,12 @@
 
 #include <QApplication>
 #include <QWidget>
+#include <QDialog>
+#include <QString>
+#include <QLineEdit>
+#include <QTextEdit>
 
-class NewApptDialog : public QWidget
+class NewApptDialog : public QDialog
 {
 
     Q_OBJECT
@@ -12,13 +16,13 @@ class NewApptDialog : public QWidget
 public:
     NewApptDialog(QWidget *parent = 0);
     virtual ~NewApptDialog() {};
+    void get_details(QString *title_ptr, QString *desc_ptr);
 
 private:
     void init_window();
-
-private slots:
-    void accepted();
-    void cancelled();
+    void finished(int result);
+    QLineEdit *field_title;
+    QTextEdit *field_desc;
 };
 
 #endif // NEWAPPTDIALOG_H
