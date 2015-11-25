@@ -24,7 +24,8 @@ SOURCES += src/main.cpp \
     src/guihandler.cpp \
     src/guimainwindow.cpp \
     src/newapptdialog.cpp \
-    src/log.cpp
+    src/log.cpp \
+    src/warningbox.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -34,4 +35,5 @@ HEADERS  += \
     include/guihandler.h \
     include/guimainwindow.h \
     include/newapptdialog.h \
-    include/log.h
+    include/log.h \
+    include/warningbox.h
