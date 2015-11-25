@@ -21,11 +21,5 @@ int GuiHandler::init(int argc, char *argv[]) {
     // show when we do app.exec()
     main_win->show();
 
-    // do logic stuff
-    DataHandler db = DataHandler();
-    std::vector<Appointment> appts;
-    appts.push_back(Appointment("test title 1", "test desc 1"));
-    db.insert_appts(appts);
-
     return app.exec();
 }
