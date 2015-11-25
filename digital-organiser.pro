@@ -22,9 +22,8 @@ SOURCES += src/main.cpp \
     src/appointment.cpp \
     src/dbhelper.cpp \
     src/guihandler.cpp \
-    src/dialogaddappt.cpp \
-    src/dialogaddtodo.cpp \
-    src/mainwindow.cpp
+    src/guimainwindow.cpp \
+    src/newapptdialog.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -32,11 +31,5 @@ HEADERS  += \
     include/sqlitehelper.h \
     include/dbhelper.h \
     include/guihandler.h \
-    include/dialogaddappt.h \
-    include/dialogaddtodo.h \
-    include/mainwindow.h
-
-FORMS    += \
-    src/dialogaddappt.ui \
-    src/mainwindow.ui \
-    src/dialogaddtodo.ui
+    include/guimainwindow.h \
+    include/newapptdialog.h
