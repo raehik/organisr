@@ -4,5 +4,7 @@
 
 void log(std::string msg);
 void log(std::string pre, std::string msg);
+void error(std::string msg);
+void error(std::string pre, std::string msg);
 
 #endif // LOG_H

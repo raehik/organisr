@@ -11,7 +11,14 @@ void log(std::string msg) {
 
 void log(std::string pre, std::string msg) {
     if (verbose) {
-        std::string msg_with_pre = pre + ": " + msg;
-        log(msg_with_pre);
+        log(pre + ": " + msg);
     }
+}
+
+void error(std::string msg) {
+    std::cout << "ERROR: " + msg << std::endl;
+}
+
+void error(std::string pre, std::string msg) {
+    error(pre + ": " + msg);
 }
