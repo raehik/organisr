@@ -3,6 +3,7 @@
 #include <QPushButton>
 #include <iostream>
 #include "newapptdialog.h"
+#include "log.h"
 
 GuiMainWindow::GuiMainWindow() {
     init_window();
@@ -27,6 +28,7 @@ void GuiMainWindow::init_window() {
 }
 
 void GuiMainWindow::open_new_appt_dialog() {
+    log("opening new appt. dialog");
     std::cout << "opening new appt. dialog" << std::endl;
     NewApptDialog *w_appt_dialog = new NewApptDialog();
     w_appt_dialog->show();
