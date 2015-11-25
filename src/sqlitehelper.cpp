@@ -2,6 +2,7 @@
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
+#include "log.h"
 
 std::string SQLiteHelper::db_appt = "appointments";
 
@@ -45,11 +46,11 @@ template <typename T> std::string SQLiteHelper::to_string(T var) {
 }
 
 void SQLiteHelper::log_msg(std::string message) {
-    std::cout << message << std::endl;
+    log(message);
 }
 
 void SQLiteHelper::log_err(std::string message) {
-    log_msg(message);
+    log("error", message);
 }
 
 /**

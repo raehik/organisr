@@ -1,14 +1,15 @@
 #include "newapptdialog.h"
 #include <iostream>
+#include "log.h"
 
 NewApptDialog::NewApptDialog(QWidget *parent) : QWidget(parent){
     this->setWindowFlags(Qt::Dialog);
 }
 
 void NewApptDialog::accepted() {
-    std::cout << "Accepted" << std::endl;
+    log("Accepted");
 }
 
 void NewApptDialog::cancelled() {
-    std::cout << "Cancelled" << std::endl;
+    log("Cancelled");
 }

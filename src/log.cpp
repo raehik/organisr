@@ -1,11 +1,17 @@
 #include "log.h"
 #include <iostream>
 
+bool verbose = false;
+
 void log(std::string msg) {
-    std::cout << msg << std::endl;
+    if (verbose) {
+        std::cout << msg << std::endl;
+    }
 }
 
 void log(std::string pre, std::string msg) {
-    std::string msg_with_pre = pre + ": " + msg;
-    log(msg_with_pre);
+    if (verbose) {
+        std::string msg_with_pre = pre + ": " + msg;
+        log(msg_with_pre);
+    }
 }
