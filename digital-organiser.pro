@@ -23,7 +23,8 @@ SOURCES += src/main.cpp \
     src/dbhelper.cpp \
     src/guihandler.cpp \
     src/guimainwindow.cpp \
-    src/newapptdialog.cpp
+    src/newapptdialog.cpp \
+    src/logger.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -32,4 +33,5 @@ HEADERS  += \
     include/dbhelper.h \
     include/guihandler.h \
     include/guimainwindow.h \
-    include/newapptdialog.h
+    include/newapptdialog.h \
+    src/logger.h
