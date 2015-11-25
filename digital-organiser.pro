@@ -1,4 +1,4 @@
-#-------------------------------------------------
+-------------------------------------------------
 #
 # Project created by QtCreator 2015-10-12T14:38:28
 #
@@ -24,7 +24,7 @@ SOURCES += src/main.cpp \
     src/guihandler.cpp \
     src/guimainwindow.cpp \
     src/newapptdialog.cpp \
-    src/logger.cpp
+    src/log.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -34,4 +34,4 @@ HEADERS  += \
     include/guihandler.h \
     include/guimainwindow.h \
     include/newapptdialog.h \
-    src/logger.h
+    include/log.h
