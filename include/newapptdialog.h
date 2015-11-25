@@ -13,6 +13,9 @@ public:
     NewApptDialog(QWidget *parent = 0);
     virtual ~NewApptDialog() {};
 
+private:
+    void init_window();
+
 private slots:
     void accepted();
     void cancelled();
