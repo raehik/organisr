@@ -10,7 +10,7 @@ class WarningBox : public QMessageBox
     Q_OBJECT
 
 public:
-    WarningBox(QString title, QString text, QWidget *parent = 0);
+    WarningBox(QString text, QWidget *parent = 0);
     virtual ~WarningBox() {};
 
 private:

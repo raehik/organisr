@@ -1,8 +1,9 @@
 #include "warningbox.h"
 
-WarningBox::WarningBox(QString title, QString text, QWidget *parent) : QMessageBox(parent) {
+WarningBox::WarningBox(QString text, QWidget *parent) : QMessageBox(parent) {
+    QString def_title = "Error";
     this->setIcon(QMessageBox::Warning);
-    this->setWindowTitle(title);
+    this->setWindowTitle(def_title);
     this->setText(text);
 
     this->exec();
