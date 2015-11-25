@@ -1,7 +1,7 @@
 #include "log.h"
 #include <iostream>
 
-bool verbose = false;
+bool verbose = true;
 
 void log(std::string msg) {
     if (verbose) {
