@@ -2,18 +2,19 @@
 #define WARNINGBOX_H
 
 #include <QMessageBox>
-#include <QApplication>
-#include <QWidget>
-#include <QDialog>
+#include <QString>
 
-
-class WarningBox : public QWidget
+class WarningBox : public QMessageBox
 {
 
-    QT_OBJECT
+    Q_OBJECT
 
 public:
-    WarningBox();
+    WarningBox(QString title, QString text, QWidget *parent = 0);
+    virtual ~WarningBox() {};
+
+private:
+    void init_window();
 };
 
 #endif // WARNINGBOX_H

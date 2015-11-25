@@ -15,6 +15,8 @@
 #include <QString>
 // }}}
 
+#include "warningbox.h"
+
 NewApptDialog::NewApptDialog(QWidget *parent) : QDialog(parent){
     init_window();
 }
@@ -63,12 +65,6 @@ int NewApptDialog::verify_fields() {
 
    if (title == "") {
        log("no title");
-       QMessageBox::warning(this, "Title", "Text");
-       //QMessageBox msg_box;
-       //msg_box.warning()
-       //msg_box.setWindowTitle("Error");
-       //msg_box.setText("Shit's fucked yo");
-       //msg_box.setDetailedText("Yeah, basically shit's real fucked.");
-       //msg_box.exec();
+       WarningBox *warning = new WarningBox("Error", "Shit boys", this);
    }
 }
