@@ -18,6 +18,9 @@ public:
     virtual ~NewApptDialog() {};
     void get_details(QString *title_ptr, QString *desc_ptr);
 
+public slots:
+    int verify_fields();
+
 private:
     void init_window();
     void finished(int result);

@@ -1,5 +1,9 @@
 #include "newapptdialog.h"
+
 #include <iostream>
+#include "log.h"
+
+// Qt includes {{{
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
@@ -7,8 +11,9 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QTextEdit>
+#include <QMessageBox>
 #include <QString>
-#include "log.h"
+// }}}
 
 NewApptDialog::NewApptDialog(QWidget *parent) : QDialog(parent){
     init_window();
@@ -36,7 +41,7 @@ void NewApptDialog::init_window() {
     buttons->addWidget(b_cancel, 1, Qt::AlignRight);
 
     // slots & signals
-    connect(b_confirm, SIGNAL(clicked(bool)), this, SLOT(accept()));
+    connect(b_confirm, SIGNAL(clicked(bool)), this, SLOT(verify_fields()));
     connect(b_cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
 
     // put layouts together
@@ -50,4 +55,20 @@ void NewApptDialog::get_details(QString *title_ptr, QString *desc_ptr) {
     // POINTERS BITCH
     *title_ptr = field_title->text();
     *desc_ptr = field_desc->toPlainText();
+}
+
+int NewApptDialog::verify_fields() {
+   QString title = field_title->text();
+   QString desc = field_desc->toPlainText();
+
+   if (title == "") {
+       log("no title");
+       QMessageBox::warning(this, "Title", "Text");
+       //QMessageBox msg_box;
+       //msg_box.warning()
+       //msg_box.setWindowTitle("Error");
+       //msg_box.setText("Shit's fucked yo");
+       //msg_box.setDetailedText("Yeah, basically shit's real fucked.");
+       //msg_box.exec();
+   }
 }
