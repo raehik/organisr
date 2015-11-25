@@ -46,11 +46,11 @@ template <typename T> std::string SQLiteHelper::to_string(T var) {
 }
 
 void SQLiteHelper::log_msg(std::string message) {
-    log(message);
+    log("SQLiteHelper: " + message);
 }
 
 void SQLiteHelper::log_err(std::string message) {
-    log("error", message);
+    error("SQLiteHelper: " + message);
 }
 
 /**
