@@ -7,7 +7,8 @@
 #include "sqlitehelper.h"
 
 
-class DataHandler {
+class DataHandler
+{
 public:
     DataHandler();
     void insert_appts(std::vector<Appointment> appts);
