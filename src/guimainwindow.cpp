@@ -1,18 +1,17 @@
 #include "guimainwindow.h"
+
+#include <vector>
+
 #include <QHBoxLayout>
 #include <QPushButton>
-#include <iostream>
+
 #include "newapptdialog.h"
+#include "appointment.h"
+
 #include "log.h"
 
 GuiMainWindow::GuiMainWindow() {
     init_window();
-    db = DataHandler();
-
-    // do logic stuff
-    //std::vector<Appointment> appts;
-    //appts.push_back(Appointment("test title 1", "test desc 1"));
-    //db.insert_appts(appts);
 }
 
 /**
@@ -41,12 +40,17 @@ void GuiMainWindow::open_new_appt_dialog() {
     log("opening new appt. dialog");
     NewApptDialog *w_appt_dialog = new NewApptDialog(this);
     if (w_appt_dialog->exec() == QDialog::Accepted) {
+        log("adding new appointment");
         QString appt_title;
         QString appt_desc;
         w_appt_dialog->get_details(&appt_title, &appt_desc);
-        log(appt_title.toUtf8().constData());
-        log(appt_desc.toUtf8().constData());
+
+        std::vector<Appointment> appts;
+        appts.push_back(Appointment(
+                            appt_title.toUtf8().constData(),
+                            appt_desc.toUtf8().constData() ));
+        db.insert_appts(appts);
     }
-    //connect(w_appt_dialog, SIGNAL(accepted()), this, SLOT(add_new_appt(w_appt_dialog)));
-    //connect(w_appt_dialog, SIGNAL(rejected()), this, SLOT(rejected? or sth()));
+    // we're finished with the window: delete it
+    delete w_appt_dialog;
 }
