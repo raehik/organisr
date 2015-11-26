@@ -63,8 +63,19 @@ int NewApptDialog::verify_fields() {
    QString title = field_title->text();
    QString desc = field_desc->toPlainText();
 
-   if (title == "") {
+   // check that certain fields aren't empty
+   if ( field_not_empty(title) ) {
+       accept();
+   }
+
+}
+
+bool NewApptDialog::field_not_empty(QString field_text) {
+    if (field_text == "") {
        log("no title");
        WarningBox("Title field is empty");
-   }
+        return false;
+    } else {
+        return true;
+    }
 }

@@ -22,10 +22,10 @@ public slots:
     int verify_fields();
 
 private:
-    void init_window();
-    void finished(int result);
     QLineEdit *field_title;
     QTextEdit *field_desc;
+    void init_window();
+    bool field_not_empty(QString field_text);
 };
 
 #endif // NEWAPPTDIALOG_H
