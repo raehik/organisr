@@ -1,4 +1,5 @@
 #include "warningbox.h"
+#include "log.h"
 
 WarningBox::WarningBox(QString text, QWidget *parent) : QMessageBox(parent) {
     QString def_title = "Error";
@@ -7,4 +8,11 @@ WarningBox::WarningBox(QString text, QWidget *parent) : QMessageBox(parent) {
     this->setText(text);
 
     this->exec();
+}
+
+/**
+ * Show when the WarningBox is deleted (for debugging purposes).
+ */
+WarningBox::~WarningBox() {
+    log("warning box deleting");
 }

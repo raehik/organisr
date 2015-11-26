@@ -11,7 +11,7 @@ class WarningBox : public QMessageBox
 
 public:
     WarningBox(QString text, QWidget *parent = 0);
-    virtual ~WarningBox() {};
+    virtual ~WarningBox();
 
 private:
     void init_window();

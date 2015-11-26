@@ -65,6 +65,6 @@ int NewApptDialog::verify_fields() {
 
    if (title == "") {
        log("no title");
-       WarningBox *warning = new WarningBox("Title field is empty", this);
+       WarningBox("Title field is empty", this);
    }
 }
