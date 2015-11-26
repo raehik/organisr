@@ -18,6 +18,7 @@ SQLiteHelper::SQLiteHelper(std::string db_file) : DBHelper(db_file) {
     // check if database file exists
     if (file_exists(this->db_file)) {
         log_msg("Database file exists -- not initialising");
+        open_db();
     } else {
         log_msg("Initialising database");
         int rc = init_sqlite_db();
@@ -25,9 +26,6 @@ SQLiteHelper::SQLiteHelper(std::string db_file) : DBHelper(db_file) {
             log_err("Something went wrong, init_sqlite_db returned " + to_string(rc));
         }
     }
-
-    // connect to database
-    open_db();
 }
 
 SQLiteHelper::~SQLiteHelper() {
@@ -77,14 +75,9 @@ int SQLiteHelper::init_sqlite_db() {
     std::string sql_init;
 
     // create database
-    rc = sqlite3_open(db_file.c_str(), &db);
-
-    // try to open database with sqlite
-    if (rc) {
-      log_err("can't open database: " + std::string(sqlite3_errmsg(db)));
-      return 1;
-    } else {
-      log_msg("opened database successfully");
+    rc = open_db();
+    if ( rc != 0) {
+        return 1;
     }
 
     // form SQL statement
@@ -97,7 +90,7 @@ int SQLiteHelper::init_sqlite_db() {
     rc = exec_sql(sql_init);
 
     if (rc != 0) {
-        log_err("error while executing init SQL");
+        log_err("error while executing init SQL: " + std::string(sqlite3_errmsg(db)));
         return 2;
     }
 
@@ -110,7 +103,7 @@ int SQLiteHelper::open_db() {
         log_msg("opened database successfully");
         return 0;
     } else {
-        log_msg("failed to open database");
+        log_err("failed to open database: " + std::string(sqlite3_errmsg(db)));
         return 1;
     }
 }
