@@ -45,11 +45,9 @@ void GuiMainWindow::open_new_appt_dialog() {
         QString appt_desc;
         w_appt_dialog->get_details(&appt_title, &appt_desc);
 
-        std::vector<Appointment> appts;
-        appts.push_back(Appointment(
-                            appt_title.toUtf8().constData(),
-                            appt_desc.toUtf8().constData() ));
-        db.insert_appts(appts);
+        db.insert_appt(
+                    DBObject(appt_title.toUtf8().constData()),
+                    DBObject(appt_desc.toUtf8().constData()) );
     }
     // we're finished with the window: delete it
     delete w_appt_dialog;
