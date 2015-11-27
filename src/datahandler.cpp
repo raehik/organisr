@@ -37,8 +37,4 @@ void DataHandler::insert_appts(std::vector<Appointment> appts) {
         rows.push_back(row);
     }
     db_helper.insert_rows(table_appts, table_appts_cols, rows);
-    std::vector<std::string> all_cols;
-    all_cols.push_back("title");
-    all_cols.push_back("description");
-    db_helper.select_columns_where(table_appts, all_cols, std::string(""));
 }
