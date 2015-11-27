@@ -5,6 +5,7 @@
 #include <QWidget>
 #include <QDialog>
 #include <QString>
+#include <QLabel>
 #include <QLineEdit>
 #include <QTextEdit>
 
@@ -24,8 +25,10 @@ public slots:
 private:
     QLineEdit *field_title;
     QTextEdit *field_desc;
+    QLabel *label_title;
+    QLabel *label_desc;
     void init_window();
-    bool field_not_empty(QString field_text);
+    bool field_not_empty(QString field_text, QString field_name);
 };
 
 #endif // NEWAPPTDIALOG_H

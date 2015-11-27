@@ -27,9 +27,9 @@ void NewApptDialog::init_window() {
     QHBoxLayout *buttons = new QHBoxLayout;
 
     // form layout
-    QLabel *label_title = new QLabel("Title");
+    label_title = new QLabel("Title");
     field_title = new QLineEdit;
-    QLabel *label_desc = new QLabel("Description");
+    label_desc = new QLabel("Description");
     field_desc = new QTextEdit;
 
     form->addRow(label_title, field_title);
@@ -64,16 +64,16 @@ int NewApptDialog::verify_fields() {
    QString desc = field_desc->toPlainText();
 
    // check that certain fields aren't empty
-   if ( field_not_empty(title) ) {
+   if ( field_not_empty(title, label_title->text()) ) {
        accept();
    }
 
 }
 
-bool NewApptDialog::field_not_empty(QString field_text) {
+bool NewApptDialog::field_not_empty(QString field_text, QString field_name) {
     if (field_text == "") {
        log("no title");
-       WarningBox("Title field is empty");
+       WarningBox("Field '" + field_name + "' is empty");
         return false;
     } else {
         return true;
