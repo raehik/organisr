@@ -11,7 +11,8 @@ class DataHandler
 {
 public:
     DataHandler();
-    void insert_appts(std::vector<Appointment> appts);
+    int insert_appts(std::vector<Appointment> appts);
+    int insert_appt(DBObject title, DBObject desc);
 
 private:
     SQLiteHelper db_helper = SQLiteHelper("test.db");
