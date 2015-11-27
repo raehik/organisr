@@ -3,7 +3,6 @@
 
 #include <string>
 
-
 class Appointment {
     public:
         Appointment(std::string title, std::string description);
