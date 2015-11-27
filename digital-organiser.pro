@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = digital-organiser
 TEMPLATE = app
 
-LIBS += -lsqlite3
+LIBS += -L $$PWD/lib -lsqlite3 -lSQLiteCpp
 
 INCLUDEPATH += $$PWD/include
 
@@ -25,7 +25,8 @@ SOURCES += src/main.cpp \
     src/guimainwindow.cpp \
     src/newapptdialog.cpp \
     src/log.cpp \
-    src/warningbox.cpp
+    src/warningbox.cpp \
+    src/dbobject.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -36,4 +37,5 @@ HEADERS  += \
     include/guimainwindow.h \
     include/newapptdialog.h \
     include/log.h \
-    include/warningbox.h
+    include/warningbox.h \
+    include/dbobject.h
