@@ -2,9 +2,12 @@
 #define SQLITEHELPER_H
 
 #include <sqlite3.h>
+//#include <SQLiteCpp/SQLiteCpp.h>
+
 #include <string>
 #include "dbhelper.h"
 #include <iostream>
+#include "dbobject.h"
 
 
 /**
@@ -15,12 +18,12 @@ class SQLiteHelper : public DBHelper {
         SQLiteHelper(std::string db_file);
         ~SQLiteHelper();
 
-        virtual void insert_rows(
+        virtual int insert_rows(
                 std::string table_name,
                 std::vector<std::string> table_cols,
-                std::vector< std::vector<std::string> > rows);
+                std::vector< std::vector<DBObject> > rows);
 
-        virtual std::vector< std::vector<std::string> > select_columns_where(
+        virtual std::vector< std::vector<DBObject> > select_columns_where(
                 std::string table_name,
                 std::vector<std::string> cols,
                 std::string sql_where);

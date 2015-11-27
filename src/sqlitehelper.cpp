@@ -3,6 +3,7 @@
 #include <sstream>
 #include <stdio.h>
 #include "log.h"
+#include "dbobject.h"
 
 std::string SQLiteHelper::db_appt = "appointments";
 
@@ -135,25 +136,26 @@ void SQLiteHelper::print_db() {
     log_msg("Database");
 }
 
-void SQLiteHelper::insert_rows(
+int SQLiteHelper::insert_rows(
         std::string table_name,
         std::vector<std::string> table_cols,
-        std::vector< std::vector<std::string> > rows)
+        std::vector< std::vector<DBObject> > rows)
 {
     char *err_msg;
     sqlite3_stmt *stmt;
     char *pzTest;
     std::string cols_str;
-    std::vector<std::string> cur_row;
+    std::vector<DBObject> cur_row;
 
     // see http://stackoverflow.com/q/452859/2246637
     if (rows.size() > 1000) {
-        log_msg("ERROR: too many rows");
+        log_err("too many rows");
         // TODO: throw an exception
+        return 1;
     }
 
     std::string sql = "insert into " + table_name + "(";
-    for (std::vector<std::string>::size_type i = 0; i != table_cols.size(); i++) {
+    for (std::vector<DBObject>::size_type i = 0; i != table_cols.size(); i++) {
         if (i != 0) {
             cols_str += ",";
         }
@@ -162,26 +164,28 @@ void SQLiteHelper::insert_rows(
     sql += cols_str + ") values";
 
     // TODO: parameterise instead of inserting blindly
-    for (std::vector< std::vector<std::string> >::size_type i = 0; i != rows.size(); i++) {
+    for (std::vector< std::vector<DBObject> >::size_type i = 0; i != rows.size(); i++) {
         if (i != 0) {
             sql += ",";
         }
         sql += "(";
         cur_row = rows[i];
-        for (std::vector<std::string>::size_type j = 0; j != cur_row.size(); j++) {
+        for (std::vector<DBObject>::size_type j = 0; j != cur_row.size(); j++) {
             if (j != 0) {
                 sql += ",";
             }
-            sql += "\"" + cur_row[j] + "\"";
+            std::string cur_str = cur_row[j].get_str();
+            sql += "\"" + cur_str + "\"";
         }
         sql += ")";
     }
 
     log_msg(sql);
-    exec_sql(sql);
+    int rc = exec_sql(sql);
+    return rc;
 }
 
-std::vector< std::vector<std::string> > SQLiteHelper::select_columns_where(
+std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
         std::string table_name,
         std::vector<std::string> cols,
         std::string sql_where)
@@ -190,8 +194,8 @@ std::vector< std::vector<std::string> > SQLiteHelper::select_columns_where(
     sqlite3_stmt *stmt;
     char *pzTest;
     std::string cols_str;
-    std::vector<std::string> cur_record;
-    std::vector< std::vector<std::string> > records;
+    std::vector<DBObject> cur_record;
+    std::vector< std::vector<DBObject> > records;
 
     std::string sql;
 
@@ -228,7 +232,7 @@ std::vector< std::vector<std::string> > SQLiteHelper::select_columns_where(
             for (int i = 0; i != cols.size(); i++) {
                 tmp_str = to_string(sqlite3_column_text(stmt, i));
                 log_msg("col: " + tmp_str);
-                cur_record.push_back(tmp_str);
+                DBObject cur_record = DBObject(tmp_str);
             }
             records.push_back(cur_record);
         }

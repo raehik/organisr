@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include "dbobject.h"
 
 /**
  * @brief An abstract class defining methods for database helpers to implement.
@@ -18,11 +19,11 @@ public:
     // http://stackoverflow.com/questions/12854778/abstract-class-vs-interface-in-c
     //virtual ~DBHelper() {}
 
-    virtual void insert_rows(std::string table_name,
+    virtual int insert_rows(std::string table_name,
                              std::vector<std::string> table_cols,
-                             std::vector< std::vector<std::string> > rows) = 0;
+                             std::vector< std::vector<DBObject> > rows) = 0;
 
-    virtual std::vector< std::vector<std::string> > select_columns_where(
+    virtual std::vector< std::vector<DBObject> > select_columns_where(
             std::string table_name,
             std::vector<std::string> cols,
             std::string sql_where) = 0;
