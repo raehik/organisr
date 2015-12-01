@@ -15,8 +15,9 @@ public:
     int insert_appt(DBObject title, DBObject desc);
 
 private:
-    SQLiteHelper db_helper = SQLiteHelper("test.db");
+    SQLiteHelper db_helper;
 
+    static std::string db_file;
     static std::string table_appts;
     std::vector<std::string> table_appts_cols; // TODO: static or no?
 };

@@ -10,14 +10,9 @@ DBObject::DBObject(std::string value) {
     str_val = value;
 }
 
-template <typename T> T DBObject::get_value() {
-    if (obj_type == "int") {
-        return int_val;
-    } else if (obj_type == "string") {
-        return str_val;
-    }
+void DBObject::get_value(int *var) {
+    *var = int_val;
 }
-
-std::string DBObject::get_str() {
-    return str_val;
+void DBObject::get_value(std::string *var) {
+    *var = str_val;
 }

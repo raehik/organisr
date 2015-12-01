@@ -6,10 +6,11 @@
 class DBObject
 {
 public:
-    DBObject(int value);
-    DBObject(std::string value);
-    template <typename T> T get_value();
-    std::string get_str();
+    DBObject(int);
+    DBObject(std::string);
+
+    void get_value(int*);
+    void get_value(std::string*);
 
 private:
     int int_val;

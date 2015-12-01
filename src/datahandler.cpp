@@ -4,11 +4,15 @@
 #include "sqlitehelper.h"
 
 std::string DataHandler::table_appts = "appointments";
+std::string DataHandler::db_file = "test.db";
 
-DataHandler::DataHandler() {
+DataHandler::DataHandler() : db_helper(db_file) {
+    // initialise database
+    //DataHandler::db_helper = SQLiteHelper(db_file);
+
     // define column names
-    DataHandler::table_appts_cols.push_back("title");
-    DataHandler::table_appts_cols.push_back("description");
+    table_appts_cols.push_back("title");
+    table_appts_cols.push_back("description");
 }
 
 int DataHandler::insert_appts(std::vector<Appointment> objects) {
@@ -47,4 +51,6 @@ int DataHandler::insert_appt(DBObject title, DBObject desc) {
     std::vector< std::vector<DBObject> > appt_vector;
     appt_vector.push_back(appt);
     db_helper.insert_rows(table_appts, table_appts_cols, appt_vector);
+
+    return 0;
 }

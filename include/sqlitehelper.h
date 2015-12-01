@@ -2,7 +2,7 @@
 #define SQLITEHELPER_H
 
 #include <sqlite3.h>
-//#include <SQLiteCpp/SQLiteCpp.h>
+#include <SQLiteCpp/SQLiteCpp.h>
 
 #include <string>
 #include "dbhelper.h"
@@ -26,18 +26,15 @@ class SQLiteHelper : public DBHelper {
         virtual std::vector< std::vector<DBObject> > select_columns_where(
                 std::string table_name,
                 std::vector<std::string> cols,
-                std::string sql_where);
+                std::string sql_where = "");
 
         int init_sqlite_db();
         void print_db();
 
     private:
-        sqlite3 *db;
+        SQLite::Database db;
         int exec_sql(std::string statement);
         int open_db();
-
-
-        static std::string db_appt;
 
         static void log_msg(std::string message);
         static void log_err(std::string message);
@@ -45,6 +42,7 @@ class SQLiteHelper : public DBHelper {
         template <typename T> static std::string to_string(T var);
 
         void step_api_test();
+        const static std::string SQL_PARAM;
 };
 
 #endif // SQLITEHELPER_H

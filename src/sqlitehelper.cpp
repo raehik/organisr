@@ -1,11 +1,12 @@
 #include "sqlitehelper.h"
+
 #include <iostream>
 #include <sstream>
 #include <stdio.h>
 #include "log.h"
 #include "dbobject.h"
 
-std::string SQLiteHelper::db_appt = "appointments";
+const std::string SQLiteHelper::SQL_PARAM = "?";
 
 /**
  * @brief Initialise a SQLiteHelper.
@@ -15,24 +16,34 @@ std::string SQLiteHelper::db_appt = "appointments";
  *
  * @param db_file    The name of the SQLite database file to use.
  */
-SQLiteHelper::SQLiteHelper(std::string db_file) : DBHelper(db_file) {
-    // check if database file exists
-    if (file_exists(this->db_file)) {
-        log_msg("Database file exists -- not initialising");
-        open_db();
-    } else {
-        log_msg("Initialising database");
-        int rc = init_sqlite_db();
-        if (rc != 0) {
-            log_err("Something went wrong, init_sqlite_db returned " + to_string(rc));
+SQLiteHelper::SQLiteHelper(std::string db_file)
+try : DBHelper(db_file), db(db_file, SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE) {
+    // in the member init list we tried to *open* the file -- if it succeeds
+    // then this is all run, so pretend that the database is open
+    log_msg("opened database successfully");
+    std::string appt_table = "appointments";
+    try {
+        if (db.tableExists(appt_table)) {
+            log_msg("table exists");
+        } else {
+            log_msg("table does not exist");
+            init_sqlite_db();
         }
+    } catch(SQLite::Exception e) {
+        log_err("exception when checking for appt. table existence");
     }
+}
+catch(SQLite::Exception e) {
+    log_err("SQLite database open or creation failed");
+
+    // just throw e again after catching it lol
+    throw e;
 }
 
 SQLiteHelper::~SQLiteHelper() {
     // close the database when helper ends
     // TODO: this may not be permanent
-    sqlite3_close(db);
+    //sqlite3_close(db);
 }
 
 /**
@@ -71,15 +82,7 @@ bool SQLiteHelper::file_exists(std::string filename) {
  * @return      non-zero on fail, else 0
  */
 int SQLiteHelper::init_sqlite_db() {
-    char *err_msg = 0;
-    int rc;
     std::string sql_init;
-
-    // create database
-    rc = open_db();
-    if ( rc != 0) {
-        return 1;
-    }
 
     // form SQL statement
     sql_init = "create table appointments(" \
@@ -88,25 +91,15 @@ int SQLiteHelper::init_sqlite_db() {
             "description text);";
 
     // now run it
-    rc = exec_sql(sql_init);
-
-    if (rc != 0) {
-        log_err("error while executing init SQL: " + std::string(sqlite3_errmsg(db)));
-        return 2;
-    }
+    exec_sql(sql_init);
 
     return 0;
 }
 
 int SQLiteHelper::open_db() {
-    int rc = sqlite3_open(db_file.c_str(), &db);
-    if (rc == SQLITE_OK) {
-        log_msg("opened database successfully");
-        return 0;
-    } else {
-        log_err("failed to open database: " + std::string(sqlite3_errmsg(db)));
-        return 1;
-    }
+    // for now, we are forced to open the database in the constructor, so this
+    // does nothing
+    return 0;
 }
 
 /**
@@ -114,21 +107,9 @@ int SQLiteHelper::open_db() {
  *
  * @return      non-zero on fail, else 0
  */
-int SQLiteHelper::exec_sql(std::string statements) {
-    log_msg("exec_sql: beginning");
-    char * err_msg = 0;
-    int rc;
-
-    rc = sqlite3_exec(db, statements.c_str(), NULL, 0, &err_msg);
-    if (rc != SQLITE_OK) {
-        log_err("SQL error: " + std::string(err_msg));
-        sqlite3_free(err_msg);
-        return 1;
-    } else {
-        log_msg("exec_sql: operation successful");
-    }
-
-    log_msg("exec_sql: finished successfully");
+int SQLiteHelper::exec_sql(std::string statement) {
+    log_msg("exec: " + statement);
+    db.exec(statement);
     return 0;
 }
 
@@ -141,9 +122,6 @@ int SQLiteHelper::insert_rows(
         std::vector<std::string> table_cols,
         std::vector< std::vector<DBObject> > rows)
 {
-    char *err_msg;
-    sqlite3_stmt *stmt;
-    char *pzTest;
     std::string cols_str;
     std::vector<DBObject> cur_row;
 
@@ -154,6 +132,7 @@ int SQLiteHelper::insert_rows(
         return 1;
     }
 
+    // columns
     std::string sql = "insert into " + table_name + "(";
     for (std::vector<DBObject>::size_type i = 0; i != table_cols.size(); i++) {
         if (i != 0) {
@@ -163,7 +142,7 @@ int SQLiteHelper::insert_rows(
     }
     sql += cols_str + ") values";
 
-    // TODO: parameterise instead of inserting blindly
+    // value placeholders (for binding later)
     for (std::vector< std::vector<DBObject> >::size_type i = 0; i != rows.size(); i++) {
         if (i != 0) {
             sql += ",";
@@ -171,18 +150,28 @@ int SQLiteHelper::insert_rows(
         sql += "(";
         cur_row = rows[i];
         for (std::vector<DBObject>::size_type j = 0; j != cur_row.size(); j++) {
-            if (j != 0) {
-                sql += ",";
-            }
-            std::string cur_str = cur_row[j].get_str();
-            sql += "\"" + cur_str + "\"";
+            // as long as not first item, put a comma
+            if (j != 0) { sql += ","; }
+            sql += SQL_PARAM;
         }
         sql += ")";
     }
 
-    log_msg(sql);
-    int rc = exec_sql(sql);
-    return rc;
+    log_msg("compiling SQL query");
+    SQLite::Statement query(db, sql);
+
+    // note that SQL parameters are counted starting from 1, not 0
+    log_msg("binding values");
+    int bind_count = 1;
+    for (std::vector< std::vector<DBObject> >::size_type i = 0; i != rows.size(); i++) {
+        for (std::vector<DBObject>::size_type j = 0; j != cur_row.size(); j++) {
+            std::string val;
+            rows[i][j].get_value(&val);
+            query.bind(bind_count, val);
+            bind_count++;
+        }
+    }
+    query.exec();
 }
 
 std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
@@ -190,22 +179,20 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
         std::vector<std::string> cols,
         std::string sql_where)
 {
-    char *err_msg;
-    sqlite3_stmt *stmt;
-    char *pzTest;
-    std::string cols_str;
     std::vector<DBObject> cur_record;
     std::vector< std::vector<DBObject> > records;
 
     std::string sql;
 
+    // start the query
     sql = "select ";
 
+    // select specified columns
     for (std::vector<std::string>::size_type i = 0; i != cols.size(); i++) {
         if (i != 0) {
             sql += ",";
         }
-        sql += cols[i];
+        sql += SQL_PARAM;
     }
 
     sql += " from " + table_name;
@@ -215,29 +202,29 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
         sql += " where " + sql_where;
     }
 
-    int rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, NULL);
-    if (rc != SQLITE_OK) {
-        log_msg("failed to prepare statement");
-        log_msg(to_string(sqlite3_errmsg(db)));
-        sqlite3_finalize(stmt);
-        throw("error");
+    // compile SQL query
+    SQLite::Statement query(db, sql);
+
+    // now bind values (have to do it at the end, after we've formed the query)
+    int bind_count = 1;
+    for (std::vector<std::string>::size_type i = 0; i != cols.size(); i++) {
+        query.bind(bind_count, cols[i]);
     }
-    log_msg("statement prepared successfully");
 
-    // package up all output info
-    std::string tmp_str;
-    do {
-        rc = sqlite3_step(stmt);
-        if (rc == SQLITE_ROW) {
-            for (int i = 0; i != cols.size(); i++) {
-                tmp_str = to_string(sqlite3_column_text(stmt, i));
-                log_msg("col: " + tmp_str);
-                DBObject cur_record = DBObject(tmp_str);
-            }
-            records.push_back(cur_record);
+    // and finally execute the command
+    while (query.executeStep()) {
+        // clear temp. record holder
+        cur_record.clear();
+
+        for (int i = 0; i != cols.size(); i++) {
+            // columns *do* start at 0, at least
+            cur_record.push_back(DBObject("Example"));
+            //cur_record.push_back(DBObject(query.getColumn(i)));
         }
-    } while (rc == SQLITE_ROW);
 
-    sqlite3_finalize(stmt);
+        // add record to records list
+        records.push_back(cur_record);
+    }
+
     return records;
 }
