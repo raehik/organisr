@@ -16,7 +16,7 @@ class NewApptDialog : public QDialog
 
 public:
     NewApptDialog(QWidget *parent = 0);
-    virtual ~NewApptDialog() {};
+    virtual ~NewApptDialog() {}
     void get_details(QString *title_ptr, QString *desc_ptr);
 
 public slots:
