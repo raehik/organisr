@@ -1,14 +1,14 @@
 #include "guimainwindow.h"
 
 #include <vector>
-
 #include <QHBoxLayout>
 #include <QPushButton>
 
 #include "newapptdialog.h"
 #include "appointment.h"
-
 #include "log.h"
+
+using namespace Util;
 
 GuiMainWindow::GuiMainWindow() {
     init_window();
