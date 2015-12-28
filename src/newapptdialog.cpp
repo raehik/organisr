@@ -1,6 +1,7 @@
 #include "newapptdialog.h"
 
 #include <iostream>
+#include "warningbox.h"
 #include "log.h"
 
 // Qt includes {{{
@@ -13,9 +14,10 @@
 #include <QTextEdit>
 #include <QMessageBox>
 #include <QString>
+#include <QPrinter>
+#include <QPainter>
+#include <QPrintDialog>
 // }}}
-
-#include "warningbox.h"
 
 NewApptDialog::NewApptDialog(QWidget *parent) : QDialog(parent){
     init_window();
@@ -29,17 +31,18 @@ void NewApptDialog::init_window() {
     // form layout
     label_title = new QLabel("Title");
     field_title = new QLineEdit;
+    form->addRow(label_title, field_title);
+
     label_desc = new QLabel("Description");
     field_desc = new QTextEdit;
-
-    form->addRow(label_title, field_title);
     form->addRow(label_desc, field_desc);
+
 
     // buttons layout
     QPushButton *b_confirm = new QPushButton("Confirm");
-    QPushButton *b_cancel = new QPushButton("Cancel");
-
     buttons->addWidget(b_confirm, 0, Qt::AlignRight);
+
+    QPushButton *b_cancel = new QPushButton("Cancel");
     buttons->addWidget(b_cancel, 1, Qt::AlignRight);
 
     // slots & signals
@@ -61,13 +64,27 @@ void NewApptDialog::get_details(QString *title_ptr, QString *desc_ptr) {
 
 int NewApptDialog::verify_fields() {
    QString title = field_title->text();
-   QString desc = field_desc->toPlainText();
 
    // check that certain fields aren't empty
    if ( field_not_empty(title, label_title->text()) ) {
        accept();
    }
-
+    //TEST
+    QPrinter printer(QPrinter::HighResolution);
+    printer.setOutputFormat(QPrinter::PdfFormat);
+    printer.setOutputFileName("test.pdf");
+    QPrintDialog *print_dialog = new QPrintDialog(&printer, this);
+    //dlg->setWindowTitle(QObject::tr("Print Document"));
+    if(print_dialog->exec() == QDialog::Accepted) {
+        log("great");
+        QPainter painter;
+        painter.begin(&printer);
+        this->render(&painter);
+        painter.end();
+    }
+    delete print_dialog;
+    //END TEST
+    return 0;
 }
 
 bool NewApptDialog::field_not_empty(QString field_text, QString field_name) {
