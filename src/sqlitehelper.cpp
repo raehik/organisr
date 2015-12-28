@@ -1,10 +1,8 @@
 #include "sqlitehelper.h"
 
-#include <iostream>
 #include <sstream>
 #include <stdio.h>
 #include "log.h"
-#include "dbobject.h"
 
 const std::string SQLiteHelper::SQL_PARAM = "?";
 
@@ -38,12 +36,6 @@ catch(SQLite::Exception e) {
 
     // just throw e again after catching it lol
     throw e;
-}
-
-SQLiteHelper::~SQLiteHelper() {
-    // close the database when helper ends
-    // TODO: this may not be permanent
-    //sqlite3_close(db);
 }
 
 /**
@@ -165,13 +157,21 @@ int SQLiteHelper::insert_rows(
     int bind_count = 1;
     for (std::vector< std::vector<DBObject> >::size_type i = 0; i != rows.size(); i++) {
         for (std::vector<DBObject>::size_type j = 0; j != cur_row.size(); j++) {
-            std::string val;
-            rows[i][j].get_value(&val);
-            query.bind(bind_count, val);
+            DBObject obj = rows[i][j];
+            if (obj.type() == "string") {
+                query.bind(bind_count, obj.get_str());
+            } else if (obj.type() == "int") {
+                query.bind(bind_count, obj.get_int());
+            } else {
+                error("DBObject of a type we can't handle");
+                return 1;
+            }
+
             bind_count++;
         }
     }
     query.exec();
+    return 0;
 }
 
 std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
