@@ -5,8 +5,8 @@
 #include <SQLiteCpp/SQLiteCpp.h>
 
 #include <string>
-#include "dbhelper.h"
 #include <iostream>
+#include "dbhelper.h"
 #include "dbobject.h"
 
 
@@ -16,7 +16,6 @@
 class SQLiteHelper : public DBHelper {
     public:
         SQLiteHelper(std::string db_file);
-        ~SQLiteHelper();
 
         virtual int insert_rows(
                 std::string table_name,
