@@ -28,6 +28,7 @@ SOURCES += \
     src/newapptdialog.cpp \
     src/sqlitehelper.cpp \
     src/warningbox.cpp \
+    src/widgetprinter.cpp
 
 HEADERS  += \
     include/appointment.h \
@@ -40,3 +41,4 @@ HEADERS  += \
     include/newapptdialog.h \
     include/sqlitehelper.h \
     include/warningbox.h \
+    include/widgetprinter.h
