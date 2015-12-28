@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui
+QT       += core gui printsupport
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -16,26 +16,27 @@ LIBS += -L $$PWD/lib -lsqlite3 -lSQLiteCpp
 INCLUDEPATH += $$PWD/include
 
 
-SOURCES += src/main.cpp \
-    src/sqlitehelper.cpp \
-    src/datahandler.cpp \
+SOURCES += \
     src/appointment.cpp \
+    src/datahandler.cpp \
     src/dbhelper.cpp \
+    src/dbobject.cpp \
     src/guihandler.cpp \
     src/guimainwindow.cpp \
-    src/newapptdialog.cpp \
     src/log.cpp \
+    src/main.cpp \
+    src/newapptdialog.cpp \
+    src/sqlitehelper.cpp \
     src/warningbox.cpp \
-    src/dbobject.cpp
 
 HEADERS  += \
-    include/datahandler.h \
     include/appointment.h \
-    include/sqlitehelper.h \
+    include/datahandler.h \
     include/dbhelper.h \
+    include/dbobject.h \
     include/guihandler.h \
     include/guimainwindow.h \
-    include/newapptdialog.h \
     include/log.h \
+    include/newapptdialog.h \
+    include/sqlitehelper.h \
     include/warningbox.h \
-    include/dbobject.h
