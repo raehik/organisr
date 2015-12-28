@@ -16,3 +16,15 @@ void DBObject::get_value(int *var) {
 void DBObject::get_value(std::string *var) {
     *var = str_val;
 }
+
+std::string DBObject::type() {
+    return obj_type;
+}
+
+int DBObject::get_int() {
+    return int_val;
+}
+
+std::string DBObject::get_str() {
+    return str_val;
+}

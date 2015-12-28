@@ -9,6 +9,11 @@ public:
     DBObject(int);
     DBObject(std::string);
 
+    std::string type();
+
+    int get_int();
+    std::string get_str();
+
     void get_value(int*);
     void get_value(std::string*);
 
