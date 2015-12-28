@@ -1,6 +1,7 @@
 #include "newapptdialog.h"
 
 #include <iostream>
+#include "widgetprinter.h"
 #include "warningbox.h"
 #include "log.h"
 
@@ -18,6 +19,8 @@
 #include <QPainter>
 #include <QPrintDialog>
 // }}}
+
+using namespace Util;
 
 NewApptDialog::NewApptDialog(QWidget *parent) : QDialog(parent){
     init_window();
@@ -69,22 +72,7 @@ int NewApptDialog::verify_fields() {
    if ( field_not_empty(title, label_title->text()) ) {
        accept();
    }
-    //TEST
-    QPrinter printer(QPrinter::HighResolution);
-    printer.setOutputFormat(QPrinter::PdfFormat);
-    printer.setOutputFileName("test.pdf");
-    QPrintDialog *print_dialog = new QPrintDialog(&printer, this);
-    //dlg->setWindowTitle(QObject::tr("Print Document"));
-    if(print_dialog->exec() == QDialog::Accepted) {
-        log("great");
-        QPainter painter;
-        painter.begin(&printer);
-        this->render(&painter);
-        painter.end();
-    }
-    delete print_dialog;
-    //END TEST
-    return 0;
+   return 0;
 }
 
 bool NewApptDialog::field_not_empty(QString field_text, QString field_name) {
