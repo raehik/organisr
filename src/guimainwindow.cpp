@@ -24,10 +24,11 @@ void GuiMainWindow::init_window() {
     QHBoxLayout *layout = new QHBoxLayout;
 
     QPushButton *b_new_appt = new QPushButton("Add new appointment");
-    QPushButton *b_new_todo = new QPushButton("Add new to-do");
-
     layout->addWidget(b_new_appt, 0);
+
+    QPushButton *b_new_todo = new QPushButton("Add new to-do");
     layout->addWidget(b_new_todo, 1, Qt::AlignRight);
+
 
     connect(b_new_appt, SIGNAL(clicked()), this, SLOT(open_new_appt_dialog()));
 
