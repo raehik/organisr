@@ -1,6 +1,9 @@
 #include "log.h"
 #include <iostream>
 
+namespace Util
+{
+
 bool verbose = true;
 
 void log(std::string msg) {
@@ -22,3 +25,5 @@ void error(std::string msg) {
 void error(std::string pre, std::string msg) {
     error(pre + ": " + msg);
 }
+
+} // namespace util

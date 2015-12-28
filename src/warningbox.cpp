@@ -14,5 +14,5 @@ WarningBox::WarningBox(QString text, QWidget *parent) : QMessageBox(parent) {
  * Show when the WarningBox is deleted (for debugging purposes).
  */
 WarningBox::~WarningBox() {
-    log("warning box deleting");
+    Util::log("warning box deleting");
 }

@@ -38,7 +38,6 @@ class SQLiteHelper : public DBHelper {
         static void log_msg(std::string message);
         static void log_err(std::string message);
         static bool file_exists(std::string filename);
-        template <typename T> static std::string to_string(T var);
 
         void step_api_test();
         const static std::string SQL_PARAM;

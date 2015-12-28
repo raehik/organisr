@@ -1,8 +1,9 @@
 #include "sqlitehelper.h"
 
-#include <sstream>
 #include <stdio.h>
 #include "log.h"
+
+using namespace Util;
 
 const std::string SQLiteHelper::SQL_PARAM = "?";
 
@@ -36,15 +37,6 @@ catch(SQLite::Exception e) {
 
     // just throw e again after catching it lol
     throw e;
-}
-
-/**
- * Convert a variable to a string.
- */
-template <typename T> std::string SQLiteHelper::to_string(T var) {
-    std::stringstream stream;
-    stream << var;
-    return stream.str();
 }
 
 void SQLiteHelper::log_msg(std::string message) {
