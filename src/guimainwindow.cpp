@@ -3,6 +3,7 @@
 #include <vector>
 #include <QHBoxLayout>
 #include <QPushButton>
+#include <QTabWidget>
 
 #include "newapptdialog.h"
 #include "appointment.h"
@@ -21,20 +22,23 @@ void GuiMainWindow::init_window() {
     // uncomment for floating main window
     this->setWindowFlags(Qt::Dialog);
 
-    QHBoxLayout *layout = new QHBoxLayout;
-
-    QPushButton *b_new_appt = new QPushButton("Add new appointment");
-    layout->addWidget(b_new_appt, 0);
-
+    QWidget *w_todo = new QWidget;
+    QHBoxLayout *l_todo = new QHBoxLayout(w_todo);
     QPushButton *b_new_todo = new QPushButton("Add new to-do");
-    layout->addWidget(b_new_todo, 1, Qt::AlignRight);
+    l_todo->addWidget(b_new_todo);
 
+    QWidget *w_appt = new QWidget;
+    QHBoxLayout *l_appt = new QHBoxLayout(w_appt);
+    QPushButton *b_new_appt = new QPushButton("Add new appointment");
+    l_appt->addWidget(b_new_appt);
+
+    QTabWidget *tabber = new QTabWidget;
+    tabber->addTab(w_todo, "To-dos");
+    tabber->addTab(w_appt, "Appointments");
 
     connect(b_new_appt, SIGNAL(clicked()), this, SLOT(open_new_appt_dialog()));
 
-    QWidget *main_widget = new QWidget;
-    main_widget->setLayout(layout);
-    setCentralWidget(main_widget);
+    setCentralWidget(tabber);
 }
 
 void GuiMainWindow::open_new_appt_dialog() {
