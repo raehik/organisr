@@ -4,15 +4,36 @@
 #include "sqlitehelper.h"
 
 std::string DataHandler::table_appts = "appointments";
+std::string DataHandler::table_todos = "todos";
 std::string DataHandler::db_file = "test.db";
 
 DataHandler::DataHandler() : db_helper(db_file) {
-    // initialise database
+    // check if we need to initialise database
+    // TODO: not a good check honestly
+    if (! db_helper.table_exists(table_appts)) {
+        init_db();
+    }
+
     //DataHandler::db_helper = SQLiteHelper(db_file);
 
     // define column names
     table_appts_cols.push_back("title");
     table_appts_cols.push_back("description");
+
+    table_todos_cols.push_back("text");
+}
+
+int DataHandler::init_db() {
+    std::string sql_appt = "create table appointments(" \
+            "id          integer  primary key," \
+            "title       text     not null," \
+            "description text);";
+    db_helper.exec_sql(sql_appt);
+
+    std::string sql_todo = "create table todos(" \
+            "id          integer  primary key," \
+            "text        text     not null);";
+    db_helper.exec_sql(sql_appt);
 }
 
 int DataHandler::insert_appts(std::vector<Appointment> objects) {
@@ -51,6 +72,15 @@ int DataHandler::insert_appt(DBObject title, DBObject desc) {
     std::vector< std::vector<DBObject> > appt_vector;
     appt_vector.push_back(appt);
     db_helper.insert_rows(table_appts, table_appts_cols, appt_vector);
+
+    return 0;
+}
+
+int DataHandler::insert_todo(std::string text) {
+    std::vector<DBObject> todo;
+    todo.push_back(DBObject(text));
+    std::vector< std::vector<DBObject> > todo_vector;
+    db_helper.insert_rows(table_todos, table_todos_cols, todo_vector);
 
     return 0;
 }
