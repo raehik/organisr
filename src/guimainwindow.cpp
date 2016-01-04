@@ -4,6 +4,8 @@
 #include <QHBoxLayout>
 #include <QPushButton>
 #include <QTabWidget>
+#include <QMenuBar>
+#include <QMenu>
 
 #include "newapptdialog.h"
 #include "todolistwidget.h"
@@ -21,9 +23,41 @@ GuiMainWindow::GuiMainWindow() {
  */
 void GuiMainWindow::init_window() {
     // uncomment for floating main window
-    this->setWindowFlags(Qt::Dialog);
+    //this->setWindowFlags(Qt::Dialog);
 
-    QWidget *w_todo = new QWidget(this);
+    // Menu bar {{{
+    QMenu *m_new = menuBar()->addMenu(tr("&New"));
+    QAction *a_new_appt = new QAction("&Appointment", this);
+    QAction *a_new_todo = new QAction("&To-do", this);
+    m_new->addAction(a_new_appt);
+    m_new->addAction(a_new_todo);
+
+    QMenu *m_search = menuBar()->addMenu(tr("&Search"));
+    QAction *a_srch_appt = new QAction("Search in &appointments", this);
+    QAction *a_srch_todo = new QAction("Search in &to-dos", this);
+    m_search->addAction(a_srch_appt);
+    m_search->addAction(a_srch_todo);
+
+    QMenu *m_view = menuBar()->addMenu(tr("&View"));
+    QAction *a_view_day = new QAction("&Day", this);
+    QAction *a_view_month = new QAction("&Month", this);
+    QAction *a_view_year = new QAction("&Year", this);
+    QAction *a_view_todo = new QAction("All &to-dos", this);
+    m_view->addAction(a_view_day);
+    m_view->addAction(a_view_month);
+    m_view->addAction(a_view_year);
+    m_view->addSeparator();
+    m_view->addAction(a_view_todo);
+
+    QMenu *m_help = menuBar()->addMenu(tr("&Help"));
+    QAction *a_manual = new QAction("&User manual", this);
+    QAction *a_about = new QAction("&About", this);
+    m_help->addAction(a_manual);
+    m_help->addAction(a_about);
+    // }}}
+
+    // Window contents {{{
+    QWidget *w_todo = new QWidget;
     QVBoxLayout *l_todo = new QVBoxLayout(w_todo);
     TodoListWidget *todo_list = new TodoListWidget(this);
     QPushButton *b_new_todo = new QPushButton("Add new to-do");
@@ -38,8 +72,11 @@ void GuiMainWindow::init_window() {
     QTabWidget *tabber = new QTabWidget;
     tabber->addTab(w_todo, "To-dos");
     tabber->addTab(w_appt, "Appointments");
+    // }}}
 
+    // Signals & slots {{{
     connect(b_new_appt, SIGNAL(clicked()), this, SLOT(open_new_appt_dialog()));
+    // }}}
 
     setCentralWidget(tabber);
 }
