@@ -20,17 +20,6 @@ try : DBHelper(db_file), db(db_file, SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE) {
     // in the member init list we tried to *open* the file -- if it succeeds
     // then this is all run, so pretend that the database is open
     log_msg("opened database successfully");
-    std::string appt_table = "appointments";
-    try {
-        if (db.tableExists(appt_table)) {
-            log_msg("table exists");
-        } else {
-            log_msg("table does not exist");
-            init_sqlite_db();
-        }
-    } catch(SQLite::Exception e) {
-        log_err("exception when checking for appt. table existence");
-    }
 }
 catch(SQLite::Exception e) {
     log_err("SQLite database open or creation failed");
@@ -219,4 +208,19 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
     }
 
     return records;
+}
+
+bool SQLiteHelper::table_exists(std::string table) {
+    try {
+        if (db.tableExists(table)) {
+            log_msg("table " + table + " exists");
+            return true;
+        } else {
+            log_msg("table " + table + " does not exist");
+            return false;
+        }
+    } catch(SQLite::Exception e) {
+        log_err("exception when checking for existence of table " + table);
+        return false;
+    }
 }
