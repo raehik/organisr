@@ -6,6 +6,7 @@
 #include <QTabWidget>
 
 #include "newapptdialog.h"
+#include "todolistwidget.h"
 #include "appointment.h"
 #include "log.h"
 
@@ -22,13 +23,15 @@ void GuiMainWindow::init_window() {
     // uncomment for floating main window
     this->setWindowFlags(Qt::Dialog);
 
-    QWidget *w_todo = new QWidget;
-    QHBoxLayout *l_todo = new QHBoxLayout(w_todo);
+    QWidget *w_todo = new QWidget(this);
+    QVBoxLayout *l_todo = new QVBoxLayout(w_todo);
+    TodoListWidget *todo_list = new TodoListWidget(this);
     QPushButton *b_new_todo = new QPushButton("Add new to-do");
+    l_todo->addWidget(todo_list);
     l_todo->addWidget(b_new_todo);
 
     QWidget *w_appt = new QWidget;
-    QHBoxLayout *l_appt = new QHBoxLayout(w_appt);
+    QVBoxLayout *l_appt = new QVBoxLayout(w_appt);
     QPushButton *b_new_appt = new QPushButton("Add new appointment");
     l_appt->addWidget(b_new_appt);
 
