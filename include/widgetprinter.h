@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QPrinter>
+#include <QString>
 
 class WidgetPrinter : public QWidget
 {
