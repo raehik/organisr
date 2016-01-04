@@ -22,8 +22,13 @@ GuiMainWindow::GuiMainWindow() {
  * Initialise the main window.
  */
 void GuiMainWindow::init_window() {
+    // Window size/options {{{
     // uncomment for floating main window
-    //this->setWindowFlags(Qt::Dialog);
+    this->setWindowFlags(Qt::Dialog);
+
+    // fixed size
+    resize(600, 480);
+    // }}}
 
     // Menu bar {{{
     QMenu *m_new = menuBar()->addMenu(tr("&New"));
