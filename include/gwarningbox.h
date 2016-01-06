@@ -1,5 +1,5 @@
-#ifndef WARNINGBOX_H
-#define WARNINGBOX_H
+#ifndef GWARNINGBOX_H
+#define GWARNINGBOX_H
 
 #include <QMessageBox>
 #include <QString>
@@ -15,17 +15,17 @@
  * Using this syntax, it should be deleted when the user closes the dialog
  * (rather than using `new` and having to `delete` it manually).
  */
-class WarningBox : public QMessageBox
+class GWarningBox : public QMessageBox
 {
 
     Q_OBJECT
 
 public:
-    WarningBox(QString text, QWidget *parent = 0);
-    virtual ~WarningBox();
+    GWarningBox(QString text, QWidget *parent = 0);
+    virtual ~GWarningBox();
 
 private:
     void init_window();
 };
 
-#endif // WARNINGBOX_H
+#endif // GWARNINGBOX_H

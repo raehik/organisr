@@ -1,7 +1,7 @@
 #include <QApplication>
 #include "guihandler.h"
 #include "datahandler.h"
-#include "guimainwindow.h"
+#include "gmainwindow.h"
 
 GuiHandler::GuiHandler() {
 }
@@ -16,7 +16,7 @@ int GuiHandler::init(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     // start GUI
-    GuiMainWindow *main_win = new GuiMainWindow();
+    GMainWindow *main_win = new GMainWindow();
 
     // show when we do app.exec()
     main_win->show();

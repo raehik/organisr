@@ -1,5 +1,5 @@
-#ifndef NEWAPPTDIALOG_H
-#define NEWAPPTDIALOG_H
+#ifndef GNEWAPPTDIALOG_H
+#define GNEWAPPTDIALOG_H
 
 #include <QApplication>
 #include <QWidget>
@@ -9,14 +9,14 @@
 #include <QLineEdit>
 #include <QTextEdit>
 
-class NewApptDialog : public QDialog
+class GNewApptDialog : public QDialog
 {
 
     Q_OBJECT
 
 public:
-    NewApptDialog(QWidget *parent = 0);
-    virtual ~NewApptDialog() {}
+    GNewApptDialog(QWidget *parent = 0);
+    virtual ~GNewApptDialog() {}
     void get_details(QString *title_ptr, QString *desc_ptr);
 
 public slots:
@@ -31,4 +31,4 @@ private:
     bool field_not_empty(QString field_text, QString field_name);
 };
 
-#endif // NEWAPPTDIALOG_H
+#endif // GNEWAPPTDIALOG_H

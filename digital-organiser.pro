@@ -22,14 +22,15 @@ SOURCES += \
     src/dbhelper.cpp \
     src/dbobject.cpp \
     src/guihandler.cpp \
-    src/guimainwindow.cpp \
     src/log.cpp \
     src/main.cpp \
-    src/newapptdialog.cpp \
     src/sqlitehelper.cpp \
-    src/warningbox.cpp \
     src/widgetprinter.cpp \
-    src/todolistwidget.cpp
+    src/gwinabout.cpp \
+    src/gmainwindow.cpp \
+    src/gnewapptdialog.cpp \
+    src/gwarningbox.cpp \
+    src/gtodolistwidget.cpp
 
 HEADERS  += \
     include/appointment.h \
@@ -37,10 +38,11 @@ HEADERS  += \
     include/dbhelper.h \
     include/dbobject.h \
     include/guihandler.h \
-    include/guimainwindow.h \
     include/log.h \
-    include/newapptdialog.h \
     include/sqlitehelper.h \
-    include/warningbox.h \
     include/widgetprinter.h \
-    include/todolistwidget.h
+    src/gwinabout.h \
+    include/gmainwindow.h \
+    include/gnewapptdialog.h \
+    include/gwarningbox.h \
+    include/gtodolistwidget.h

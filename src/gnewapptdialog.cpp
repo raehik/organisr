@@ -1,8 +1,8 @@
-#include "newapptdialog.h"
+#include "gnewapptdialog.h"
 
 #include <iostream>
 #include "widgetprinter.h"
-#include "warningbox.h"
+#include "gwarningbox.h"
 #include "log.h"
 
 // Qt includes {{{
@@ -22,11 +22,11 @@
 
 using namespace Util;
 
-NewApptDialog::NewApptDialog(QWidget *parent) : QDialog(parent){
+GNewApptDialog::GNewApptDialog(QWidget *parent) : QDialog(parent){
     init_window();
 }
 
-void NewApptDialog::init_window() {
+void GNewApptDialog::init_window() {
     QVBoxLayout *layout = new QVBoxLayout;
     QFormLayout *form = new QFormLayout;
     QHBoxLayout *buttons = new QHBoxLayout;
@@ -59,13 +59,13 @@ void NewApptDialog::init_window() {
     this->setLayout(layout);
 }
 
-void NewApptDialog::get_details(QString *title_ptr, QString *desc_ptr) {
+void GNewApptDialog::get_details(QString *title_ptr, QString *desc_ptr) {
     // POINTERS BITCH
     *title_ptr = field_title->text();
     *desc_ptr = field_desc->toPlainText();
 }
 
-int NewApptDialog::verify_fields() {
+int GNewApptDialog::verify_fields() {
    QString title = field_title->text();
 
    // check that certain fields aren't empty
@@ -75,10 +75,10 @@ int NewApptDialog::verify_fields() {
    return 0;
 }
 
-bool NewApptDialog::field_not_empty(QString field_text, QString field_name) {
+bool GNewApptDialog::field_not_empty(QString field_text, QString field_name) {
     if (field_text == "") {
        log("no title");
-       WarningBox("Field '" + field_name + "' is empty");
+       GWarningBox("Field '" + field_name + "' is empty");
         return false;
     } else {
         return true;

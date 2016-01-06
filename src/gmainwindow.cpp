@@ -1,4 +1,4 @@
-#include "guimainwindow.h"
+#include "gmainwindow.h"
 
 #include <vector>
 #include <QHBoxLayout>
@@ -7,21 +7,21 @@
 #include <QMenuBar>
 #include <QMenu>
 
-#include "newapptdialog.h"
-#include "todolistwidget.h"
+#include "gnewapptdialog.h"
+#include "gtodolistwidget.h"
 #include "appointment.h"
 #include "log.h"
 
 using namespace Util;
 
-GuiMainWindow::GuiMainWindow() {
+GMainWindow::GMainWindow() {
     init_window();
 }
 
 /**
  * Initialise the main window.
  */
-void GuiMainWindow::init_window() {
+void GMainWindow::init_window() {
     // Window size/options {{{
     // uncomment for floating main window
     this->setWindowFlags(Qt::Dialog);
@@ -32,22 +32,22 @@ void GuiMainWindow::init_window() {
 
     // Menu bar {{{
     QMenu *m_new = menuBar()->addMenu(tr("&New"));
-    QAction *a_new_appt = new QAction("&Appointment", this);
-    QAction *a_new_todo = new QAction("&To-do", this);
+    QAction *a_new_appt = new QAction(tr("&Appointment"), this);
+    QAction *a_new_todo = new QAction(tr("&To-do"), this);
     m_new->addAction(a_new_appt);
     m_new->addAction(a_new_todo);
 
     QMenu *m_search = menuBar()->addMenu(tr("&Search"));
-    QAction *a_srch_appt = new QAction("Search in &appointments", this);
-    QAction *a_srch_todo = new QAction("Search in &to-dos", this);
+    QAction *a_srch_appt = new QAction(tr("Search in &appointments"), this);
+    QAction *a_srch_todo = new QAction(tr("Search in &to-dos"), this);
     m_search->addAction(a_srch_appt);
     m_search->addAction(a_srch_todo);
 
     QMenu *m_view = menuBar()->addMenu(tr("&View"));
-    QAction *a_view_day = new QAction("&Day", this);
-    QAction *a_view_month = new QAction("&Month", this);
-    QAction *a_view_year = new QAction("&Year", this);
-    QAction *a_view_todo = new QAction("All &to-dos", this);
+    QAction *a_view_day = new QAction(tr("&Day"), this);
+    QAction *a_view_month = new QAction(tr("&Month"), this);
+    QAction *a_view_year = new QAction(tr("&Year"), this);
+    QAction *a_view_todo = new QAction(tr("All &to-dos"), this);
     m_view->addAction(a_view_day);
     m_view->addAction(a_view_month);
     m_view->addAction(a_view_year);
@@ -55,16 +55,32 @@ void GuiMainWindow::init_window() {
     m_view->addAction(a_view_todo);
 
     QMenu *m_help = menuBar()->addMenu(tr("&Help"));
-    QAction *a_manual = new QAction("&User manual", this);
-    QAction *a_about = new QAction("&About", this);
+    QAction *a_manual = new QAction(tr("&User manual"), this);
+    QAction *a_about = new QAction(tr("&About"), this);
     m_help->addAction(a_manual);
     m_help->addAction(a_about);
+    // }}}
+
+    // Menu bar signals & slots {{{
+    connect(a_new_appt, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+    connect(a_new_todo, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+
+    connect(a_srch_appt, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+    connect(a_srch_todo, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+
+    connect(a_view_day, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+    connect(a_view_month, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+    connect(a_view_year, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+    connect(a_view_todo, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+
+    connect(a_manual, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+    connect(a_about, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
     // }}}
 
     // Window contents {{{
     QWidget *w_todo = new QWidget;
     QVBoxLayout *l_todo = new QVBoxLayout(w_todo);
-    TodoListWidget *todo_list = new TodoListWidget(this);
+    GTodoListWidget *todo_list = new GTodoListWidget(this);
     QPushButton *b_new_todo = new QPushButton("Add new to-do");
     l_todo->addWidget(todo_list);
     l_todo->addWidget(b_new_todo);
@@ -86,9 +102,9 @@ void GuiMainWindow::init_window() {
     setCentralWidget(tabber);
 }
 
-void GuiMainWindow::open_new_appt_dialog() {
+void GMainWindow::open_new_appt_dialog() {
     log("opening new appt. dialog");
-    NewApptDialog *w_appt_dialog = new NewApptDialog(this);
+    GNewApptDialog *w_appt_dialog = new GNewApptDialog(this);
     if (w_appt_dialog->exec() == QDialog::Accepted) {
         log("adding new appointment");
         QString appt_title;
