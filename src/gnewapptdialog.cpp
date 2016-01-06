@@ -1,7 +1,7 @@
 #include "gnewapptdialog.h"
 
 #include <iostream>
-#include "widgetprinter.h"
+#include "gwidgetprinter.h"
 #include "gwarningbox.h"
 #include "log.h"
 

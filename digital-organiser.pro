@@ -25,12 +25,12 @@ SOURCES += \
     src/log.cpp \
     src/main.cpp \
     src/sqlitehelper.cpp \
-    src/widgetprinter.cpp \
     src/gwinabout.cpp \
     src/gmainwindow.cpp \
     src/gnewapptdialog.cpp \
     src/gwarningbox.cpp \
-    src/gtodolistwidget.cpp
+    src/gtodolistwidget.cpp \
+    src/gwidgetprinter.cpp
 
 HEADERS  += \
     include/appointment.h \
@@ -40,9 +40,9 @@ HEADERS  += \
     include/guihandler.h \
     include/log.h \
     include/sqlitehelper.h \
-    include/widgetprinter.h \
     src/gwinabout.h \
     include/gmainwindow.h \
     include/gnewapptdialog.h \
     include/gwarningbox.h \
-    include/gtodolistwidget.h
+    include/gtodolistwidget.h \
+    include/gwidgetprinter.h

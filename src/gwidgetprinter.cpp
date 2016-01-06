@@ -1,10 +1,10 @@
-#include "widgetprinter.h"
+#include "gwidgetprinter.h"
 
 #include <QPrintDialog>
 #include <QPainter>
 #include "log.h"
 
-WidgetPrinter::WidgetPrinter(QWidget *print_object, QString dialog_title) :
+GWidgetPrinter::GWidgetPrinter(QWidget *print_object, QString dialog_title) :
     printer(QPrinter::HighResolution)
 {
     this->print_object = print_object;
@@ -17,7 +17,7 @@ WidgetPrinter::WidgetPrinter(QWidget *print_object, QString dialog_title) :
     printer.setOutputFileName(printer_filename);
 }
 
-void WidgetPrinter::dialogAndPrint() {
+void GWidgetPrinter::dialogAndPrint() {
     QPrintDialog *print_dialog = new QPrintDialog(&printer, this);
     print_dialog->setWindowTitle(opt_dialog_title);
 

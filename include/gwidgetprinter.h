@@ -1,14 +1,14 @@
-#ifndef WIDGETPRINTER_H
-#define WIDGETPRINTER_H
+#ifndef GWIDGETPRINTER_H
+#define GWIDGETPRINTER_H
 
 #include <QWidget>
 #include <QPrinter>
 #include <QString>
 
-class WidgetPrinter : public QWidget
+class GWidgetPrinter : public QWidget
 {
 public:
-    WidgetPrinter(QWidget *print_object, QString dialog_title);
+    GWidgetPrinter(QWidget *print_object, QString dialog_title);
     void dialogAndPrint();
 
 private:
@@ -18,4 +18,4 @@ private:
     QString printer_filename;
 };
 
-#endif // WIDGETPRINTER_H
+#endif // GWIDGETPRINTER_H
