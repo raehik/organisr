@@ -10,7 +10,7 @@
 class DataHandler
 {
 public:
-    DataHandler();
+    DataHandler(std::string db_file);
     int init_db();
     int insert_appts(std::vector<Appointment> appts);
     int insert_appt(DBObject title, DBObject desc);
@@ -19,9 +19,11 @@ public:
 private:
     SQLiteHelper db_helper;
 
-    static std::string db_file;
+    std::string db_file;
+
     static std::string table_appts;
     static std::string table_todos;
+
     std::vector<std::string> table_appts_cols; // TODO: static or no?
     std::vector<std::string> table_todos_cols;
 };

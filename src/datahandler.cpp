@@ -5,16 +5,15 @@
 
 std::string DataHandler::table_appts = "appointments";
 std::string DataHandler::table_todos = "todos";
-std::string DataHandler::db_file = "test.db";
 
-DataHandler::DataHandler() : db_helper(db_file) {
+DataHandler::DataHandler(std::string db_file) : db_helper(db_file) {
+    this->db_file = db_file;
+
     // check if we need to initialise database
     // TODO: not a good check honestly
     if (! db_helper.table_exists(table_appts)) {
         init_db();
     }
-
-    //DataHandler::db_helper = SQLiteHelper(db_file);
 
     // define column names
     table_appts_cols.push_back("title");
