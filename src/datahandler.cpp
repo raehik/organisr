@@ -33,7 +33,9 @@ int DataHandler::init_db() {
     std::string sql_todo = "create table todos(" \
             "id          integer  primary key," \
             "text        text     not null);";
-    db_helper.exec_sql(sql_appt);
+    db_helper.exec_sql(sql_todo);
+
+    return 0;
 }
 
 int DataHandler::insert_appts(std::vector<Appointment> objects) {
