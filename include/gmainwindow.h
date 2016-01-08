@@ -20,6 +20,10 @@ private slots:
 
 private:
     DataHandler db;
+
+    static QString data_dir;
+    static QString db_file;
+
     void init_window();
     GNewApptDialog* _new_appt_dialog;
 };

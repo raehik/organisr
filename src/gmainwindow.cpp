@@ -6,6 +6,8 @@
 #include <QTabWidget>
 #include <QMenuBar>
 #include <QMenu>
+#include <QStandardPaths>
+#include <QDir>
 
 #include "gnewapptdialog.h"
 #include "gwinabout.h"
@@ -15,7 +17,11 @@
 
 using namespace Util;
 
-GMainWindow::GMainWindow() {
+QString GMainWindow::data_dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+QString GMainWindow::db_file = "test.db";
+
+GMainWindow::GMainWindow() : db((QDir().mkpath(data_dir), QDir::toNativeSeparators(data_dir + "/" + db_file).toStdString()))
+{
     init_window();
 }
 
