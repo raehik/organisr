@@ -8,6 +8,7 @@
 #include <QMenu>
 
 #include "gnewapptdialog.h"
+#include "gwinabout.h"
 #include "gtodolistwidget.h"
 #include "appointment.h"
 #include "log.h"
@@ -74,7 +75,7 @@ void GMainWindow::init_window() {
     connect(a_view_todo, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
 
     connect(a_manual, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
-    connect(a_about, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+    connect(a_about, SIGNAL(triggered(bool)), this, SLOT(winopen_about()));
     // }}}
 
     // Window contents {{{
@@ -117,4 +118,9 @@ void GMainWindow::open_new_appt_dialog() {
     }
     // we're finished with the window: delete it
     delete w_appt_dialog;
+}
+
+void GMainWindow::winopen_about() {
+    GWinAbout *win = new GWinAbout(this);
+    win->exec();
 }
