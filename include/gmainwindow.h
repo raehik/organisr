@@ -2,6 +2,7 @@
 #define GMAINWINDOW_H
 
 #include "datahandler.h"
+#include "gwinabout.h"
 #include <QMainWindow>
 #include "gnewapptdialog.h"
 
@@ -15,6 +16,7 @@ public:
 
 private slots:
     void open_new_appt_dialog();
+    void winopen_about();
 
 private:
     DataHandler db;
