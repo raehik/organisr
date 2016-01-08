@@ -19,10 +19,10 @@ SQLiteHelper::SQLiteHelper(std::string db_file)
 try : DBHelper(db_file), db(db_file, SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE) {
     // in the member init list we tried to *open* the file -- if it succeeds
     // then this is all run, so pretend that the database is open
-    log_msg("opened database successfully");
+    log_msg("opened database " + db_file + " successfully");
 }
 catch(SQLite::Exception e) {
-    log_err("SQLite database open or creation failed");
+    log_err("SQLite database open or creation failed (file was " + db_file + " )");
 
     // just throw e again after catching it lol
     throw e;
