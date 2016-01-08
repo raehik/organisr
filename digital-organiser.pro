@@ -30,8 +30,7 @@ SOURCES += \
     src/gnewapptdialog.cpp \
     src/gwarningbox.cpp \
     src/gtodolistwidget.cpp \
-    src/gwidgetprinter.cpp \
-    src/gabout.cpp
+    src/gwidgetprinter.cpp
 
 HEADERS  += \
     include/appointment.h \
@@ -46,5 +45,4 @@ HEADERS  += \
     include/gwarningbox.h \
     include/gtodolistwidget.h \
     include/gwidgetprinter.h \
-    include/gabout.h \
     include/gwinabout.h
