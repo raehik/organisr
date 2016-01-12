@@ -77,7 +77,6 @@ int GNewApptDialog::verify_fields() {
 
 bool GNewApptDialog::field_not_empty(QString field_text, QString field_name) {
     if (field_text == "") {
-       log("no title");
        GWarningBox("Field '" + field_name + "' is empty");
         return false;
     } else {
