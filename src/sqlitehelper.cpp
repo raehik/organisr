@@ -49,26 +49,6 @@ bool SQLiteHelper::file_exists(std::string filename) {
     }
 }
 
-/**
- * Initialise the SQLite database file.
- *
- * @return      non-zero on fail, else 0
- */
-int SQLiteHelper::init_sqlite_db() {
-    std::string sql_init;
-
-    // form SQL statement
-    sql_init = "create table appointments(" \
-            "id          integer  primary key," \
-            "title       text     not null," \
-            "description text);";
-
-    // now run it
-    exec_sql(sql_init);
-
-    return 0;
-}
-
 int SQLiteHelper::open_db() {
     // for now, we are forced to open the database in the constructor, so this
     // does nothing
@@ -169,28 +149,26 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
     sql = "select ";
 
     // select specified columns
+    log("select: setting columns");
     for (std::vector<std::string>::size_type i = 0; i != cols.size(); i++) {
         if (i != 0) {
             sql += ",";
         }
-        sql += SQL_PARAM;
+        sql += cols[i];
     }
 
     sql += " from " + table_name;
 
     if (sql_where != "") {
+        log("select: where specified: " + sql_where);
         // TODO: parameterise
         sql += " where " + sql_where;
     }
+        log("select: no where specified");
 
     // compile SQL query
     SQLite::Statement query(db, sql);
-
-    // now bind values (have to do it at the end, after we've formed the query)
-    int bind_count = 1;
-    for (std::vector<std::string>::size_type i = 0; i != cols.size(); i++) {
-        query.bind(bind_count, cols[i]);
-    }
+    log("select: SQL compiled");
 
     // and finally execute the command
     while (query.executeStep()) {
@@ -199,13 +177,21 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
 
         for (int i = 0; i != cols.size(); i++) {
             // columns *do* start at 0, at least
-            cur_record.push_back(DBObject("Example"));
-            //cur_record.push_back(DBObject(query.getColumn(i)));
+            //cur_record.push_back(DBObject("Example"));
+            DBObject tmp("tmp");
+            if (query.getColumn(i).isInteger()) {
+                tmp = DBObject(query.getColumn(i).getInt());
+            } else if (query.getColumn(i).isText()) {
+                //tmp = DBObject("LOL");
+                tmp = DBObject(query.getColumn(i).getText());
+            }
+            cur_record.push_back(tmp);
         }
 
         // add record to records list
         records.push_back(cur_record);
     }
+    log("select: finished executing command");
 
     return records;
 }
