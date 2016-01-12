@@ -81,7 +81,19 @@ int DataHandler::insert_todo(std::string text) {
     std::vector<DBObject> todo;
     todo.push_back(DBObject(text));
     std::vector< std::vector<DBObject> > todo_vector;
+    todo_vector.push_back(todo);
     db_helper.insert_rows(table_todos, table_todos_cols, todo_vector);
 
     return 0;
+}
+
+std::vector<std::string> DataHandler::get_todos() {
+    std::vector<std::string> todos;
+    std::vector< std::vector<DBObject> > todos_raw = db_helper.select_columns_where(table_todos, table_todos_cols, "");
+    for (std::vector< std::vector<DBObject> >::size_type i = 0; i != todos_raw.size(); i++) {
+        for (std::vector<DBObject>::size_type j = 0; j != todos_raw[i].size(); j++) {
+            todos.push_back(todos_raw[i][j].get_str());
+        }
+    }
+    return todos;
 }
