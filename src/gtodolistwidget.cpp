@@ -4,7 +4,8 @@
 #include <string>
 #include <QString>
 #include <QLabel>
-#include <QTextDocument>
+#include <QBoxLayout>
+
 
 #include "log.h"
 
@@ -16,21 +17,34 @@ GTodoListWidget::GTodoListWidget(GMainWindow *parent) : QWidget(parent) {
 }
 
 void GTodoListWidget::build_widget() {
-    todos_label = new QLabel(this);
-    todos_label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
+    // make & set layout
+    QVBoxLayout *layout = new QVBoxLayout;
+    layout->setAlignment(Qt::AlignTop);
+    todos_label = new QLabel;
+    //todos_label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     todos_label->setWordWrap(true);
+    layout->addWidget(todos_label);
+    this->setLayout(layout);
     refresh();
 }
 
 void GTodoListWidget::refresh() {
     log("refreshing todos");
     std::vector<std::string> todos = parent_win->get_todos();
-    std::string todo_text = "<h2>To-dos</h2><p><ul>";
-    for (std::vector<std::string>::size_type i = 0; i != todos.size(); i++) {
-        log(todos[i]);
-        std::string tmp = "<li>" + todos[i] + "</li>";
-        todo_text += tmp;
+    std::string todo_text = "<h2>To-dos</h2>";
+    // add each todo in sequence if there are any
+    if (todos.size() > 0) {
+        todo_text += "<p><ul>";
+        for (std::vector<std::string>::size_type i = 0; i != todos.size(); i++) {
+            // HTML escape to-dos for safety
+            std::string todo_formatted = QString::fromStdString(
+                        todos[i]).toHtmlEscaped().toUtf8().toStdString();
+            std::string tmp = "<li>" + todo_formatted + "</li>";
+            todo_text += tmp;
+        }
+    // override if there were no todos
+    } else {
+        todo_text += "<p>No to-dos!</p>";
     }
-    todo_text += "</ul></p>";
-    //todos_label->setText(QString::fromStdString(todo_text));
+    todos_label->setText(QString::fromStdString(todo_text));
 }
