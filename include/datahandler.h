@@ -15,6 +15,7 @@ public:
     int insert_appts(std::vector<Appointment> appts);
     int insert_appt(DBObject title, DBObject desc);
     int insert_todo(std::string text);
+    std::vector<std::string> get_todos();
 
 private:
     SQLiteHelper db_helper;
