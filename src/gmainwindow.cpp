@@ -8,8 +8,10 @@
 #include <QMenu>
 #include <QStandardPaths>
 #include <QDir>
+#include <QCoreApplication>
 
 #include "gnewapptdialog.h"
+#include "gnewtododialog.h"
 #include "gwinabout.h"
 #include "gtodolistwidget.h"
 #include "appointment.h"
@@ -17,7 +19,9 @@
 
 using namespace Util;
 
-QString GMainWindow::data_dir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+QString GMainWindow::data_dir = QDir::toNativeSeparators(
+            QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
+            + "/digital-organiser");
 QString GMainWindow::db_file = "test.db";
 
 GMainWindow::GMainWindow() : db((QDir().mkpath(data_dir), QDir::toNativeSeparators(data_dir + "/" + db_file).toStdString()))
@@ -68,9 +72,9 @@ void GMainWindow::init_window() {
     m_help->addAction(a_about);
     // }}}
 
-    // Menu bar signals & slots {{{
+    // Menu bar sigs&slots {{{
     connect(a_new_appt, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
-    connect(a_new_todo, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
+    connect(a_new_todo, SIGNAL(triggered(bool)), this, SLOT(open_new_todo_dialog()));
 
     connect(a_srch_appt, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
     connect(a_srch_todo, SIGNAL(triggered(bool)), this, SLOT(open_new_appt_dialog()));
@@ -87,9 +91,9 @@ void GMainWindow::init_window() {
     // Window contents {{{
     QWidget *w_todo = new QWidget;
     QVBoxLayout *l_todo = new QVBoxLayout(w_todo);
-    GTodoListWidget *todo_list = new GTodoListWidget(this);
+    wid_todo = new GTodoListWidget(this);
     QPushButton *b_new_todo = new QPushButton("Add new to-do");
-    l_todo->addWidget(todo_list);
+    l_todo->addWidget(wid_todo);
     l_todo->addWidget(b_new_todo);
 
     QWidget *w_appt = new QWidget;
@@ -102,8 +106,9 @@ void GMainWindow::init_window() {
     tabber->addTab(w_appt, "Appointments");
     // }}}
 
-    // Signals & slots {{{
+    // Button sigs&slots {{{
     connect(b_new_appt, SIGNAL(clicked()), this, SLOT(open_new_appt_dialog()));
+    connect(b_new_todo, SIGNAL(clicked()), this, SLOT(open_new_todo_dialog()));
     // }}}
 
     setCentralWidget(tabber);
@@ -113,10 +118,10 @@ void GMainWindow::open_new_appt_dialog() {
     log("opening new appt. dialog");
     GNewApptDialog *w_appt_dialog = new GNewApptDialog(this);
     if (w_appt_dialog->exec() == QDialog::Accepted) {
-        log("adding new appointment");
         QString appt_title;
         QString appt_desc;
         w_appt_dialog->get_details(&appt_title, &appt_desc);
+        log("adding new appt " + (std::string)appt_title.toUtf8().constData());
 
         db.insert_appt(
                     DBObject(appt_title.toUtf8().constData()),
@@ -124,6 +129,28 @@ void GMainWindow::open_new_appt_dialog() {
     }
     // we're finished with the window: delete it
     delete w_appt_dialog;
+}
+
+void GMainWindow::open_new_todo_dialog() {
+    log("opening new dialog");
+    GNewTodoDialog *w_dialog = new GNewTodoDialog(this);
+    if (w_dialog->exec() == QDialog::Accepted) {
+        QString todo_text;
+        w_dialog->get_details(&todo_text);
+        log("adding new todo " + (std::string)todo_text.toUtf8().constData());
+
+        db.insert_todo(todo_text.toUtf8().constData());
+    }
+    // we're finished with the window: delete it
+    delete w_dialog;
+
+    // now update the todo dialog
+    wid_todo->refresh();
+}
+
+std::vector<std::string> GMainWindow::get_todos() {
+    log("getting all todos");
+    return db.get_todos();
 }
 
 void GMainWindow::winopen_about() {
