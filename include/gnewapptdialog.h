@@ -1,7 +1,6 @@
 #ifndef GNEWAPPTDIALOG_H
 #define GNEWAPPTDIALOG_H
 
-#include <QApplication>
 #include <QWidget>
 #include <QDialog>
 #include <QString>
