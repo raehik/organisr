@@ -31,7 +31,6 @@ class SQLiteHelper : public DBHelper {
 
         int exec_sql(std::string statement);
 
-        int init_sqlite_db();
         void print_db();
 
     private:
