@@ -22,6 +22,8 @@ public:
 
 private:
     QLabel *todos_label;
+
+    /// A bit unneat, but we require a pointer to a GMainWindow to access get_todos()
     GMainWindow *parent_win;
 };
 
