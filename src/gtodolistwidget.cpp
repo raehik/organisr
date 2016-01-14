@@ -17,19 +17,24 @@ GTodoListWidget::GTodoListWidget(GMainWindow *parent) : QWidget(parent) {
 }
 
 void GTodoListWidget::build_widget() {
+    log("initialising todo list widget");
+
     // make & set layout
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setAlignment(Qt::AlignTop);
     todos_label = new QLabel;
-    //todos_label->setSizePolicy(QSizePolicy::Preferred, QSizePolicy::Minimum);
     todos_label->setWordWrap(true);
     layout->addWidget(todos_label);
     this->setLayout(layout);
     refresh();
 }
 
+/**
+ * @brief Get to-dos and update the widget display.
+ */
 void GTodoListWidget::refresh() {
     log("refreshing todos");
+
     std::vector<std::string> todos = parent_win->get_todos();
     std::string todo_text = "<h2>To-dos</h2>";
     // add each todo in sequence if there are any
