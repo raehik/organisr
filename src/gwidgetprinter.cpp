@@ -4,6 +4,8 @@
 #include <QPainter>
 #include "log.h"
 
+using namespace Util;
+
 GWidgetPrinter::GWidgetPrinter(QWidget *print_object, QString dialog_title) :
     printer(QPrinter::HighResolution)
 {
@@ -12,28 +14,38 @@ GWidgetPrinter::GWidgetPrinter(QWidget *print_object, QString dialog_title) :
     opt_dialog_title = dialog_title;
     printer_filename = "calendar.pdf";
 
-    // set default options so that dialog needs less changing by default
+    /// We set some default options so that the user may not need to change them
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(printer_filename);
 }
 
+/**
+ * @brief Present an option dialog and print depending on input.
+ *
+ * The user is presented with a QPrintDialog which allows them to choose whether
+ * to print to a physical printer & options to do so, or export to a PDF file.
+ * Whatever print_object was provided in the constructor is scaled to a full
+ * page before printing.
+ */
 void GWidgetPrinter::dialogAndPrint() {
+    log("starting print dialog");
+
     QPrintDialog *print_dialog = new QPrintDialog(&printer, this);
     print_dialog->setWindowTitle(opt_dialog_title);
 
     if(print_dialog->exec() == QDialog::Accepted) {
+        log("print dialog: accepted, printing");
         QPainter painter;
         painter.begin(&printer);
 
-        // scale to full page (thanks to http://doc.qt.io/qt-4.8/printing.html )
+        /// scale to full page (thanks to http://doc.qt.io/qt-4.8/printing.html )
         double xscale = printer.pageRect().width()/double(print_object->width());
         double yscale = printer.pageRect().height()/double(print_object->height());
         double scale = qMin(xscale, yscale);
         painter.scale(scale, scale);
         print_object->render(&painter);
         painter.end();
-
-        Util::log("printed");
+    } else {
+        log("print dialog: cancelled");
     }
-    delete print_dialog;
 }
