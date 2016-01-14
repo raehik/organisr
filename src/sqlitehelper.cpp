@@ -38,6 +38,9 @@ void SQLiteHelper::log_err(std::string message) {
 
 /**
  * Check if a file exists.
+ *
+ * Currently unused, but I would be using it if I could be (SQLiteCPP forces you
+ * to open the DB in the constructor, and it makes the file).
  */
 bool SQLiteHelper::file_exists(std::string filename) {
     char * FILE_READ = (char *)"r";
@@ -49,6 +52,10 @@ bool SQLiteHelper::file_exists(std::string filename) {
     }
 }
 
+/**
+ * @brief SQLiteHelper::open_db
+ * @return 0
+ */
 int SQLiteHelper::open_db() {
     // for now, we are forced to open the database in the constructor, so this
     // does nothing
