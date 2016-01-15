@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = digital-organiser
 TEMPLATE = app
 
-LIBS += -L $$PWD/lib -lsqlite3 -lSQLiteCpp
+LIBS += -L $$PWD/lib -lSQLiteCpp -ldl -lpthread -lsqlite3
 
 INCLUDEPATH += $$PWD/include
 
