@@ -3,3 +3,6 @@
 
 # QtCreator backup files
 *.autosave
+
+# build stuff
+build/
