@@ -27,11 +27,13 @@ class SQLiteHelper : public DBHelper {
                 std::vector<std::string> cols,
                 std::string sql_where = "");
 
+        ~SQLiteHelper();
+
         bool table_exists(std::string table);
 
         int exec_sql(std::string statement);
 
-        void print_db();
+        std::string get_errmsg();
 
     private:
         SQLite::Database db;

@@ -3,8 +3,6 @@
 #include <stdio.h>
 #include "log.h"
 
-using namespace Util;
-
 const std::string SQLiteHelper::SQL_PARAM = "?";
 
 /**
@@ -28,12 +26,16 @@ catch(SQLite::Exception e) {
     throw e;
 }
 
+SQLiteHelper::~SQLiteHelper() {
+    log_msg("closing DB");
+}
+
 void SQLiteHelper::log_msg(std::string message) {
-    log("SQLiteHelper: " + message);
+    Util::log("SQLiteHelper: " + message);
 }
 
 void SQLiteHelper::log_err(std::string message) {
-    error("SQLiteHelper: " + message);
+    Util::error("SQLiteHelper: " + message);
 }
 
 /**
@@ -73,8 +75,8 @@ int SQLiteHelper::exec_sql(std::string statement) {
     return 0;
 }
 
-void SQLiteHelper::print_db() {
-    log_msg("Database");
+std::string SQLiteHelper::get_errmsg() {
+    return db.errmsg();
 }
 
 int SQLiteHelper::insert_rows(
@@ -85,11 +87,14 @@ int SQLiteHelper::insert_rows(
     std::string cols_str;
     std::vector<DBObject> cur_row;
 
+    // check for table existence before anything
+    if (! table_exists(table_name)) {
+        throw SQLite::Exception("no such table: " + table_name);
+    }
+
     // see http://stackoverflow.com/q/452859/2246637
-    if (rows.size() > 1000) {
-        log_err("too many rows");
-        // TODO: throw an exception
-        return 1;
+    if (rows.size() >= 1000) {
+        throw SQLite::Exception("trying to insert too many rows (1000 or more)");
     }
 
     // columns
@@ -131,7 +136,7 @@ int SQLiteHelper::insert_rows(
             } else if (obj.type() == "int") {
                 query.bind(bind_count, obj.get_int());
             } else {
-                error("DBObject of a type we can't handle");
+                log_err("DBObject of a type we can't handle");
                 return 1;
             }
 
@@ -147,16 +152,18 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
         std::vector<std::string> cols,
         std::string sql_where)
 {
-    std::vector<DBObject> cur_record;
-    std::vector< std::vector<DBObject> > records;
-
     std::string sql;
+
+    // check for table existence before anything
+    if (! table_exists(table_name)) {
+        throw SQLite::Exception("no such table: " + table_name);
+    }
 
     // start the query
     sql = "select ";
 
     // select specified columns
-    log("select: setting columns");
+    log_msg("select: setting columns");
     for (std::vector<std::string>::size_type i = 0; i != cols.size(); i++) {
         if (i != 0) {
             sql += ",";
@@ -167,29 +174,29 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
     sql += " from " + table_name;
 
     if (sql_where != "") {
-        log("select: where specified: " + sql_where);
+        log_msg("select: where specified: " + sql_where);
         // TODO: parameterise
         sql += " where " + sql_where;
     }
-        log("select: no where specified");
+        log_msg("select: no where specified");
 
     // compile SQL query
     SQLite::Statement query(db, sql);
-    log("select: SQL compiled");
+    log_msg("select: compiled: " + sql);
 
     // and finally execute the command
+    std::vector<DBObject> cur_record;
+    std::vector< std::vector<DBObject> > records;
     while (query.executeStep()) {
         // clear temp. record holder
         cur_record.clear();
 
         for (int i = 0; i != cols.size(); i++) {
             // columns *do* start at 0, at least
-            //cur_record.push_back(DBObject("Example"));
             DBObject tmp("tmp");
             if (query.getColumn(i).isInteger()) {
                 tmp = DBObject(query.getColumn(i).getInt());
             } else if (query.getColumn(i).isText()) {
-                //tmp = DBObject("LOL");
                 tmp = DBObject(query.getColumn(i).getText());
             }
             cur_record.push_back(tmp);
@@ -198,7 +205,7 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
         // add record to records list
         records.push_back(cur_record);
     }
-    log("select: finished executing command");
+    log_msg("select: finished executing command");
 
     return records;
 }
