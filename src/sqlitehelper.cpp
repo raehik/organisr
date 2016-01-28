@@ -103,6 +103,11 @@ int SQLiteHelper::insert_rows(
         throw SQLite::Exception("trying to insert too many rows (1000 or more)");
     }
 
+    // if no rows passed, throw exception
+    if (rows.size() == 0) {
+        throw SQLite::Exception("no rows to insert passed (empty array)");
+    }
+
     // columns
     std::string sql = "insert into " + table_name + "(";
     for (std::vector<DBObject>::size_type i = 0; i != table_cols.size(); i++) {
