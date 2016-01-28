@@ -1,8 +1,7 @@
 #include "log.h"
 #include <iostream>
 
-namespace Util
-{
+namespace Util {
 
 bool verbose = true;
 
