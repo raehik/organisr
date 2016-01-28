@@ -32,7 +32,9 @@ SOURCES += \
     src/gtodolistwidget.cpp \
     src/gwidgetprinter.cpp \
     src/gnewtododialog.cpp \
-    src/testsql.cpp
+    src/testcommon.cpp \
+    src/testsql.cpp \
+    src/testgui.cpp \
 
 HEADERS  += \
     include/appointment.h \
@@ -49,4 +51,6 @@ HEADERS  += \
     include/gwidgetprinter.h \
     include/gwinabout.h \
     include/gnewtododialog.h \
-    include/testsql.h
+    include/testcommon.h \
+    include/testsql.h \
+    include/testgui.h
