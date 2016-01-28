@@ -4,8 +4,7 @@
 #include <string>
 #include <sstream>
 
-namespace Util
-{
+namespace Util {
 
 void log(std::string msg);
 void log(std::string pre, std::string msg);
@@ -22,6 +21,6 @@ template <typename T> std::string to_string(T var) {
     return stream.str();
 }
 
-} // namespace util
+} // namespace Util
 
 #endif // LOG_H
