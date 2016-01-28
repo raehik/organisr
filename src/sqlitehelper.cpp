@@ -67,12 +67,18 @@ int SQLiteHelper::open_db() {
 /**
  * Execute a set of SQL statements.
  *
- * @return      non-zero on fail, else 0
+ * @return always returns 0
+ * @throw SQLite::Exception in case of error
  */
 int SQLiteHelper::exec_sql(std::string statement) {
-    log_msg("exec: " + statement);
-    db.exec(statement);
-    return 0;
+    if (statement.size() == 0) {
+        log_msg("exec statement is empty");
+        return 0;
+    } else {
+        log_msg("exec: '" + statement + "'");
+        db.exec(statement);
+        return 0;
+    }
 }
 
 std::string SQLiteHelper::get_errmsg() {
