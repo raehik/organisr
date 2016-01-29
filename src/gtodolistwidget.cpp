@@ -29,9 +29,6 @@ void GTodoListWidget::build_widget() {
     refresh();
 }
 
-/**
- * @brief Get to-dos and update the widget display.
- */
 void GTodoListWidget::refresh() {
     log("refreshing todos");
 

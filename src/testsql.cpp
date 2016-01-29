@@ -33,7 +33,7 @@ void test_sql() {
     fake_cols.push_back("fake_col1");
     fake_cols.push_back("fake_col2");
     try {
-        db_test.select_columns_where("fake_table", fake_cols);
+        db_test.select_from_where("fake_table", fake_cols);
     } catch (SQLite::Exception e) {
         log_test_note(e.what());
     }
@@ -47,7 +47,7 @@ void test_sql() {
 
     log_test("SQL11", "select from table with wrong columns");
     try {
-        db_test.select_columns_where(t1, fake_cols);
+        db_test.select_from_where(t1, fake_cols);
     } catch (SQLite::Exception) {
         log_test_note(db_test.get_errmsg());
     }
@@ -56,7 +56,7 @@ void test_sql() {
     std::vector<std::string> t1_cols_id;
     t1_cols_id.push_back("id");
     t1_cols_id.push_back("field");
-    std::vector< std::vector<DBObject> > res = db_test.select_columns_where(t1, t1_cols_id);
+    std::vector< std::vector<DBObject> > res = db_test.select_from_where(t1, t1_cols_id);
     assert(res.size() == 0);
 
     log_test("SQL20", "insert into table without id");

@@ -5,14 +5,6 @@
 
 const std::string SQLiteHelper::SQL_PARAM = "?";
 
-/**
- * @brief Initialise a SQLiteHelper.
- *
- * The SQLiteHelper class contains methods for manipulating a SQLite database.
- * It is used by DBHelper.
- *
- * @param db_file    The name of the SQLite database file to use.
- */
 SQLiteHelper::SQLiteHelper(std::string db_file)
 try : DBHelper(db_file), db(db_file, SQLITE_OPEN_READWRITE|SQLITE_OPEN_CREATE) {
     // in the member init list we tried to *open* the file -- if it succeeds
@@ -27,7 +19,7 @@ catch(SQLite::Exception e) {
 }
 
 SQLiteHelper::~SQLiteHelper() {
-    log_msg("closing DB");
+    log_msg("deconstructor called (doing nothing)");
 }
 
 void SQLiteHelper::log_msg(std::string message) {
@@ -38,12 +30,6 @@ void SQLiteHelper::log_err(std::string message) {
     Util::error("SQLiteHelper: " + message);
 }
 
-/**
- * Check if a file exists.
- *
- * Currently unused, but I would be using it if I could be (SQLiteCPP forces you
- * to open the DB in the constructor, and it makes the file).
- */
 bool SQLiteHelper::file_exists(std::string filename) {
     char * FILE_READ = (char *)"r";
     if (FILE *file = fopen(filename.c_str(), FILE_READ)) {
@@ -54,22 +40,6 @@ bool SQLiteHelper::file_exists(std::string filename) {
     }
 }
 
-/**
- * @brief SQLiteHelper::open_db
- * @return 0
- */
-int SQLiteHelper::open_db() {
-    // for now, we are forced to open the database in the constructor, so this
-    // does nothing
-    return 0;
-}
-
-/**
- * Execute a set of SQL statements.
- *
- * @return always returns 0
- * @throw SQLite::Exception in case of error
- */
 int SQLiteHelper::exec_sql(std::string statement) {
     if (statement.size() == 0) {
         log_msg("exec statement is empty");
@@ -158,9 +128,9 @@ int SQLiteHelper::insert_rows(
     return 0;
 }
 
-std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
+std::vector< std::vector<DBObject> > SQLiteHelper::select_from_where(
         std::string table_name,
-        std::vector<std::string> cols,
+        std::vector<std::string> table_cols,
         std::string sql_where)
 {
     std::string sql;
@@ -175,11 +145,11 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
 
     // select specified columns
     log_msg("select: setting columns");
-    for (std::vector<std::string>::size_type i = 0; i != cols.size(); i++) {
+    for (std::vector<std::string>::size_type i = 0; i != table_cols.size(); i++) {
         if (i != 0) {
             sql += ",";
         }
-        sql += cols[i];
+        sql += table_cols[i];
     }
 
     sql += " from " + table_name;
@@ -202,7 +172,7 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_columns_where(
         // clear temp. record holder
         cur_record.clear();
 
-        for (int i = 0; i != cols.size(); i++) {
+        for (unsigned int i = 0; i != table_cols.size(); i++) {
             // columns *do* start at 0, at least
             DBObject tmp("tmp");
             if (query.getColumn(i).isInteger()) {
@@ -232,6 +202,8 @@ bool SQLiteHelper::table_exists(std::string table) {
         }
     } catch(SQLite::Exception e) {
         log_err("exception when checking for existence of table " + table);
-        return false;
+
+        // rethrow after noting error
+        throw e;
     }
 }

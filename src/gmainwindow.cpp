@@ -29,13 +29,11 @@ GMainWindow::GMainWindow() : db((QDir().mkpath(data_dir), QDir::toNativeSeparato
     init_window();
 }
 
-/**
- * Initialise the main window.
- */
 void GMainWindow::init_window() {
     // Window size/options {{{
     // uncomment for floating main window
     this->setWindowFlags(Qt::Dialog);
+    this->setWindowTitle("Digital organiser");
 
     // fixed size
     resize(600, 480);

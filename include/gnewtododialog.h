@@ -9,7 +9,6 @@
 
 class GNewTodoDialog : public QDialog
 {
-
     Q_OBJECT
 
 public:

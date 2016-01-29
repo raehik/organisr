@@ -7,7 +7,6 @@
 
 class GWinAbout : public QDialog
 {
-
     Q_OBJECT
 
 public:

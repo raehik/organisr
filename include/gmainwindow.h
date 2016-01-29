@@ -12,7 +12,6 @@
 
 class GMainWindow : public QMainWindow
 {
-
     Q_OBJECT
 
 public:
@@ -31,6 +30,9 @@ private:
     static QString db_file;
     GTodoListWidget *wid_todo;
 
+    /**
+     * \brief Initialise the main window.
+     */
     void init_window();
 };
 

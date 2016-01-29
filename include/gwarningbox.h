@@ -5,7 +5,7 @@
 #include <QString>
 
 /**
- * @brief A message box for user warnings.
+ * \brief A message box for user warnings.
  *
  * This is a convenience class to make it easy to bring up a warning dialog box.
  * Most often, you should instantiate an object of this class like so:
@@ -17,7 +17,6 @@
  */
 class GWarningBox : public QMessageBox
 {
-
     Q_OBJECT
 
 public:

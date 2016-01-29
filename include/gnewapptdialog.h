@@ -10,7 +10,6 @@
 
 class GNewApptDialog : public QDialog
 {
-
     Q_OBJECT
 
 public:

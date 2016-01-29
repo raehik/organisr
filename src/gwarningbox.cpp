@@ -10,9 +10,7 @@ GWarningBox::GWarningBox(QString text, QWidget *parent) : QMessageBox(parent) {
     this->exec();
 }
 
-/**
- * Show when the WarningBox is deleted (for debugging purposes).
- */
 GWarningBox::~GWarningBox() {
+    // show when the object is deleted for debugging
     Util::log("warning box deleting");
 }

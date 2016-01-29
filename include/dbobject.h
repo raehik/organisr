@@ -6,16 +6,16 @@
 class DBObject
 {
 public:
-    DBObject(int);
-    DBObject(std::string);
+    DBObject(int value);
+    DBObject(std::string value);
 
     std::string type();
 
     int get_int();
     std::string get_str();
 
-    void get_value(int*);
-    void get_value(std::string*);
+    void get_value(int *val_store);
+    void get_value(std::string *val_store);
 
 private:
     int int_val;

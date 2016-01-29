@@ -3,6 +3,8 @@
 
 namespace Util {
 
+/// Verbosity of the program. Set to false if you don't want any logs produced
+/// (possibly when building/testing production).
 bool verbose = true;
 
 void log(std::string msg) {

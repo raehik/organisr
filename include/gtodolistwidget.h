@@ -18,6 +18,10 @@ class GTodoListWidget : public QWidget
 public:
     GTodoListWidget(GMainWindow *parent = 0);
     void build_widget();
+
+    /**
+     * \brief Get to-dos and update the widget display.
+     */
     void refresh();
 
 private:

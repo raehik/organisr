@@ -15,7 +15,8 @@ GWinAbout::GWinAbout(QWidget *parent) : QDialog(parent) {
 }
 
 void GWinAbout::init_win() {
-    this->resize(400, 300);
+    this->resize(400, 250);
+    this->setFixedSize(this->size()); // TODO: what does this do on Windows?
     QVBoxLayout *layout = new QVBoxLayout;
     layout->setMargin(5);
     this->setLayout(layout);
@@ -32,7 +33,7 @@ href=\"https://github.com/raehik/digital-organiser\">digital-organiser GitHub pa
     // open HTML links in default browser
     about->setOpenExternalLinks(true);
     about->setWordWrap(true);
-    layout->addWidget(about);
+    layout->addWidget(about, 0, Qt::AlignTop);
 
     QPushButton *b_exit = new QPushButton(tr("Close"));
     layout->addWidget(b_exit);
