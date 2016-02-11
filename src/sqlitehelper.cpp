@@ -1,4 +1,5 @@
 #include "sqlitehelper.h"
+#include "datarecord.h"
 
 #include <stdio.h>
 #include "log.h"
@@ -58,10 +59,9 @@ std::string SQLiteHelper::get_errmsg() {
 int SQLiteHelper::insert_rows(
         std::string table_name,
         std::vector<std::string> table_cols,
-        std::vector< std::vector<DBObject> > rows)
+        std::vector<DataRecord> rows)
 {
     std::string cols_str;
-    std::vector<DBObject> cur_row;
 
     // check for table existence before anything
     if (! table_exists(table_name)) {
@@ -80,7 +80,7 @@ int SQLiteHelper::insert_rows(
 
     // columns
     std::string sql = "insert into " + table_name + "(";
-    for (std::vector<DBObject>::size_type i = 0; i != table_cols.size(); i++) {
+    for (std::vector<std::string>::size_type i = 0; i != table_cols.size(); i++) {
         if (i != 0) {
             cols_str += ",";
         }
@@ -89,13 +89,13 @@ int SQLiteHelper::insert_rows(
     sql += cols_str + ") values";
 
     // value placeholders (for binding later)
-    for (std::vector< std::vector<DBObject> >::size_type i = 0; i != rows.size(); i++) {
+    for (std::vector<DataRecord>::size_type i = 0; i != rows.size(); i++) {
         if (i != 0) {
             sql += ",";
         }
         sql += "(";
-        cur_row = rows[i];
-        for (std::vector<DBObject>::size_type j = 0; j != cur_row.size(); j++) {
+        DataRecord cur_row = rows[i];
+        for (int j = 0; j != cur_row.size(); j++) {
             // as long as not first item, put a comma
             if (j != 0) { sql += ","; }
             sql += SQL_PARAM;
@@ -103,21 +103,24 @@ int SQLiteHelper::insert_rows(
         sql += ")";
     }
 
+    log_msg(rows[0].get_object(0).get_str());
+    log_msg(sql);
     log_msg("compiling SQL query");
     SQLite::Statement query(db, sql);
 
     // note that SQL parameters are counted starting from 1, not 0
     log_msg("binding values");
     int bind_count = 1;
-    for (std::vector< std::vector<DBObject> >::size_type i = 0; i != rows.size(); i++) {
-        for (std::vector<DBObject>::size_type j = 0; j != cur_row.size(); j++) {
-            DBObject obj = rows[i][j];
+    for (std::vector<DataRecord>::size_type i = 0; i != rows.size(); i++) {
+        DataRecord cur_row = rows[i];
+        for (int j = 0; j != cur_row.size(); j++) {
+            DataObject obj = cur_row.get_object(j);
             if (obj.type() == "string") {
                 query.bind(bind_count, obj.get_str());
             } else if (obj.type() == "int") {
                 query.bind(bind_count, obj.get_int());
             } else {
-                log_err("DBObject of a type we can't handle");
+                log_err("DataObject of a type we can't handle");
                 return 1;
             }
 
@@ -128,7 +131,7 @@ int SQLiteHelper::insert_rows(
     return 0;
 }
 
-std::vector< std::vector<DBObject> > SQLiteHelper::select_from_where(
+std::vector<DataRecord> SQLiteHelper::select_from_where(
         std::string table_name,
         std::vector<std::string> table_cols,
         std::string sql_where)
@@ -166,21 +169,19 @@ std::vector< std::vector<DBObject> > SQLiteHelper::select_from_where(
     log_msg("select: compiled: " + sql);
 
     // and finally execute the command
-    std::vector<DBObject> cur_record;
-    std::vector< std::vector<DBObject> > records;
+    std::vector<DataRecord> records;
     while (query.executeStep()) {
-        // clear temp. record holder
-        cur_record.clear();
+        DataRecord cur_record;
 
         for (unsigned int i = 0; i != table_cols.size(); i++) {
             // columns *do* start at 0, at least
-            DBObject tmp("tmp");
+            DataObject tmp("tmp");
             if (query.getColumn(i).isInteger()) {
-                tmp = DBObject(query.getColumn(i).getInt());
+                tmp = DataObject(query.getColumn(i).getInt());
             } else if (query.getColumn(i).isText()) {
-                tmp = DBObject(query.getColumn(i).getText());
+                tmp = DataObject(query.getColumn(i).getText());
             }
-            cur_record.push_back(tmp);
+            cur_record.add(tmp);
         }
 
         // add record to records list
@@ -206,4 +207,32 @@ bool SQLiteHelper::table_exists(std::string table) {
         // rethrow after noting error
         throw e;
     }
+}
+
+int SQLiteHelper::delete_from_where(std::string table_name, int id) {
+    // check for table existence before anything
+    if (! table_exists(table_name)) {
+        throw SQLite::Exception("no such table: " + table_name);
+    }
+    return exec_sql("delete from " + table_name + " where id=" + Util::to_string(id));
+}
+
+int SQLiteHelper::update_id(std::string table_name, std::string where_col, DataObject where_val, int id) {
+    std::string sql;
+    // check for table existence before anything
+    if (! table_exists(table_name)) {
+        throw SQLite::Exception("no such table: " + table_name);
+    }
+
+    sql = "update " + table_name + " set " + where_col + "=? where id=" + Util::to_string(id);
+    SQLite::Statement stmt(db, sql);
+    if (where_val.type() == "string") {
+        stmt.bind(1, where_val.get_str());
+    } else if (where_val.type() == "int") {
+        stmt.bind(1, where_val.get_int());
+    } else {
+        log_err("DataObject of a type we can't handle");
+        return 1;
+    }
+    return stmt.exec();
 }
