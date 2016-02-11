@@ -51,33 +51,6 @@ int DataHandler::init_db() {
     return 0;
 }
 
-int DataHandler::insert_appts(std::vector<Appointment> objects) {
-    /*
-     * The information a database needs to insert a row into a table is:
-     *   * table name
-     *   * ordered column names
-     *   * ordered insert values
-     *   * knowledge of insert value types (TODO: maybe?)
-     * We don't provide the ID and instead assume that the DB helper sorts that
-     * for us in some way (it can be omitted if configured correctly).
-     *
-     * TODO: you're limited to ~1000 inserts for one statement, test it
-     */
-    std::vector<DataRecord> rows;
-    for (std::vector<Appointment>::size_type i = 0; i != objects.size(); i++) {
-        DataRecord row;
-
-        // append info for one insert
-        row.add(DataObject(objects[i].title));
-        row.add(DataObject(objects[i].description));
-
-        // add to vector vector
-        rows.push_back(row);
-    }
-    int rc = db_helper.insert_rows(TABLE_APPTS, table_appts_cols, rows);
-    return rc;
-}
-
 int DataHandler::insert_appt(DataObject title, DataObject desc, DataObject date, DataObject loc) {
     DataRecord appt;
     appt.add(title);

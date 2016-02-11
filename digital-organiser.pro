@@ -19,7 +19,6 @@ INCLUDEPATH += $$PWD/include
 
 
 SOURCES += \
-    src/appointment.cpp \
     src/datahandler.cpp \
     src/dbhelper.cpp \
     src/guihandler.cpp \
@@ -41,7 +40,6 @@ SOURCES += \
     src/dataobject.cpp
 
 HEADERS  += \
-    include/appointment.h \
     include/datahandler.h \
     include/dbhelper.h \
     include/guihandler.h \

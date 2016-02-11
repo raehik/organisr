@@ -13,7 +13,6 @@ class DataHandler
 public:
     DataHandler(std::string db_file);
     int init_db();
-    int insert_appts(std::vector<Appointment> appts);
     int insert_appt(DataObject title, DataObject desc, DataObject date, DataObject loc);
     int insert_todo(std::string text);
     int complete_todo(int id);
