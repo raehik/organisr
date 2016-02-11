@@ -3,7 +3,8 @@
 
 #include <string>
 #include <vector>
-#include "dbobject.h"
+#include "dataobject.h"
+#include "datarecord.h"
 
 /**
  * \brief An abstract class defining methods for database helpers to implement.
@@ -34,9 +35,10 @@ public:
      * \throw SQLite::Exception with a descriptive what() string in case of any
      *        errors
      */
-    virtual int insert_rows(std::string table_name,
-                             std::vector<std::string> table_cols,
-                             std::vector< std::vector<DBObject> > rows) = 0;
+    virtual int insert_rows(
+            std::string table_name,
+            std::vector<std::string> table_cols,
+            std::vector<DataRecord> rows) = 0;
 
     /**
      * \brief Select matching rows from a table using an optional 'where'
@@ -50,7 +52,7 @@ public:
      *        errors
      * \return
      */
-    virtual std::vector< std::vector<DBObject> > select_from_where(
+    virtual std::vector<DataRecord> select_from_where(
             std::string table_name,
             std::vector<std::string> table_cols,
             std::string sql_where) = 0;
