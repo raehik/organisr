@@ -7,7 +7,8 @@
 #include <string>
 #include <iostream>
 #include "dbhelper.h"
-#include "dbobject.h"
+#include "dataobject.h"
+#include "datarecord.h"
 
 
 /**
@@ -30,12 +31,38 @@ public:
     virtual int insert_rows(
             std::string table_name,
             std::vector<std::string> table_cols,
-            std::vector< std::vector<DBObject> > rows);
+            std::vector<DataRecord> rows);
 
-    virtual std::vector< std::vector<DBObject> > select_from_where(
+    virtual std::vector<DataRecord> select_from_where(
             std::string table_name,
             std::vector<std::string> cols,
             std::string sql_where = "");
+
+    /** \brief Delete a row in a table using its ID.
+     *
+     * \param table_name  table to use
+     * \param id          id of row to delete
+     *
+     * \return 0 if success, else non-zero for a fail
+     */
+    int delete_from_where(
+            std::string table_name,
+            int id);
+
+    /** \brief Update a single column in a row in a table using its ID.
+     *
+     * \param table_name  table to use
+     * \param col         set col[0]=col[1]
+     * \param id          id of row to update
+     *
+     * \return 0 if success, else non-zero for a fail
+     * \throw SQLite::Exception if no such table or col.size() != 2
+     */
+    int update_id(
+            std::string table_name,
+            std::string where_col,
+            DataObject where_val,
+            int id);
 
     /**
      * \brief Deconstructor for SQLiteHelper.
@@ -46,7 +73,7 @@ public:
     ~SQLiteHelper();
 
     /**
-     * \brief Checks for the existence of a specified table.
+     * \brief Check for the existence of a specified table.
      *
      * \param table name of table to check
      *
