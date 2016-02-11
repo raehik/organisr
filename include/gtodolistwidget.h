@@ -1,22 +1,19 @@
 #ifndef GTODOLISTWIDGET_H
 #define GTODOLISTWIDGET_H
 
-#include <datahandler.h>
-//#include "gmainwindow.h"
-// forward declaration
-class GMainWindow;
-
 #include <vector>
 #include <string>
 #include <QTextList>
 #include <QLabel>
+#include <QVBoxLayout>
 #include <QWidget>
+#include "datahandler.h"
 
 
 class GTodoListWidget : public QWidget
 {
 public:
-    GTodoListWidget(GMainWindow *parent = 0);
+    GTodoListWidget(DataHandler *db, QWidget *parent = 0);
     void build_widget();
 
     /**
@@ -25,10 +22,15 @@ public:
     void refresh();
 
 private:
+    QVBoxLayout *top_layout;
     QLabel *todos_label;
 
     /// A bit unneat, but we require a pointer to a GMainWindow to access get_todos()
-    GMainWindow *parent_win;
+    DataHandler *db;
+
+    void delete_todo(int id);
+    void edit_todo(int id, std::string cur_text);
+    void complete_todo(int id);
 };
 
 #endif // GTODOLISTWIDGET_H
