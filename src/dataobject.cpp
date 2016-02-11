@@ -1,30 +1,31 @@
-#include "dbobject.h"
+#include "dataobject.h"
 
-DBObject::DBObject(int value) {
+DataObject::DataObject(int val) {
+    set_value(val);
+}
+
+DataObject::DataObject(std::string val) {
+    set_value(val);
+}
+
+void DataObject::set_value(int val) {
     obj_type = "int";
-    int_val = value;
+    v_int = val;
 }
 
-DBObject::DBObject(std::string value) {
+void DataObject::set_value(std::string val) {
     obj_type = "string";
-    str_val = value;
+    v_str = val;
 }
 
-void DBObject::get_value(int *var) {
-    *var = int_val;
-}
-void DBObject::get_value(std::string *var) {
-    *var = str_val;
+int DataObject::get_int() {
+    return v_int;
 }
 
-std::string DBObject::type() {
+std::string DataObject::get_str() {
+    return v_str;
+}
+
+std::string DataObject::type() {
     return obj_type;
-}
-
-int DBObject::get_int() {
-    return int_val;
-}
-
-std::string DBObject::get_str() {
-    return str_val;
 }

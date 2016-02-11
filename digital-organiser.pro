@@ -6,6 +6,8 @@
 
 QT       += core gui printsupport
 
+CONFIG += c++11
+
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
 TARGET = digital-organiser
@@ -20,7 +22,6 @@ SOURCES += \
     src/appointment.cpp \
     src/datahandler.cpp \
     src/dbhelper.cpp \
-    src/dbobject.cpp \
     src/guihandler.cpp \
     src/log.cpp \
     src/main.cpp \
@@ -35,12 +36,14 @@ SOURCES += \
     src/testcommon.cpp \
     src/testsql.cpp \
     src/testgui.cpp \
+    src/todorow.cpp \
+    src/datarecord.cpp \
+    src/dataobject.cpp
 
 HEADERS  += \
     include/appointment.h \
     include/datahandler.h \
     include/dbhelper.h \
-    include/dbobject.h \
     include/guihandler.h \
     include/log.h \
     include/sqlitehelper.h \
@@ -53,4 +56,7 @@ HEADERS  += \
     include/gnewtododialog.h \
     include/testcommon.h \
     include/testsql.h \
-    include/testgui.h
+    include/testgui.h \
+    include/todorow.h \
+    include/datarecord.h \
+    include/dataobject.h

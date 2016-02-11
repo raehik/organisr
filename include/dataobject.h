@@ -1,26 +1,26 @@
-#ifndef DBOBJECT_H
-#define DBOBJECT_H
+#ifndef DATAOBJECT_H
+#define DATAOBJECT_H
 
 #include <string>
 
-class DBObject
+class DataObject
 {
 public:
-    DBObject(int value);
-    DBObject(std::string value);
-
-    std::string type();
+    DataObject(int val);
+    DataObject(std::string val);
 
     int get_int();
     std::string get_str();
 
-    void get_value(int *val_store);
-    void get_value(std::string *val_store);
+    void set_value(int var);
+    void set_value(std::string var);
+
+    std::string type();
 
 private:
-    int int_val;
-    std::string str_val;
+    int v_int;
+    std::string v_str;
     std::string obj_type;
 };
 
-#endif // DBOBJECT_H
+#endif // DATAOBJECT_H
