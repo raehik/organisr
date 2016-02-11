@@ -16,7 +16,6 @@ class GMainWindow : public QMainWindow
 
 public:
     GMainWindow();
-    std::vector<std::string> get_todos();
 
 private slots:
     void open_new_appt_dialog();
