@@ -1,6 +1,6 @@
 #include "testsql.h"
 #include <stdio.h>
-#include "dbobject.h"
+#include "dataobject.h"
 #include <fstream>
 #include "sqlitehelper.h"
 #include "testcommon.h"
@@ -56,15 +56,15 @@ void test_sql() {
     std::vector<std::string> t1_cols_id;
     t1_cols_id.push_back("id");
     t1_cols_id.push_back("field");
-    std::vector< std::vector<DBObject> > res = db_test.select_from_where(t1, t1_cols_id);
+    std::vector<DataRecord> res = db_test.select_from_where(t1, t1_cols_id);
     assert(res.size() == 0);
 
     log_test("SQL20", "insert into table without id");
     std::vector<std::string> t1_cols;
     t1_cols.push_back("field");
-    std::vector< std::vector<DBObject> > t1_rows;
-    std::vector<DBObject> t1_row1;
-    t1_row1.push_back(DBObject("ayy lmao"));
+    std::vector<DataRecord> t1_rows;
+    DataRecord t1_row1;
+    t1_row1.add(DataObject("ayy lmao"));
     t1_rows.push_back(t1_row1);
     try {
         db_test.insert_rows(t1, t1_cols, t1_rows);
@@ -73,11 +73,10 @@ void test_sql() {
     }
 
     log_test("SQL21", "insert >1000 rows in one query");
-    std::vector< std::vector<DBObject> > t1_huge_rows;
-    std::vector<DBObject> row_tmp;
+    std::vector<DataRecord> t1_huge_rows;
     for (int i = 0; i < 1000; i++) {
-        row_tmp.clear();
-        row_tmp.push_back(DBObject("ayy lmao"));
+        DataRecord row_tmp;
+        row_tmp.add(DataObject("ayy lmao"));
         t1_huge_rows.push_back(row_tmp);
     }
     std::stringstream ss;
@@ -90,10 +89,24 @@ void test_sql() {
     }
 
     log_test("SQL22", "insert nothing into table");
-    std::vector< std::vector<DBObject> > t1_nanimo;
+    std::vector<DataRecord> t1_nanimo;
     try {
         db_test.insert_rows(t1, t1_cols, t1_nanimo);
     } catch (SQLite::Exception e) {
         log_test_note(e.what());
     }
+
+    log_test("SQL23", "SQL injection attack");
+    std::vector<DataRecord> t1_inject;
+    DataRecord row_inject;
+    row_inject.add(DataObject("Robert'); drop table " + t1 + ";"));
+    t1_inject.push_back(row_inject);
+    db_test.insert_rows(t1, t1_cols, t1_inject);
+    std::vector<DataRecord> inject_select = db_test.select_from_where(t1, t1_cols);
+    log_test_note("table " + t1 + " contents:");
+    for (std::vector<DataRecord>::size_type i = 0; i != inject_select.size(); i++) {
+        DataRecord tmp = inject_select[i];
+        log_test_note(tmp.get_object(0).get_str());
+    }
+    assert(db_test.table_exists(t1));
 }
