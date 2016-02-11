@@ -5,20 +5,10 @@
 #include "gwarningbox.h"
 #include "log.h"
 
-// Qt includes {{{
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QFormLayout>
 #include <QPushButton>
-#include <QLabel>
-#include <QLineEdit>
-#include <QTextEdit>
-#include <QMessageBox>
-#include <QString>
-#include <QPrinter>
-#include <QPainter>
-#include <QPrintDialog>
-// }}}
 
 using namespace Util;
 
@@ -40,6 +30,13 @@ void GNewApptDialog::init_window() {
     field_desc = new QTextEdit;
     form->addRow(label_desc, field_desc);
 
+    label_date = new QLabel("Date");
+    field_date = new QCalendarWidget;
+    form->addRow(label_date, field_date);
+
+    label_loc = new QLabel("Location");
+    field_loc = new QLineEdit;
+    form->addRow(label_loc, field_loc);
 
     // buttons layout
     QPushButton *b_confirm = new QPushButton("Confirm");
@@ -49,8 +46,8 @@ void GNewApptDialog::init_window() {
     buttons->addWidget(b_cancel, 1, Qt::AlignRight);
 
     // slots & signals
-    connect(b_confirm, SIGNAL(clicked(bool)), this, SLOT(verify_fields()));
-    connect(b_cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
+    connect(b_confirm, &QPushButton::clicked, this, &GNewApptDialog::verify_fields);
+    connect(b_cancel, &QPushButton::clicked, this, &GNewApptDialog::reject);
 
     // put layouts together
     layout->addLayout(form);
@@ -59,10 +56,12 @@ void GNewApptDialog::init_window() {
     this->setLayout(layout);
 }
 
-void GNewApptDialog::get_details(QString *title_ptr, QString *desc_ptr) {
+void GNewApptDialog::get_details(QString *title_ptr, QString *desc_ptr, QDate *date_ptr, QString *loc_ptr) {
     // POINTERS BITCH
     *title_ptr = field_title->text();
     *desc_ptr = field_desc->toPlainText();
+    *date_ptr = field_date->selectedDate();
+    *loc_ptr = field_loc->text();
 }
 
 int GNewApptDialog::verify_fields() {
