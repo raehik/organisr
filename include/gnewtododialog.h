@@ -12,7 +12,7 @@ class GNewTodoDialog : public QDialog
     Q_OBJECT
 
 public:
-    GNewTodoDialog(QWidget *parent = 0);
+    GNewTodoDialog(QWidget *parent, std::string placeholder = "");
     virtual ~GNewTodoDialog() {}
     void get_details(QString *text_ptr);
 
@@ -22,7 +22,7 @@ public slots:
 private:
     QLineEdit *field_text;
     QLabel *label_text;
-    void init_window();
+    void init_window(std::string placeholder);
     bool field_not_empty(QString field_text, QString field_name);
 };
 

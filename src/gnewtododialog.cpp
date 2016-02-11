@@ -9,11 +9,14 @@
 
 using namespace Util;
 
-GNewTodoDialog::GNewTodoDialog(QWidget *parent) : QDialog(parent){
-    init_window();
+GNewTodoDialog::GNewTodoDialog(QWidget *parent, std::string placeholder) : QDialog(parent){
+    init_window(placeholder);
 }
 
-void GNewTodoDialog::init_window() {
+void GNewTodoDialog::init_window(std::string placeholder) {
+    // window size
+    this->setFixedWidth(250);
+
     QVBoxLayout *layout = new QVBoxLayout;
     QFormLayout *form = new QFormLayout;
     QHBoxLayout *buttons = new QHBoxLayout;
@@ -21,6 +24,7 @@ void GNewTodoDialog::init_window() {
     // form layout
     label_text = new QLabel("To-do");
     field_text = new QLineEdit;
+    field_text->setText(QString::fromStdString(placeholder));
     form->addRow(label_text, field_text);
 
     // buttons layout
@@ -31,8 +35,8 @@ void GNewTodoDialog::init_window() {
     buttons->addWidget(b_cancel, 1, Qt::AlignRight);
 
     // slots & signals
-    connect(b_confirm, SIGNAL(clicked(bool)), this, SLOT(verify_fields()));
-    connect(b_cancel, SIGNAL(clicked(bool)), this, SLOT(reject()));
+    connect(b_confirm, &QPushButton::clicked, this, &GNewTodoDialog::verify_fields);
+    connect(b_cancel, &QPushButton::clicked, this, &GNewTodoDialog::reject);
 
     // put layouts together
     layout->addLayout(form);
