@@ -25,7 +25,6 @@ private:
     QVBoxLayout *top_layout;
     QLabel *todos_label;
 
-    /// A bit unneat, but we require a pointer to a GMainWindow to access get_todos()
     DataHandler *db;
 
     void delete_todo(int id);
