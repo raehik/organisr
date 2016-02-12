@@ -15,7 +15,6 @@
 #include "gnewtododialog.h"
 #include "gwinabout.h"
 #include "gtodolistwidget.h"
-#include "appointment.h"
 #include "log.h"
 
 using namespace Util;
@@ -124,13 +123,15 @@ void GMainWindow::open_new_appt_dialog() {
         QString appt_title;
         QString appt_desc;
         QDate appt_date;
+        QTime appt_time;
         QString appt_loc;
-        w_appt_dialog->get_details(&appt_title, &appt_desc, &appt_date, &appt_loc);
+        w_appt_dialog->get_details(&appt_title, &appt_desc, &appt_date, &appt_time, &appt_loc);
         log("adding new appt " + appt_title.toUtf8().toStdString());
         db.insert_appt(
                     DataObject(appt_title.toUtf8().toStdString()),
                     DataObject(appt_desc.toUtf8().toStdString()),
                     DataObject(appt_date.toJulianDay()),
+                    DataObject(QTime(0, 0, 0).secsTo(appt_time)),
                     DataObject(appt_loc.toUtf8().toStdString())
                    );
     }

@@ -3,7 +3,6 @@
 
 #include <string>
 #include <vector>
-#include "appointment.h"
 #include "todorow.h"
 #include "sqlitehelper.h"
 
@@ -13,7 +12,7 @@ class DataHandler
 public:
     DataHandler(std::string db_file);
     int init_db();
-    int insert_appt(DataObject title, DataObject desc, DataObject date, DataObject loc);
+    int insert_appt(DataObject title, DataObject desc, DataObject date, DataObject time, DataObject loc);
     int insert_todo(std::string text);
     int complete_todo(int id);
     int update_todo(int id, std::string text);

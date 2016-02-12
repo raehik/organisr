@@ -34,6 +34,10 @@ void GNewApptDialog::init_window() {
     field_date = new QCalendarWidget;
     form->addRow(label_date, field_date);
 
+    label_time = new QLabel("Time");
+    field_time = new QTimeEdit;
+    form->addRow(label_time, field_time);
+
     label_loc = new QLabel("Location");
     field_loc = new QLineEdit;
     form->addRow(label_loc, field_loc);
@@ -56,11 +60,12 @@ void GNewApptDialog::init_window() {
     this->setLayout(layout);
 }
 
-void GNewApptDialog::get_details(QString *title_ptr, QString *desc_ptr, QDate *date_ptr, QString *loc_ptr) {
+void GNewApptDialog::get_details(QString *title_ptr, QString *desc_ptr, QDate *date_ptr, QTime *time_ptr, QString *loc_ptr) {
     // POINTERS BITCH
     *title_ptr = field_title->text();
     *desc_ptr = field_desc->toPlainText();
     *date_ptr = field_date->selectedDate();
+    *time_ptr = field_time->time();
     *loc_ptr = field_loc->text();
 }
 

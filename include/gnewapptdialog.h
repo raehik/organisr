@@ -7,6 +7,7 @@
 #include <QLabel>
 #include <QLineEdit>
 #include <QTextEdit>
+#include <QTimeEdit>
 #include <QCalendarWidget>
 
 class GNewApptDialog : public QDialog
@@ -16,7 +17,7 @@ class GNewApptDialog : public QDialog
 public:
     GNewApptDialog(QWidget *parent = 0);
     virtual ~GNewApptDialog() {}
-    void get_details(QString *title_ptr, QString *desc_ptr, QDate *date_ptr, QString *loc_ptr);
+    void get_details(QString *title_ptr, QString *desc_ptr, QDate *date_ptr, QTime *time_ptr, QString *loc_ptr);
 
 public slots:
     int verify_fields();
@@ -26,9 +27,11 @@ private:
     QTextEdit *field_desc;
     QCalendarWidget *field_date;
     QLineEdit *field_loc;
+    QTimeEdit *field_time;
     QLabel *label_title;
     QLabel *label_desc;
     QLabel *label_date;
+    QLabel *label_time;
     QLabel *label_loc;
     void init_window();
     bool field_not_empty(QString field_text, QString field_name);

@@ -1,6 +1,5 @@
 #include "datahandler.h"
 
-#include "appointment.h"
 #include "sqlitehelper.h"
 #include "log.h"
 
@@ -24,6 +23,7 @@ DataHandler::DataHandler(std::string db_file) : db_helper(db_file) {
     table_appts_cols.push_back("title");
     table_appts_cols.push_back("description");
     table_appts_cols.push_back("date");
+    table_appts_cols.push_back("time");
     table_appts_cols.push_back("location");
 
     table_todos_cols.push_back("text");
@@ -51,11 +51,12 @@ int DataHandler::init_db() {
     return 0;
 }
 
-int DataHandler::insert_appt(DataObject title, DataObject desc, DataObject date, DataObject loc) {
+int DataHandler::insert_appt(DataObject title, DataObject desc, DataObject date, DataObject time, DataObject loc) {
     DataRecord appt;
     appt.add(title);
     appt.add(desc);
     appt.add(date);
+    appt.add(time);
     appt.add(loc);
     std::vector<DataRecord> appt_vector;
     appt_vector.push_back(appt);
