@@ -103,8 +103,6 @@ int SQLiteHelper::insert_rows(
         sql += ")";
     }
 
-    log_msg(rows[0].get_object(0).get_str());
-    log_msg(sql);
     log_msg("compiling SQL query");
     SQLite::Statement query(db, sql);
 
