@@ -155,12 +155,12 @@ std::vector<DataRecord> SQLiteHelper::select_from_where(
 
     sql += " from " + table_name;
 
+    // sort the where clause
     if (sql_where != "") {
         log_msg("select: where specified: " + sql_where);
         // TODO: parameterise
         sql += " where " + sql_where;
     }
-        log_msg("select: no where specified");
 
     // compile SQL query
     SQLite::Statement query(db, sql);
