@@ -122,4 +122,5 @@ void GTodoListWidget::edit_todo(int id, std::string cur_text) {
 
 void GTodoListWidget::complete_todo(int id) {
     db->complete_todo(id);
+    refresh();
 }
