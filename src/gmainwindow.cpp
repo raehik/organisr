@@ -14,6 +14,7 @@
 #include "gnewapptdialog.h"
 #include "gnewtododialog.h"
 #include "gwinabout.h"
+#include "gwinviewday.h"
 #include "gtodolistwidget.h"
 #include "log.h"
 
@@ -79,7 +80,7 @@ void GMainWindow::init_window() {
     connect(a_srch_appt, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
     connect(a_srch_todo, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
 
-    connect(a_view_day, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
+    connect(a_view_day, &QAction::triggered, this, &GMainWindow::winopen_view_day);
     connect(a_view_month, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
     connect(a_view_year, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
     connect(a_view_todo, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
@@ -159,4 +160,9 @@ void GMainWindow::open_new_todo_dialog() {
 void GMainWindow::winopen_about() {
     GWinAbout *win = new GWinAbout(this);
     win->exec();
+}
+
+void GMainWindow::winopen_view_day() {
+    GWinViewDay *win = new GWinViewDay(&db, this);
+    win->show();
 }

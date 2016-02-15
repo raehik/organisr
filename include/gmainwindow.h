@@ -21,6 +21,7 @@ private slots:
     void open_new_appt_dialog();
     void open_new_todo_dialog();
     void winopen_about();
+    void winopen_view_day();
 
 private:
     DataHandler db;
