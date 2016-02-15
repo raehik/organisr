@@ -81,7 +81,7 @@ std::vector<TodoRow> DataHandler::get_todos() {
     std::vector<std::string> todos_cols_with_id;
     todos_cols_with_id = table_todos_cols;
     todos_cols_with_id.insert(todos_cols_with_id.begin(), "id");
-    std::vector<DataRecord> todos_raw = db_helper.select_from_where(TABLE_TODOS, todos_cols_with_id, "");
+    std::vector<DataRecord> todos_raw = db_helper.select_from_where(TABLE_TODOS, todos_cols_with_id);
     for (std::vector<DataRecord>::size_type i = 0; i != todos_raw.size(); i++) {
         DataRecord tmp = todos_raw[i];
         todos.push_back(TodoRow(
@@ -91,6 +91,21 @@ std::vector<TodoRow> DataHandler::get_todos() {
                             ));
     }
     return todos;
+}
+
+std::vector<DataRecord> DataHandler::get_appts_where(std::string search_str) {
+    std::vector<std::string> appts_cols_with_id;
+    appts_cols_with_id = table_appts_cols;
+    appts_cols_with_id.insert(appts_cols_with_id.begin(), "id");
+
+    std::string query = "title like '%" + search_str + "%' or \
+description like '%" + search_str + "%' or \
+date like '%" + search_str + "%' or \
+time like '%" + search_str + "%' or \
+location like '%" + search_str + "%'";
+
+    std::vector<DataRecord> matching_appts = db_helper.select_from_where(TABLE_APPTS, appts_cols_with_id, query);
+    return matching_appts;
 }
 
 int DataHandler::delete_todo(int id) {

@@ -18,6 +18,7 @@ public:
     int update_todo(int id, std::string text);
     int delete_todo(int id);
     std::vector<TodoRow> get_todos();
+    std::vector<DataRecord> get_appts_where(std::string search_str);
 
     static int TODO_FIN;
     static int TODO_UNFIN;
