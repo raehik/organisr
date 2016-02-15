@@ -37,7 +37,8 @@ SOURCES += \
     src/testgui.cpp \
     src/todorow.cpp \
     src/datarecord.cpp \
-    src/dataobject.cpp
+    src/dataobject.cpp \
+    src/gwinviewday.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -57,4 +58,5 @@ HEADERS  += \
     include/testgui.h \
     include/todorow.h \
     include/datarecord.h \
-    include/dataobject.h
+    include/dataobject.h \
+    include/gwinviewday.h
