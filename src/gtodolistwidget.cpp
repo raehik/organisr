@@ -63,19 +63,19 @@ void GTodoListWidget::refresh() {
             // add delete/edit buttons
             QPushButton *b_del_cur = new QPushButton("X");
             QPushButton *b_edit_cur = new QPushButton("E");
-            QPushButton *b_complete_cur = new QPushButton("✓");
+            QPushButton *b_toggle_cur = new QPushButton("✓");
 
             b_del_cur->setMinimumWidth(20);
             b_edit_cur->setMinimumWidth(20);
-            b_complete_cur->setMinimumWidth(20);
+            b_toggle_cur->setMinimumWidth(20);
 
             connect(b_del_cur, &QPushButton::clicked, this, [this, t_id](){ delete_todo(t_id); });
             connect(b_edit_cur, &QPushButton::clicked, this, [this, t_id, t_text](){ edit_todo(t_id, t_text); });
-            connect(b_complete_cur, &QPushButton::clicked, this, [this, t_id](){ complete_todo(t_id); });
+            connect(b_toggle_cur, &QPushButton::clicked, this, [this, t_id, t_done](){ toggle_complete(t_id, t_done); });
             QHBoxLayout *l_row = new QHBoxLayout;
             l_row->addWidget(b_del_cur, 1);
             l_row->addWidget(b_edit_cur, 1);
-            l_row->addWidget(b_complete_cur, 1);
+            l_row->addWidget(b_toggle_cur, 1);
             QLabel *cur_lbl = new QLabel(QString::fromStdString(cur_todo));
             cur_lbl->setWordWrap(true);
             l_row->addWidget(cur_lbl, 100);
@@ -120,7 +120,12 @@ void GTodoListWidget::edit_todo(int id, std::string cur_text) {
     }
 }
 
-void GTodoListWidget::complete_todo(int id) {
-    db->complete_todo(id);
+void GTodoListWidget::toggle_complete(int id, bool complete) {
+    log("ID: " + to_string(id) + ", complete: " + to_string(complete));
+    if (complete) {
+        db->uncomplete_todo(id);
+    } else {
+        db->complete_todo(id);
+    }
     refresh();
 }

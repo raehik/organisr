@@ -119,3 +119,7 @@ int DataHandler::update_todo(int id, std::string text) {
 int DataHandler::complete_todo(int id) {
     return db_helper.update_id(TABLE_TODOS, "completed", DataObject(TODO_FIN), id);
 }
+
+int DataHandler::uncomplete_todo(int id) {
+    return db_helper.update_id(TABLE_TODOS, "completed", DataObject(TODO_UNFIN), id);
+}

@@ -29,7 +29,7 @@ private:
 
     void delete_todo(int id);
     void edit_todo(int id, std::string cur_text);
-    void complete_todo(int id);
+    void toggle_complete(int id, bool complete);
 };
 
 #endif // GTODOLISTWIDGET_H

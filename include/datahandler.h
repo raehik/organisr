@@ -15,6 +15,7 @@ public:
     int insert_appt(DataObject title, DataObject desc, DataObject date, DataObject time, DataObject loc);
     int insert_todo(std::string text);
     int complete_todo(int id);
+    int uncomplete_todo(int id);
     int update_todo(int id, std::string text);
     int delete_todo(int id);
     std::vector<TodoRow> get_todos();
