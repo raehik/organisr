@@ -1,1 +1,1 @@
-* Tick thing should toggle completedness
+* When doing complicated SELECTs / etc., comment *every part*
