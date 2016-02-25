@@ -36,6 +36,7 @@ SOURCES += \
     src/testsql.cpp \
     src/testgui.cpp \
     src/todorow.cpp \
+    src/apptrow.cpp \
     src/datarecord.cpp \
     src/dataobject.cpp \
     src/gwinviewday.cpp
@@ -57,6 +58,7 @@ HEADERS  += \
     include/testsql.h \
     include/testgui.h \
     include/todorow.h \
+    include/apptrow.h \
     include/datarecord.h \
     include/dataobject.h \
     include/gwinviewday.h
