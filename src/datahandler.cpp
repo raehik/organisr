@@ -76,24 +76,24 @@ int DataHandler::insert_todo(std::string text) {
     return 0;
 }
 
-std::vector<TodoRow> DataHandler::get_todos() {
-    std::vector<TodoRow> todos;
+std::vector<RecTodo> DataHandler::get_todos() {
+    std::vector<RecTodo> todos;
     std::vector<std::string> todos_cols_with_id;
     todos_cols_with_id = table_todos_cols;
     todos_cols_with_id.insert(todos_cols_with_id.begin(), "id");
     std::vector<DataRecord> todos_raw = db_helper.select_from_where(TABLE_TODOS, todos_cols_with_id);
     for (std::vector<DataRecord>::size_type i = 0; i != todos_raw.size(); i++) {
-        DataRecord tmp = todos_raw[i];
-        todos.push_back(TodoRow(
-                            tmp.get_object(1).get_str(),
-                            tmp.get_object(0).get_int(),
-                            tmp.get_object(2).get_int()
-                            ));
+        DataRecord rec_tmp = todos_raw[i];
+        RecTodo todo_tmp;
+        todo_tmp.id = rec_tmp.get_object(0).get_int();
+        todo_tmp.text = rec_tmp.get_object(1).get_str();
+        todo_tmp.done = rec_tmp.get_object(2).get_int();
+        todos.push_back(todo_tmp);
     }
     return todos;
 }
 
-std::vector<ApptRow> DataHandler::get_appts_where(std::string search_str) {
+std::vector<RecAppt> DataHandler::get_appts_where(std::string search_str) {
     std::vector<std::string> appts_cols_with_id;
     appts_cols_with_id = table_appts_cols;
     appts_cols_with_id.insert(appts_cols_with_id.begin(), "id");
@@ -105,17 +105,17 @@ time like '%" + search_str + "%' or \
 location like '%" + search_str + "%'";
 
     std::vector<DataRecord> match_recs = db_helper.select_from_where(TABLE_APPTS, appts_cols_with_id, query);
-    std::vector<ApptRow> match_appts;
+    std::vector<RecAppt> match_appts;
     for (std::vector<DataRecord>::size_type i = 0; i != match_recs.size(); i++) {
-        DataRecord tmp = match_recs[i];
-        match_appts.push_back(
-                    ApptRow(tmp.get_object(0).get_int(),
-                            tmp.get_object(1).get_str(),
-                            tmp.get_object(2).get_str(),
-                            tmp.get_object(3).get_int(),
-                            tmp.get_object(4).get_int(),
-                            tmp.get_object(5).get_str()
-                            ));
+        DataRecord rec_tmp = match_recs[i];
+        RecAppt appt_tmp;
+        appt_tmp.id = rec_tmp.get_object(0).get_int();
+        appt_tmp.title = rec_tmp.get_object(1).get_str();
+        appt_tmp.desc = rec_tmp.get_object(2).get_str();
+        appt_tmp.date = rec_tmp.get_object(3).get_int();
+        appt_tmp.time = rec_tmp.get_object(4).get_int();
+        appt_tmp.location = rec_tmp.get_object(5).get_str();
+        match_appts.push_back(appt_tmp);
     }
     return match_appts;
 }

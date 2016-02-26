@@ -1,6 +1,6 @@
 #include "gtodolistwidget.h"
 #include "gmainwindow.h"
-#include "todorow.h"
+#include "rectodo.h"
 #include <QTextEdit>
 #include <string>
 #include <QString>
@@ -32,7 +32,7 @@ void GTodoListWidget::refresh() {
     qDeleteAll(this->children());
 
     // get todos
-    std::vector<TodoRow> todos = db->get_todos();
+    std::vector<RecTodo> todos = db->get_todos();
 
     // init layout
     QVBoxLayout *l_main = new QVBoxLayout;
@@ -47,10 +47,10 @@ void GTodoListWidget::refresh() {
 
     // add each todo in sequence if there are any
     if (todos.size() > 0) {
-        for (std::vector<TodoRow>::size_type i = 0; i != todos.size(); i++) {
-            std::string t_text = todos[i].get_text();
-            int t_id = todos[i].get_id();
-            bool t_done = todos[i].get_done();
+        for (std::vector<RecTodo>::size_type i = 0; i != todos.size(); i++) {
+            int t_id = todos[i].id;
+            std::string t_text = todos[i].text;
+            bool t_done = todos[i].done;
 
             // get & format to-do (HTML escape for safety)
             std::string cur_todo = "<p style='font-size: 10pt'>&bull; ";

@@ -3,8 +3,8 @@
 
 #include <string>
 #include <vector>
-#include "todorow.h"
-#include "apptrow.h"
+#include "rectodo.h"
+#include "recappt.h"
 #include "sqlitehelper.h"
 
 
@@ -19,8 +19,8 @@ public:
     int uncomplete_todo(int id);
     int update_todo(int id, std::string text);
     int delete_todo(int id);
-    std::vector<TodoRow> get_todos();
-    std::vector<ApptRow> get_appts_where(std::string search_str);
+    std::vector<RecTodo> get_todos();
+    std::vector<RecAppt> get_appts_where(std::string search_str);
 
     static int TODO_FIN;
     static int TODO_UNFIN;

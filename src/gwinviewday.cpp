@@ -9,8 +9,8 @@ GWinViewDay::GWinViewDay(DataHandler *db, QWidget *parent) : QDialog(parent) {
 }
 
 void GWinViewDay::init_window() {
-    std::vector<ApptRow> appts = db->get_appts_where("doge");
+    std::vector<RecAppt> appts = db->get_appts_where("doge");
 
-    log(appts[0].get_title());
+    log(appts[0].title);
     log("Wow: " + to_string(appts.size()));
 }
