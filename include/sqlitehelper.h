@@ -103,6 +103,9 @@ public:
     std::string get_errmsg();
 
 private:
+    /**
+     * \brief The handle to the SQLite database (via SQLiteCPP).
+     */
     SQLite::Database db;
 
     /**
@@ -131,6 +134,10 @@ private:
      */
     static bool file_exists(std::string filename);
 
+    /**
+     * The string/character which SQL replaces with a safe binded value. Likely
+     * only allowed to be '?'.
+     */
     const static std::string SQL_PARAM;
 };
 
