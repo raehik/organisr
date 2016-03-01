@@ -52,7 +52,7 @@ void error(std::string msg);
 void error(std::string pre, std::string msg);
 
 /**
- * Convert a variable of any type to a string.
+ * \brief Convert a variable of any type to a string.
  */
 // have to define in header: see http://stackoverflow.com/q/495021/2246637
 template <typename T> std::string to_string(T var) {
