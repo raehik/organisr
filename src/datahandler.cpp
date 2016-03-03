@@ -21,8 +21,8 @@ DataHandler::DataHandler(std::string db_file) : db_helper(db_file) {
 
     // define column names
     table_appts_cols.push_back("title");
-    table_appts_cols.push_back("description");
     table_appts_cols.push_back("date");
+    table_appts_cols.push_back("description");
     table_appts_cols.push_back("time");
     table_appts_cols.push_back("location");
 
@@ -34,8 +34,8 @@ int DataHandler::init_db() {
     std::string sql_appt = "create table appointments(" \
             "id          integer  primary key," \
             "title       text     not null," \
+            "date        integer  not null," \
             "description text," \
-            "date        integer," \
             "time        integer," \
             "location    text" \
             ");";
@@ -54,8 +54,8 @@ int DataHandler::init_db() {
 int DataHandler::insert_appt(DataObject title, DataObject desc, DataObject date, DataObject time, DataObject loc) {
     DataRecord appt;
     appt.add(title);
-    appt.add(desc);
     appt.add(date);
+    appt.add(desc);
     appt.add(time);
     appt.add(loc);
     std::vector<DataRecord> appt_vector;
@@ -93,16 +93,44 @@ std::vector<RecTodo> DataHandler::get_todos() {
     return todos;
 }
 
-std::vector<RecAppt> DataHandler::get_appts_where(std::string search_str) {
+std::vector<RecAppt> DataHandler::get_appts_where(std::string search_str, std::string field, std::string search_type) {
+    std::string pre_op;
+    std::string post_op;
+    std::string query;
+
     std::vector<std::string> appts_cols_with_id;
     appts_cols_with_id = table_appts_cols;
     appts_cols_with_id.insert(appts_cols_with_id.begin(), "id");
 
-    std::string query = "title like '%" + search_str + "%' or \
-description like '%" + search_str + "%' or \
-date like '%" + search_str + "%' or \
-time like '%" + search_str + "%' or \
-location like '%" + search_str + "%'";
+    if (search_type == "anywhere") {
+        log("get_appts_where: match anywhere");
+        pre_op = "%";
+        post_op = "%";
+    } else if (search_type == "start") {
+        log("get_appts_where: match at start");
+        pre_op = "";
+        post_op = "%";
+    } else if (search_type == "exact") {
+        log("get_appts_where: match exact");
+        pre_op = "";
+        post_op = "";
+    } else {
+        error("get_appts_where: unknown search type '" + search_type + "'");
+    }
+
+    std::string search = pre_op + search_str + post_op;
+
+    if (field == "all") {
+        query = "title like '" + search + "' or \
+date like '" + search + "' or \
+description like '" + search + "%' or \
+time like '" + search + "' or \
+location like '" + search + "'";
+    } else {
+        // assume that they gave a valid field (cba to check)
+        // TODO
+        query = field + " like '" + search + "'";
+    }
 
     std::vector<DataRecord> match_recs = db_helper.select_from_where(TABLE_APPTS, appts_cols_with_id, query);
     std::vector<RecAppt> match_appts;
@@ -111,8 +139,8 @@ location like '%" + search_str + "%'";
         RecAppt appt_tmp;
         appt_tmp.id = rec_tmp.get_object(0).get_int();
         appt_tmp.title = rec_tmp.get_object(1).get_str();
-        appt_tmp.desc = rec_tmp.get_object(2).get_str();
-        appt_tmp.date = rec_tmp.get_object(3).get_int();
+        appt_tmp.date = rec_tmp.get_object(2).get_int();
+        appt_tmp.desc = rec_tmp.get_object(3).get_str();
         appt_tmp.time = rec_tmp.get_object(4).get_int();
         appt_tmp.location = rec_tmp.get_object(5).get_str();
         match_appts.push_back(appt_tmp);

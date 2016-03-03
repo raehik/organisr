@@ -20,7 +20,7 @@ public:
     int update_todo(int id, std::string text);
     int delete_todo(int id);
     std::vector<RecTodo> get_todos();
-    std::vector<RecAppt> get_appts_where(std::string search_str);
+    std::vector<RecAppt> get_appts_where(std::string search_str, std::string field, std::string search_type = "anywhere");
 
     static int TODO_FIN;
     static int TODO_UNFIN;
