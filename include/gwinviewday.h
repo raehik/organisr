@@ -16,12 +16,16 @@ public:
     GWinViewDay(DataHandler *db, QWidget *parent = 0);
     void init_window();
     int update_appts();
+    void edit_appt(int id);
 
 private:
+    const static int W_CAL;
+    const static int H_CAL;
+    const static int W_APPTS;
+
     DataHandler *db;
     QCalendarWidget *cal;
     QGridLayout *grid;
-    QHBoxLayout *layout;
     std::vector<QWidget*> cur_appts;
 };
 
