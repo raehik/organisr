@@ -21,6 +21,7 @@ public:
     int delete_todo(int id);
     std::vector<RecTodo> get_todos();
     std::vector<RecAppt> get_appts_where(std::string search_str, std::string field, std::string search_type = "anywhere");
+    int update_appt(int id, std::string title, int date, std::string desc, int time, std::string loc);
 
     static int TODO_FIN;
     static int TODO_UNFIN;

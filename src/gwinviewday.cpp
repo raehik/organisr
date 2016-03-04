@@ -1,4 +1,5 @@
 #include "gwinviewday.h"
+#include "gnewapptdialog.h"
 #include <QLabel>
 #include <QDate>
 #include <QPushButton>
@@ -75,6 +76,7 @@ int GWinViewDay::update_appts() {
             QPushButton *b_edit = new QPushButton("E");
             b_edit->setFixedWidth(20);
             grid->addWidget(b_edit, grid_y+1, grid_x, 1, 1, Qt::AlignTop);
+            connect(b_edit, &QPushButton::clicked, this, [this, a](){ edit_appt(a.id); });
 
             // stretch the *long row* (= this row + 1)
             grid->setRowStretch(grid_y+1, 1);
@@ -94,4 +96,25 @@ int GWinViewDay::update_appts() {
 }
 
 void GWinViewDay::edit_appt(int id) {
+    log("Edit " + to_string(id));
+    GNewApptDialog *editor = new GNewApptDialog(this);
+    if (editor->exec() == QDialog::Accepted) {
+        QString d_title;
+        QDate d_date;
+        QString d_desc;
+        QTime d_time;
+        QString d_loc;
+
+        editor->get_details(&d_title, &d_desc, &d_date, &d_time, &d_loc);
+        log("updating appt " + d_title.toStdString());
+        db->update_appt(
+                    id,
+                    d_title.toUtf8().toStdString(),
+                    d_date.toJulianDay(),
+                    d_desc.toUtf8().toStdString(),
+                    QTime(0, 0, 0).secsTo(d_time),
+                    d_loc.toUtf8().toStdString()
+                   );
+        update_appts();
+    }
 }

@@ -163,3 +163,12 @@ int DataHandler::complete_todo(int id) {
 int DataHandler::uncomplete_todo(int id) {
     return db_helper.update_id(TABLE_TODOS, "completed", DataObject(TODO_UNFIN), id);
 }
+
+int DataHandler::update_appt(int id, std::string title, int date, std::string desc, int time, std::string loc) {
+    // TODO: this is especially unneat and slow...
+    db_helper.update_id(TABLE_APPTS, "title", DataObject(title), id);
+    db_helper.update_id(TABLE_APPTS, "date", DataObject(date), id);
+    db_helper.update_id(TABLE_APPTS, "description", DataObject(desc), id);
+    db_helper.update_id(TABLE_APPTS, "time", DataObject(time), id);
+    return db_helper.update_id(TABLE_APPTS, "location", DataObject(loc), id);
+}
