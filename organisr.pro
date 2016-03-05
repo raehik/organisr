@@ -10,7 +10,7 @@ CONFIG += c++11
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
-TARGET = digital-organiser
+TARGET = organisr
 TEMPLATE = app
 
 LIBS += -L $$PWD/lib -lSQLiteCpp -ldl -lpthread -lsqlite3

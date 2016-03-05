@@ -1,4 +1,4 @@
-Digital organiser documentation
-===============================
+Organisr
+========
 
 Main page stuff here.

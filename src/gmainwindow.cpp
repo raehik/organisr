@@ -22,7 +22,7 @@ using namespace Util;
 
 QString GMainWindow::data_dir = QDir::toNativeSeparators(
             QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
-            + "/digital-organiser");
+            + "/organisr");
 QString GMainWindow::db_file = "test.db";
 
 QString manual_file = "manual.pdf";
@@ -36,7 +36,7 @@ void GMainWindow::init_window() {
     // Window size/options {{{
     // uncomment for floating main window
     this->setWindowFlags(Qt::Dialog);
-    this->setWindowTitle("Digital organiser");
+    this->setWindowTitle("Organisr");
 
     // fixed size
     resize(600, 480);
