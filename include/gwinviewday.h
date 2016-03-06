@@ -8,6 +8,9 @@
 #include <QHBoxLayout>
 #include "datahandler.h"
 
+/**
+ * \brief A QT window for viewing a single day's appointments.
+ */
 class GWinViewDay : public QDialog
 {
     Q_OBJECT
@@ -19,6 +22,7 @@ public:
     void edit_appt(int id);
 
 private:
+    /// Test
     const static int W_CAL;
     const static int H_CAL;
     const static int W_APPTS;
