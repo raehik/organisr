@@ -37,7 +37,8 @@ SOURCES += \
     src/testgui.cpp \
     src/datarecord.cpp \
     src/dataobject.cpp \
-    src/gwinviewday.cpp
+    src/gwinviewday.cpp \
+    src/gapptdaywidget.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -59,4 +60,5 @@ HEADERS  += \
     include/recappt.h \
     include/datarecord.h \
     include/dataobject.h \
-    include/gwinviewday.h
+    include/gwinviewday.h \
+    include/gapptdaywidget.h

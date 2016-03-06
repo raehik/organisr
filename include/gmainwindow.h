@@ -9,6 +9,7 @@
 #include <QMainWindow>
 #include "gnewapptdialog.h"
 #include "gtodolistwidget.h"
+#include "gapptdaywidget.h"
 
 class GMainWindow : public QMainWindow
 {
@@ -29,6 +30,7 @@ private:
     static QString data_dir;
     static QString db_file;
     GTodoListWidget *wid_todo;
+    GApptDayWidget *wid_appt;
 
     /**
      * \brief Initialise the main window.

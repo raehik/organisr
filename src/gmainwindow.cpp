@@ -16,6 +16,7 @@
 #include "gwinabout.h"
 #include "gwinviewday.h"
 #include "gtodolistwidget.h"
+#include "gapptdaywidget.h"
 #include "log.h"
 
 using namespace Util;
@@ -101,7 +102,9 @@ void GMainWindow::init_window() {
 
     QWidget *w_appt = new QWidget;
     QVBoxLayout *l_appt = new QVBoxLayout(w_appt);
+    wid_appt = new GApptDayWidget(&db, this);
     QPushButton *b_new_appt = new QPushButton("&Add new appointment");
+    l_appt->addWidget(wid_appt);
     l_appt->addWidget(b_new_appt);
 
     QTabWidget *tabber = new QTabWidget;
@@ -138,6 +141,9 @@ void GMainWindow::open_new_appt_dialog() {
     }
     // we're finished with the window: delete it
     delete w_appt_dialog;
+
+    // and update appt. widget
+    wid_appt->refresh();
 }
 
 void GMainWindow::open_new_todo_dialog() {
