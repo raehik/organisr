@@ -1,6 +1,8 @@
 #ifndef GNEWAPPTDIALOG_H
 #define GNEWAPPTDIALOG_H
 
+#include "recappt.h"
+
 #include <QWidget>
 #include <QDialog>
 #include <QString>
@@ -15,7 +17,7 @@ class GNewApptDialog : public QDialog
     Q_OBJECT
 
 public:
-    GNewApptDialog(QWidget *parent = 0);
+    GNewApptDialog(QWidget *parent, RecAppt placeholder);
     virtual ~GNewApptDialog() {}
     void get_details(QString *title_ptr, QString *desc_ptr, QDate *date_ptr, QTime *time_ptr, QString *loc_ptr);
 
@@ -33,7 +35,7 @@ private:
     QLabel *label_date;
     QLabel *label_time;
     QLabel *label_loc;
-    void init_window();
+    void init_window(RecAppt placeholder);
     bool field_not_empty(QString field_text, QString field_name);
 };
 

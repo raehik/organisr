@@ -27,9 +27,9 @@ private:
 
     DataHandler *db;
 
-    void delete_todo(int id);
-    void edit_todo(int id, std::string cur_text);
-    void toggle_complete(int id, bool complete);
+    void delete_todo(RecTodo todo);
+    void edit_todo(RecTodo todo);
+    void toggle_complete(RecTodo todo);
 };
 
 #endif // GTODOLISTWIDGET_H

@@ -81,7 +81,7 @@ int GApptDayWidget::refresh() {
             QPushButton *b_edit = new QPushButton("E");
             b_edit->setFixedWidth(20);
             grid->addWidget(b_edit, grid_y+1, grid_x, 1, 1, Qt::AlignTop);
-            connect(b_edit, &QPushButton::clicked, this, [this, a](){ edit_appt(a.id); });
+            connect(b_edit, &QPushButton::clicked, this, [this, a](){ edit_appt(a); });
 
             // stretch the *long row* (= this row + 1)
             grid->setRowStretch(grid_y+1, 1);
@@ -100,9 +100,9 @@ int GApptDayWidget::refresh() {
     return 0;
 }
 
-void GApptDayWidget::edit_appt(int id) {
-    log("Edit " + to_string(id));
-    GNewApptDialog *editor = new GNewApptDialog(this);
+void GApptDayWidget::edit_appt(RecAppt appt) {
+    log("edit appt " + to_string(appt.id));
+    GNewApptDialog *editor = new GNewApptDialog(this, appt);
     if (editor->exec() == QDialog::Accepted) {
         QString d_title;
         QDate d_date;
@@ -111,9 +111,8 @@ void GApptDayWidget::edit_appt(int id) {
         QString d_loc;
 
         editor->get_details(&d_title, &d_desc, &d_date, &d_time, &d_loc);
-        log("updating appt " + d_title.toStdString());
         db->update_appt(
-                    id,
+                    appt.id,
                     d_title.toUtf8().toStdString(),
                     d_date.toJulianDay(),
                     d_desc.toUtf8().toStdString(),

@@ -48,17 +48,21 @@ void GTodoListWidget::refresh() {
     // add each todo in sequence if there are any
     if (todos.size() > 0) {
         for (std::vector<RecTodo>::size_type i = 0; i != todos.size(); i++) {
-            int t_id = todos[i].id;
-            std::string t_text = todos[i].text;
-            bool t_done = todos[i].done;
+            RecTodo todo = todos[i];
 
             // get & format to-do (HTML escape for safety)
-            std::string cur_todo = "<p style='font-size: 10pt'>&bull; ";
-            if (t_done) { cur_todo += "<s>"; }
-            std::string todo_formatted = QString::fromStdString(
-                        t_text).toHtmlEscaped().toUtf8().toStdString();
-            cur_todo += todo_formatted + "</p>";
-            if (t_done) { cur_todo += "</s>"; }
+            std::string fmt_str = "<p style='font-size: 10pt'>&bull; ";
+            if (todo.done) {
+                // if done, strikethrough
+                fmt_str += "<s>";
+            }
+            std::string todo_str = QString::fromStdString(
+                            todo.text).toHtmlEscaped().toUtf8().toStdString();
+            fmt_str += todo_str + "</p>";
+            if (todo.done) {
+                // end done strikethrough
+                fmt_str += "</s>";
+            }
 
             // add delete/edit buttons
             QPushButton *b_del_cur = new QPushButton("X");
@@ -69,20 +73,20 @@ void GTodoListWidget::refresh() {
             b_edit_cur->setMinimumWidth(20);
             b_toggle_cur->setMinimumWidth(20);
 
-            connect(b_del_cur, &QPushButton::clicked, this, [this, t_id](){ delete_todo(t_id); });
-            connect(b_edit_cur, &QPushButton::clicked, this, [this, t_id, t_text](){ edit_todo(t_id, t_text); });
-            connect(b_toggle_cur, &QPushButton::clicked, this, [this, t_id, t_done](){ toggle_complete(t_id, t_done); });
+            connect(b_del_cur, &QPushButton::clicked, this, [this, todo](){ delete_todo(todo); });
+            connect(b_edit_cur, &QPushButton::clicked, this, [this, todo](){ edit_todo(todo); });
+            connect(b_toggle_cur, &QPushButton::clicked, this, [this, todo](){ toggle_complete(todo); });
             QHBoxLayout *l_row = new QHBoxLayout;
             l_row->addWidget(b_del_cur, 1);
             l_row->addWidget(b_edit_cur, 1);
             l_row->addWidget(b_toggle_cur, 1);
-            QLabel *cur_lbl = new QLabel(QString::fromStdString(cur_todo));
+            QLabel *cur_lbl = new QLabel(QString::fromStdString(fmt_str));
             cur_lbl->setWordWrap(true);
             l_row->addWidget(cur_lbl, 100);
 
             // add to top or bottom layout, depending on whether todo is
             // complete or not
-            if (t_done) {
+            if (todo.done) {
                 l_done->addLayout(l_row);
             } else {
                 l_todo->addLayout(l_row);
@@ -97,7 +101,7 @@ void GTodoListWidget::refresh() {
     this->setLayout(l_main);
 }
 
-void GTodoListWidget::delete_todo(int id) {
+void GTodoListWidget::delete_todo(RecTodo todo) {
     QMessageBox *msgbox = new QMessageBox(this);
     msgbox->setWindowTitle("Delete to-do");
     msgbox->setText("Remove this to-do?");
@@ -105,27 +109,27 @@ void GTodoListWidget::delete_todo(int id) {
     msgbox->setDefaultButton(QMessageBox::Ok);
 
     if (msgbox->exec() == QMessageBox::Ok) {
-        db->delete_todo(id);
+        db->delete_todo(todo.id);
         refresh();
     }
 }
 
-void GTodoListWidget::edit_todo(int id, std::string cur_text) {
-    GNewTodoDialog *editor = new GNewTodoDialog(this, cur_text);
+void GTodoListWidget::edit_todo(RecTodo todo) {
+    GNewTodoDialog *editor = new GNewTodoDialog(this, todo);
     if (editor->exec() == QDialog::Accepted) {
-        QString todo_text;
-        editor->get_details(&todo_text);
-        db->update_todo(id, todo_text.toUtf8().toStdString());
+        QString new_text;
+        editor->get_details(&new_text);
+        db->update_todo(todo.id, new_text.toUtf8().toStdString());
         refresh();
     }
 }
 
-void GTodoListWidget::toggle_complete(int id, bool complete) {
-    log("ID: " + to_string(id) + ", complete: " + to_string(complete));
-    if (complete) {
-        db->uncomplete_todo(id);
+void GTodoListWidget::toggle_complete(RecTodo todo) {
+    log("ID: " + to_string(todo.id) + ", complete: " + to_string(todo.done));
+    if (todo.done) {
+        db->uncomplete_todo(todo.id);
     } else {
-        db->complete_todo(id);
+        db->complete_todo(todo.id);
     }
     refresh();
 }

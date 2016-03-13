@@ -122,7 +122,9 @@ void GMainWindow::init_window() {
 
 void GMainWindow::open_new_appt_dialog() {
     log("opening new appt. dialog");
-    GNewApptDialog *w_appt_dialog = new GNewApptDialog(this);
+    RecAppt rec_tmp;
+    rec_tmp.id = 0;
+    GNewApptDialog *w_appt_dialog = new GNewApptDialog(this, rec_tmp);
     if (w_appt_dialog->exec() == QDialog::Accepted) {
         QString appt_title;
         QString appt_desc;
@@ -147,20 +149,21 @@ void GMainWindow::open_new_appt_dialog() {
 }
 
 void GMainWindow::open_new_todo_dialog() {
-    log("opening new dialog");
-    GNewTodoDialog *w_dialog = new GNewTodoDialog(this);
+    RecTodo rec_tmp;
+    rec_tmp.id = 0;
+    GNewTodoDialog *w_dialog = new GNewTodoDialog(this, rec_tmp);
     if (w_dialog->exec() == QDialog::Accepted) {
         QString todo_text;
         w_dialog->get_details(&todo_text);
         log("adding new todo " + (std::string)todo_text.toUtf8().constData());
 
         db.insert_todo(todo_text.toUtf8().constData());
+
+        // only refresh if we need to i.e. actually added a to-do
+        wid_todo->refresh();
     }
     // we're finished with the window: delete it
     delete w_dialog;
-
-    // now update the todo dialog
-    wid_todo->refresh();
 }
 
 void GMainWindow::winopen_about() {

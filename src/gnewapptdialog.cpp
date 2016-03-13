@@ -1,7 +1,7 @@
 #include "gnewapptdialog.h"
 
-#include <iostream>
-#include "gwidgetprinter.h"
+#include "recappt.h"
+
 #include "gwarningbox.h"
 #include "log.h"
 
@@ -12,11 +12,11 @@
 
 using namespace Util;
 
-GNewApptDialog::GNewApptDialog(QWidget *parent) : QDialog(parent){
-    init_window();
+GNewApptDialog::GNewApptDialog(QWidget *parent, RecAppt placeholder) : QDialog(parent){
+    init_window(placeholder);
 }
 
-void GNewApptDialog::init_window() {
+void GNewApptDialog::init_window(RecAppt placeholder) {
     QVBoxLayout *layout = new QVBoxLayout;
     QFormLayout *form = new QFormLayout;
     QHBoxLayout *buttons = new QHBoxLayout;
@@ -41,6 +41,19 @@ void GNewApptDialog::init_window() {
     label_loc = new QLabel("Location");
     field_loc = new QLineEdit;
     form->addRow(label_loc, field_loc);
+
+    // if given non-empty placeholder, change some properties
+    if (placeholder.id != 0) {
+        this->setWindowTitle("Edit appointment");
+        field_title->setText(QString::fromStdString(placeholder.title));
+        field_desc->setText(QString::fromStdString(placeholder.desc));
+        field_date->setSelectedDate(QDate::fromJulianDay(placeholder.date));
+        field_time->setTime(QTime::fromMSecsSinceStartOfDay(placeholder.time));
+        field_loc->setText(QString::fromStdString(placeholder.location));
+    } else {
+        this->setWindowTitle("Add appointment");
+    }
+
 
     // buttons layout
     QPushButton *b_confirm = new QPushButton("Confirm");

@@ -1,5 +1,7 @@
 #include "gnewtododialog.h"
 
+#include "rectodo.h"
+
 #include "gwarningbox.h"
 #include "log.h"
 
@@ -9,11 +11,12 @@
 
 using namespace Util;
 
-GNewTodoDialog::GNewTodoDialog(QWidget *parent, std::string placeholder) : QDialog(parent){
+GNewTodoDialog::GNewTodoDialog(QWidget *parent, RecTodo placeholder) : QDialog(parent){
+    log("add/edit to-do dialog");
     init_window(placeholder);
 }
 
-void GNewTodoDialog::init_window(std::string placeholder) {
+void GNewTodoDialog::init_window(RecTodo placeholder) {
     // window size
     this->setFixedWidth(250);
 
@@ -24,7 +27,13 @@ void GNewTodoDialog::init_window(std::string placeholder) {
     // form layout
     label_text = new QLabel("To-do");
     field_text = new QLineEdit;
-    field_text->setText(QString::fromStdString(placeholder));
+    if (placeholder.id != 0) {
+        // received a placeholder: we're EDITING, not adding
+        field_text->setText(QString::fromStdString(placeholder.text));
+        this->setWindowTitle("Edit to-do");
+    } else {
+        this->setWindowTitle("Add to-do");
+    }
     form->addRow(label_text, field_text);
 
     // buttons layout

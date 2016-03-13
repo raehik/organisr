@@ -1,6 +1,8 @@
 #ifndef GWINVIEWDAY_H
 #define GWINVIEWDAY_H
 
+#include "recappt.h"
+
 #include <QWidget>
 #include <QDialog>
 #include <QCalendarWidget>
@@ -19,7 +21,7 @@ public:
     GWinViewDay(DataHandler *db, QWidget *parent = 0);
     void init_window();
     int update_appts();
-    void edit_appt(int id);
+    void edit_appt(RecAppt appt);
 
 private:
     /// Test

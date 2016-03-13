@@ -31,7 +31,7 @@ private:
     QGridLayout *grid;
     std::vector<QWidget*> cur_appts;
 
-    void edit_appt(int id);
+    void edit_appt(RecAppt appt);
 };
 
 #endif // GAPPTDAYWIDGET_H
