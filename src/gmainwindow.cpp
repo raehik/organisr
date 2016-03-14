@@ -45,16 +45,14 @@ void GMainWindow::init_window() {
 
     // Menu bar {{{
     QMenu *m_new = menuBar()->addMenu(tr("&New"));
-    QAction *a_new_appt = new QAction(tr("&Appointment"), this);
-    QAction *a_new_todo = new QAction(tr("&To-do"), this);
+    QAction *a_new_appt = new QAction(tr("New &appointment..."), this);
+    QAction *a_new_todo = new QAction(tr("New &to-do..."), this);
     m_new->addAction(a_new_appt);
     m_new->addAction(a_new_todo);
 
     QMenu *m_search = menuBar()->addMenu(tr("&Search"));
-    QAction *a_srch_appt = new QAction(tr("Search in &appointments"), this);
-    QAction *a_srch_todo = new QAction(tr("Search in &to-dos"), this);
+    QAction *a_srch_appt = new QAction(tr("Search &appointments..."), this);
     m_search->addAction(a_srch_appt);
-    m_search->addAction(a_srch_todo);
 
     QMenu *m_view = menuBar()->addMenu(tr("&View"));
     QAction *a_view_day = new QAction(tr("&Day"), this);
@@ -69,7 +67,7 @@ void GMainWindow::init_window() {
 
     QMenu *m_help = menuBar()->addMenu(tr("&Help"));
     QAction *a_manual = new QAction(tr("&User manual"), this);
-    QAction *a_about = new QAction(tr("&About"), this);
+    QAction *a_about = new QAction(tr("&About..."), this);
     m_help->addAction(a_manual);
     m_help->addAction(a_about);
     // }}}
@@ -79,7 +77,6 @@ void GMainWindow::init_window() {
     connect(a_new_todo, &QAction::triggered, this, &GMainWindow::open_new_todo_dialog);
 
     connect(a_srch_appt, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
-    connect(a_srch_todo, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
 
     connect(a_view_day, &QAction::triggered, this, &GMainWindow::winopen_view_day);
     connect(a_view_month, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
