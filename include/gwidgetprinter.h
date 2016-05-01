@@ -8,7 +8,7 @@
 class GWidgetPrinter : public QWidget
 {
 public:
-    GWidgetPrinter(QWidget *print_object, QString dialog_title);
+    GWidgetPrinter(QWidget *print_object, QString dialog_title, bool landscape = false);
 
     /**
      * \brief Present an option dialog and print depending on input.

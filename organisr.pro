@@ -38,7 +38,9 @@ SOURCES += \
     src/datarecord.cpp \
     src/dataobject.cpp \
     src/gwinviewday.cpp \
-    src/gapptdaywidget.cpp
+    src/gapptdaywidget.cpp \
+    src/gapptmonthwidget.cpp \
+    src/gwinsearchappt.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -61,4 +63,6 @@ HEADERS  += \
     include/datarecord.h \
     include/dataobject.h \
     include/gwinviewday.h \
-    include/gapptdaywidget.h
+    include/gapptdaywidget.h \
+    include/gapptmonthwidget.h \
+    include/gwinsearchappt.h

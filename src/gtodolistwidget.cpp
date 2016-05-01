@@ -141,14 +141,14 @@ void GTodoListWidget::toggle_complete(RecTodo todo) {
 
 void GTodoListWidget::print_list() {
     QWidget *print_widget = new QWidget;
-    print_widget->setGeometry(0,0,500,0);
+    print_widget->setGeometry(0,0,500,250);
     print_widget->setStyleSheet("background-color:white;");
 
     // get all the to-dos again
     std::vector<RecTodo> todos = db->get_todos();
 
     QVBoxLayout *l_done = new QVBoxLayout;
-    l_done->addWidget(new QLabel("<h1>To-dos</h1>"));
+    l_done->addWidget(new QLabel("<h2>To-dos</h2>"));
 
     // add each todo in sequence if there are any
     if (todos.size() > 0) {
@@ -160,7 +160,7 @@ void GTodoListWidget::print_list() {
             if (todo.done) {
                 continue;
             } else {
-                fmt_str = "<p style='font-size: 15pt'>&bull; ";
+                fmt_str = "<p style='font-size: 12pt'>&bull; ";
                 std::string todo_str = QString::fromStdString(
                                 todo.text).toHtmlEscaped().toUtf8().toStdString();
                 fmt_str += todo_str + "</p>";

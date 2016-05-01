@@ -6,7 +6,7 @@
 
 using namespace Util;
 
-GWidgetPrinter::GWidgetPrinter(QWidget *print_object, QString dialog_title) :
+GWidgetPrinter::GWidgetPrinter(QWidget *print_object, QString dialog_title, bool landscape) :
     printer(QPrinter::HighResolution)
 {
     this->print_object = print_object;
@@ -17,6 +17,9 @@ GWidgetPrinter::GWidgetPrinter(QWidget *print_object, QString dialog_title) :
     /// We set some default options so that the user may not need to change them
     printer.setOutputFormat(QPrinter::PdfFormat);
     printer.setOutputFileName(printer_filename);
+    if (landscape) {
+        printer.setOrientation(QPrinter::Landscape);
+    }
 }
 
 void GWidgetPrinter::dialogAndPrint() {

@@ -23,6 +23,8 @@ private slots:
     void open_new_todo_dialog();
     void winopen_about();
     void winopen_view_day();
+    void winopen_view_month();
+    void winopen_search_appt();
 
 private:
     DataHandler db;

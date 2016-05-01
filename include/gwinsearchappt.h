@@ -1,7 +1,9 @@
-#ifndef GNEWAPPTDIALOG_H
-#define GNEWAPPTDIALOG_H
+#ifndef GWINSEARCHAPPT_H
+#define GWINSEARCHAPPT_H
 
 #include "recappt.h"
+
+#include "datahandler.h"
 
 #include <QWidget>
 #include <QDialog>
@@ -12,17 +14,13 @@
 #include <QTimeEdit>
 #include <QCalendarWidget>
 
-class GNewApptDialog : public QDialog
+class GWinSearchAppt : public QDialog
 {
     Q_OBJECT
 
 public:
-    GNewApptDialog(QWidget *parent, RecAppt placeholder);
-    virtual ~GNewApptDialog() {}
+    GWinSearchAppt(DataHandler *db, QWidget *parent);
     void get_details(QString *title_ptr, QString *desc_ptr, QDate *date_ptr, QTime *time_ptr, QString *loc_ptr);
-
-public slots:
-    int verify_fields();
 
 private:
     QLineEdit *field_title;
@@ -35,8 +33,9 @@ private:
     QLabel *label_date;
     QLabel *label_time;
     QLabel *label_loc;
-    void init_window(RecAppt placeholder);
-    bool field_not_empty(QString field_text, QString field_name);
+
+    void init_window();
+    void run_search();
 };
 
-#endif // GNEWAPPTDIALOG_H
+#endif // GWINSEARCHAPPT_H

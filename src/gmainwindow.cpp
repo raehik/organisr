@@ -15,6 +15,8 @@
 #include "gnewtododialog.h"
 #include "gwinabout.h"
 #include "gwinviewday.h"
+#include "gwinsearchappt.h"
+#include "gapptmonthwidget.h"
 #include "gtodolistwidget.h"
 #include "gapptdaywidget.h"
 #include "log.h"
@@ -57,13 +59,9 @@ void GMainWindow::init_window() {
     QMenu *m_view = menuBar()->addMenu(tr("&View"));
     QAction *a_view_day = new QAction(tr("&Day"), this);
     QAction *a_view_month = new QAction(tr("&Month"), this);
-    QAction *a_view_year = new QAction(tr("&Year"), this);
     QAction *a_view_todo = new QAction(tr("All &to-dos"), this);
     m_view->addAction(a_view_day);
     m_view->addAction(a_view_month);
-    m_view->addAction(a_view_year);
-    m_view->addSeparator();
-    m_view->addAction(a_view_todo);
 
     QMenu *m_help = menuBar()->addMenu(tr("&Help"));
     QAction *a_manual = new QAction(tr("&User manual"), this);
@@ -76,12 +74,10 @@ void GMainWindow::init_window() {
     connect(a_new_appt, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
     connect(a_new_todo, &QAction::triggered, this, &GMainWindow::open_new_todo_dialog);
 
-    connect(a_srch_appt, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
+    connect(a_srch_appt, &QAction::triggered, this, &GMainWindow::winopen_search_appt);
 
     connect(a_view_day, &QAction::triggered, this, &GMainWindow::winopen_view_day);
-    connect(a_view_month, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
-    connect(a_view_year, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
-    connect(a_view_todo, &QAction::triggered, this, &GMainWindow::open_new_appt_dialog);
+    connect(a_view_month, &QAction::triggered, this, &GMainWindow::winopen_view_month);
 
     connect(a_manual, &QAction::triggered, [](){
         QDesktopServices::openUrl(QUrl(QDir::toNativeSeparators(data_dir + "/" + manual_file)));
@@ -170,5 +166,15 @@ void GMainWindow::winopen_about() {
 
 void GMainWindow::winopen_view_day() {
     GWinViewDay *win = new GWinViewDay(&db, this);
+    win->show();
+}
+
+void GMainWindow::winopen_view_month() {
+    GApptMonthWidget *win = new GApptMonthWidget(QDate::currentDate(), &db, this);
+    win->show();
+}
+
+void GMainWindow::winopen_search_appt() {
+    GWinSearchAppt *win = new GWinSearchAppt(QDate::currentDate(), &db, this);
     win->show();
 }
