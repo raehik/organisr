@@ -17,9 +17,14 @@ public:
     void build_widget();
 
     /**
-     * \brief Get to-dos and update the widget display.
+     * \brief Fetch to-dos from database and update the widget display.
      */
     void refresh();
+
+    /**
+     * \brief Print the current list of to-dos to a printer or PDF.
+     */
+    void print_list();
 
 private:
     QVBoxLayout *top_layout;

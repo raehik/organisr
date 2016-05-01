@@ -1,6 +1,7 @@
 #include "gtodolistwidget.h"
 #include "gmainwindow.h"
 #include "rectodo.h"
+#include "gwidgetprinter.h"
 #include <QTextEdit>
 #include <string>
 #include <QString>
@@ -92,7 +93,11 @@ void GTodoListWidget::refresh() {
                 l_todo->addLayout(l_row);
             }
         }
-    // else override if there were no todos
+        // add print button
+        QPushButton *b_print = new QPushButton("Print");
+        connect(b_print, &QPushButton::clicked, this, &GTodoListWidget::print_list);
+        l_todo->addWidget(b_print, 0, Qt::AlignRight);
+    // override if there were no todos
     } else {
         l_todo->addWidget(new QLabel("<p>No to-dos found!</p>"));
     }
@@ -125,11 +130,60 @@ void GTodoListWidget::edit_todo(RecTodo todo) {
 }
 
 void GTodoListWidget::toggle_complete(RecTodo todo) {
-    log("ID: " + to_string(todo.id) + ", complete: " + to_string(todo.done));
+    log("toggling ID " + to_string(todo.id) + ", previously complete=" + to_string(todo.done));
     if (todo.done) {
         db->uncomplete_todo(todo.id);
     } else {
         db->complete_todo(todo.id);
     }
     refresh();
+}
+
+void GTodoListWidget::print_list() {
+    QWidget *print_widget = new QWidget;
+    print_widget->setGeometry(0,0,500,0);
+    print_widget->setStyleSheet("background-color:white;");
+
+    // get all the to-dos again
+    std::vector<RecTodo> todos = db->get_todos();
+
+    QVBoxLayout *l_done = new QVBoxLayout;
+    l_done->addWidget(new QLabel("<h1>To-dos</h1>"));
+
+    // add each todo in sequence if there are any
+    if (todos.size() > 0) {
+        for (std::vector<RecTodo>::size_type i = 0; i != todos.size(); i++) {
+            RecTodo todo = todos[i];
+            std::string fmt_str;
+
+            // get & format to-do (HTML escape for safety)
+            if (todo.done) {
+                continue;
+            } else {
+                fmt_str = "<p style='font-size: 15pt'>&bull; ";
+                std::string todo_str = QString::fromStdString(
+                                todo.text).toHtmlEscaped().toUtf8().toStdString();
+                fmt_str += todo_str + "</p>";
+            }
+
+            /*
+            QHBoxLayout *l_row = new QHBoxLayout;
+            QLabel *cur_lbl = new QLabel(QString::fromStdString(fmt_str));
+            cur_lbl->setWordWrap(true);
+            l_row->addWidget(cur_lbl, 100);
+            l_done->addLayout(l_row);
+            */
+            QLabel *cur_lbl = new QLabel(QString::fromStdString(fmt_str));
+            cur_lbl->setWordWrap(true);
+            l_done->addWidget(cur_lbl);
+        }
+    // override if there were no todos -- shouldn't happen
+    } else {
+        l_done->addWidget(new QLabel("<p>No to-dos found!</p>"));
+    }
+    print_widget->setLayout(l_done);
+
+    // now print it to PDF/printer
+    GWidgetPrinter printer(print_widget, "Print to-dos");
+    printer.dialogAndPrint();
 }

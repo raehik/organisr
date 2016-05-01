@@ -19,6 +19,7 @@ public:
     GApptDayWidget(DataHandler *db, QWidget *parent = 0);
     void init_window();
     int refresh();
+    void print_window();
 
 private:
     /// Test

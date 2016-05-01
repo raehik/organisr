@@ -1,5 +1,6 @@
 #include "gapptdaywidget.h"
 #include "gnewapptdialog.h"
+#include "gwidgetprinter.h"
 #include <QLabel>
 #include <QDate>
 #include <QPushButton>
@@ -95,7 +96,12 @@ int GApptDayWidget::refresh() {
         tmp_w->setWordWrap(true);
         tmp_w->setMinimumWidth(W_APPTS);
         grid->addWidget(tmp_w, grid_y, grid_x, 1, 1, Qt::AlignTop);
+        grid_y += 1;
     }
+    // BUTTON: print button
+    QPushButton *b_print = new QPushButton("Print");
+    grid->addWidget(b_print, grid_y, grid_x+1, 1, 1, Qt::AlignRight);
+    connect(b_print, &QPushButton::clicked, this, &GApptDayWidget::print_window);
 
     return 0;
 }
@@ -121,4 +127,10 @@ void GApptDayWidget::edit_appt(RecAppt appt) {
                    );
         refresh();
     }
+}
+
+void GApptDayWidget::print_window() {
+    log("printing appointment day view");
+    GWidgetPrinter printer(this, "Print appointments");
+    printer.dialogAndPrint();
 }

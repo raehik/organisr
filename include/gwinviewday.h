@@ -22,17 +22,19 @@ public:
     void init_window();
     int update_appts();
     void edit_appt(RecAppt appt);
+    void print_widget();
 
 private:
-    /// Test
-    const static int W_CAL;
-    const static int H_CAL;
-    const static int W_APPTS;
-
+    /// Pointer to the database handler. Used for retrieving appointments.
     DataHandler *db;
+
     QCalendarWidget *cal;
     QGridLayout *grid;
     std::vector<QWidget*> cur_appts;
+
+    const static int W_CAL;
+    const static int H_CAL;
+    const static int W_APPTS;
 };
 
 #endif // GWINVIEWDAY_H

@@ -1,5 +1,6 @@
 #include "gwinviewday.h"
 #include "gnewapptdialog.h"
+#include "gwidgetprinter.h"
 #include <QLabel>
 #include <QDate>
 #include <QPushButton>
@@ -85,6 +86,10 @@ int GWinViewDay::update_appts() {
             // note that we skip a row because we use grid_y and grid_y + 1
             grid_y += 2;
         }
+        // insert print button
+        QPushButton *b_print = new QPushButton("Print");
+        grid->addWidget(b_print, grid_y, grid_x+1, 1, 1, Qt::AlignRight);
+        connect(b_print, &QPushButton::clicked, this, &GWinViewDay::print_widget);
     } else {
         QLabel *tmp_w = new QLabel("No appointments for today!");
         tmp_w->setWordWrap(true);
@@ -117,4 +122,10 @@ void GWinViewDay::edit_appt(RecAppt appt) {
                    );
         update_appts();
     }
+}
+
+void GWinViewDay::print_widget() {
+    log("printing appointment day view");
+    GWidgetPrinter printer(this, "Print appointments");
+    printer.dialogAndPrint();
 }
