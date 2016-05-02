@@ -15,8 +15,8 @@
 #include "gnewtododialog.h"
 #include "gwinabout.h"
 #include "gwinviewday.h"
+#include "gwinviewapptmonth.h"
 #include "gwinsearchappt.h"
-#include "gapptmonthwidget.h"
 #include "gtodolistwidget.h"
 #include "gapptdaywidget.h"
 #include "log.h"
@@ -38,7 +38,7 @@ GMainWindow::GMainWindow() : db((QDir().mkpath(data_dir), QDir::toNativeSeparato
 void GMainWindow::init_window() {
     // Window size/options {{{
     // uncomment for floating main window
-    this->setWindowFlags(Qt::Dialog);
+    //this->setWindowFlags(Qt::Dialog);
     this->setWindowTitle("Organisr");
 
     // fixed size
@@ -57,9 +57,7 @@ void GMainWindow::init_window() {
     m_search->addAction(a_srch_appt);
 
     QMenu *m_view = menuBar()->addMenu(tr("&View"));
-    QAction *a_view_day = new QAction(tr("&Day"), this);
-    QAction *a_view_month = new QAction(tr("&Month"), this);
-    m_view->addAction(a_view_day);
+    QAction *a_view_month = new QAction(tr("&Appointments this month"), this);
     m_view->addAction(a_view_month);
 
     QMenu *m_help = menuBar()->addMenu(tr("&Help"));
@@ -75,7 +73,6 @@ void GMainWindow::init_window() {
 
     connect(a_srch_appt, &QAction::triggered, this, &GMainWindow::winopen_search_appt);
 
-    connect(a_view_day, &QAction::triggered, this, &GMainWindow::winopen_view_day);
     connect(a_view_month, &QAction::triggered, this, &GMainWindow::winopen_view_month);
 
     connect(a_manual, &QAction::triggered, [](){
@@ -163,13 +160,8 @@ void GMainWindow::winopen_about() {
     win->exec();
 }
 
-void GMainWindow::winopen_view_day() {
-    GWinViewDay *win = new GWinViewDay(&db, this);
-    win->show();
-}
-
 void GMainWindow::winopen_view_month() {
-    GApptMonthWidget *win = new GApptMonthWidget(QDate::currentDate(), &db, this);
+    GWinViewApptMonth *win = new GWinViewApptMonth(QDate::currentDate(), &db, this);
     win->show();
 }
 

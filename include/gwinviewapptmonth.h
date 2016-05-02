@@ -1,5 +1,5 @@
-#ifndef GAPPTMONTHWIDGET_H
-#define GAPPTMONTHWIDGET_H
+#ifndef GWINVIEWAPPTMONTH_H
+#define GWINVIEWAPPTMONTH_H
 
 #include <QDialog>
 #include <QDate>
@@ -7,12 +7,12 @@
 #include "datahandler.h"
 
 
-class GApptMonthWidget : public QDialog
+class GWinViewApptMonth : public QDialog
 {
     Q_OBJECT
 
 public:
-    GApptMonthWidget(QDate date, DataHandler *db, QWidget *parent);
+    GWinViewApptMonth(QDate date, DataHandler *db, QWidget *parent);
     void init_window();
     int refresh();
 
@@ -29,4 +29,4 @@ private:
     const static int WIN_Y;
 };
 
-#endif // GAPPTMONTHWIDGET_H
+#endif // GWINVIEWAPPTMONTH_H

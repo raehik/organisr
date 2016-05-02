@@ -18,6 +18,8 @@ GWinViewDay::GWinViewDay(DataHandler *db, QWidget *parent) : QDialog(parent) {
 }
 
 void GWinViewDay::init_window() {
+    this->setWindowTitle("Organisr");
+
     cal = new QCalendarWidget;
     cal->setFixedSize(W_CAL, H_CAL);
     connect(cal, &QCalendarWidget::selectionChanged, this, &GWinViewDay::update_appts);

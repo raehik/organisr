@@ -15,6 +15,7 @@ GWinAbout::GWinAbout(QWidget *parent) : QDialog(parent) {
 }
 
 void GWinAbout::init_win() {
+    this->setWindowTitle("About Organisr");
     this->resize(400, 250);
     this->setFixedSize(this->size()); // TODO: what does this do on Windows?
     QVBoxLayout *layout = new QVBoxLayout;

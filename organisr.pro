@@ -37,11 +37,10 @@ SOURCES += \
     src/testgui.cpp \
     src/datarecord.cpp \
     src/dataobject.cpp \
-    src/gwinviewday.cpp \
     src/gapptdaywidget.cpp \
-    src/gapptmonthwidget.cpp \
     src/gwinsearchappt.cpp \
-    src/gwinapptlist.cpp
+    src/gwinapptlist.cpp \
+    src/gwinviewapptmonth.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -63,8 +62,7 @@ HEADERS  += \
     include/recappt.h \
     include/datarecord.h \
     include/dataobject.h \
-    include/gwinviewday.h \
     include/gapptdaywidget.h \
-    include/gapptmonthwidget.h \
     include/gwinsearchappt.h \
-    include/gwinapptlist.h
+    include/gwinapptlist.h \
+    include/gwinviewapptmonth.h

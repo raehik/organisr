@@ -1,4 +1,4 @@
-#include "gapptmonthwidget.h"
+#include "gwinviewapptmonth.h"
 #include "gwidgetprinter.h"
 #include <QBoxLayout>
 #include <QPushButton>
@@ -7,17 +7,19 @@
 
 using namespace Util;
 
-const int GApptMonthWidget::WIN_X = 800;
-const int GApptMonthWidget::WIN_Y = 500;
-const int GApptMonthWidget::CAL_WIDTH = 7;
+const int GWinViewApptMonth::WIN_X = 800;
+const int GWinViewApptMonth::WIN_Y = 500;
+const int GWinViewApptMonth::CAL_WIDTH = 7;
 
-GApptMonthWidget::GApptMonthWidget(QDate date, DataHandler *db, QWidget *parent) : QDialog(parent) {
+GWinViewApptMonth::GWinViewApptMonth(QDate date, DataHandler *db, QWidget *parent) : QDialog(parent) {
     this->db = db;
     this->date = date;
     init_window();
 }
 
-void GApptMonthWidget::init_window() {
+void GWinViewApptMonth::init_window() {
+    this->setWindowTitle("Appointments this month");
+
     // resize
     resize(WIN_X, WIN_Y);
 
@@ -27,7 +29,7 @@ void GApptMonthWidget::init_window() {
     //day_grid->setColumnStretch(1, 1);
 
     QPushButton *b_print = new QPushButton("Print");
-    connect(b_print, &QPushButton::clicked, this, &GApptMonthWidget::make_printout);
+    connect(b_print, &QPushButton::clicked, this, &GWinViewApptMonth::make_printout);
 
     QVBoxLayout* layout = new QVBoxLayout;
     layout->addLayout(day_grid);
@@ -37,7 +39,7 @@ void GApptMonthWidget::init_window() {
     refresh();
 }
 
-int GApptMonthWidget::refresh() {
+int GWinViewApptMonth::refresh() {
     // clear grid
     // This took me **1 hour** to find. jfc
     // thanks chrisnew from:
@@ -90,7 +92,7 @@ int GApptMonthWidget::refresh() {
     return 0;
 }
 
-void GApptMonthWidget::make_printout() {
+void GWinViewApptMonth::make_printout() {
     log("Making printout");
     //QWidget *tmp_widget = new QWidget;
     //tmp_widget->setLayout(day_grid);
