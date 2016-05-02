@@ -21,19 +21,25 @@ public:
     int delete_todo(int id);
     std::vector<RecTodo> get_todos();
     std::vector<RecAppt> get_appts_where(std::string search_str, std::string field, std::string search_type = "anywhere");
+    std::vector<RecAppt> search_appts(
+            std::string f_title,
+            std::string f_desc,
+            int f_date_before,
+            int f_date_after,
+            std::string f_loc);
     int update_appt(int id, std::string title, int date, std::string desc, int time, std::string loc);
 
     static int TODO_FIN;
     static int TODO_UNFIN;
 
 private:
-    SQLiteHelper db_helper;
+    std::vector<RecAppt> appt_recs_to_appts(std::vector<DataRecord> records);
 
+    SQLiteHelper db_helper;
     std::string db_file;
 
     static std::string TABLE_APPTS;
     static std::string TABLE_TODOS;
-
     std::vector<std::string> table_appts_cols; // TODO: static or no?
     std::vector<std::string> table_todos_cols;
 };

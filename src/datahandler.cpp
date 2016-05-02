@@ -133,18 +133,7 @@ location like '" + search + "'";
     }
 
     std::vector<DataRecord> match_recs = db_helper.select_from_where(TABLE_APPTS, appts_cols_with_id, query);
-    std::vector<RecAppt> match_appts;
-    for (std::vector<DataRecord>::size_type i = 0; i != match_recs.size(); i++) {
-        DataRecord rec_tmp = match_recs[i];
-        RecAppt appt_tmp;
-        appt_tmp.id = rec_tmp.get_object(0).get_int();
-        appt_tmp.title = rec_tmp.get_object(1).get_str();
-        appt_tmp.date = rec_tmp.get_object(2).get_int();
-        appt_tmp.desc = rec_tmp.get_object(3).get_str();
-        appt_tmp.time = rec_tmp.get_object(4).get_int();
-        appt_tmp.location = rec_tmp.get_object(5).get_str();
-        match_appts.push_back(appt_tmp);
-    }
+    std::vector<RecAppt> match_appts = appt_recs_to_appts(match_recs);
     return match_appts;
 }
 
@@ -171,4 +160,44 @@ int DataHandler::update_appt(int id, std::string title, int date, std::string de
     db_helper.update_id(TABLE_APPTS, "description", DataObject(desc), id);
     db_helper.update_id(TABLE_APPTS, "time", DataObject(time), id);
     return db_helper.update_id(TABLE_APPTS, "location", DataObject(loc), id);
+}
+
+std::vector<RecAppt> DataHandler::search_appts(
+        std::string f_title,
+        std::string f_desc,
+        int f_date_before,
+        int f_date_after,
+        std::string f_loc)
+{
+    std::vector<std::string> appts_cols_with_id;
+    appts_cols_with_id = table_appts_cols;
+    appts_cols_with_id.insert(appts_cols_with_id.begin(), "id");
+
+    std::string pre_op = "%";
+    std::string post_op = "%";
+    std::string sql = "title like '" + pre_op + f_title + post_op + "' and \
+description like '" + pre_op + f_desc + post_op + "' and \
+date <= " + to_string(f_date_before) + " and \
+date >= " + to_string(f_date_after) + " and \
+location like '" + pre_op + f_loc + post_op + "'";
+
+    std::vector<DataRecord> match_recs = db_helper.select_from_where(TABLE_APPTS, appts_cols_with_id, sql);
+    std::vector<RecAppt> match_appts = appt_recs_to_appts(match_recs);
+    return match_appts;
+}
+
+std::vector<RecAppt> DataHandler::appt_recs_to_appts(std::vector<DataRecord> records) {
+    std::vector<RecAppt> appts;
+    for (std::vector<DataRecord>::size_type i = 0; i != records.size(); i++) {
+        DataRecord rec = records[i];
+        RecAppt appt_tmp;
+        appt_tmp.id = rec.get_object(0).get_int();
+        appt_tmp.title = rec.get_object(1).get_str();
+        appt_tmp.date = rec.get_object(2).get_int();
+        appt_tmp.desc = rec.get_object(3).get_str();
+        appt_tmp.time = rec.get_object(4).get_int();
+        appt_tmp.location = rec.get_object(5).get_str();
+        appts.push_back(appt_tmp);
+    }
+    return appts;
 }

@@ -59,7 +59,6 @@ void GMainWindow::init_window() {
     QMenu *m_view = menuBar()->addMenu(tr("&View"));
     QAction *a_view_day = new QAction(tr("&Day"), this);
     QAction *a_view_month = new QAction(tr("&Month"), this);
-    QAction *a_view_todo = new QAction(tr("All &to-dos"), this);
     m_view->addAction(a_view_day);
     m_view->addAction(a_view_month);
 
@@ -175,6 +174,6 @@ void GMainWindow::winopen_view_month() {
 }
 
 void GMainWindow::winopen_search_appt() {
-    GWinSearchAppt *win = new GWinSearchAppt(QDate::currentDate(), &db, this);
+    GWinSearchAppt *win = new GWinSearchAppt(&db, this);
     win->show();
 }
