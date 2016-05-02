@@ -73,7 +73,8 @@ void GWinSearchAppt::run_search() {
     if (matches.size() == 0) {
         GWarningBox("No appointments found for given range and descriptions.");
     } else {
-        GWinApptList(matches, this);
+        GWinApptList *win = new GWinApptList(matches, this);
+        win->show();
     }
 
     // TODO: check that at least one field is filled
