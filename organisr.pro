@@ -40,7 +40,8 @@ SOURCES += \
     src/gwinviewday.cpp \
     src/gapptdaywidget.cpp \
     src/gapptmonthwidget.cpp \
-    src/gwinsearchappt.cpp
+    src/gwinsearchappt.cpp \
+    src/gwinapptlist.cpp
 
 HEADERS  += \
     include/datahandler.h \
@@ -65,4 +66,5 @@ HEADERS  += \
     include/gwinviewday.h \
     include/gapptdaywidget.h \
     include/gapptmonthwidget.h \
-    include/gwinsearchappt.h
+    include/gwinsearchappt.h \
+    include/gwinapptlist.h
