@@ -93,16 +93,18 @@ void GTodoListWidget::refresh() {
                 l_todo->addLayout(l_row);
             }
         }
-        // add print button
-        QPushButton *b_print = new QPushButton("Print");
-        connect(b_print, &QPushButton::clicked, this, &GTodoListWidget::print_list);
-        l_todo->addWidget(b_print, 0, Qt::AlignRight);
     // override if there were no todos
     } else {
         l_todo->addWidget(new QLabel("<p>No to-dos found!</p>"));
     }
     l_main->addLayout(l_todo);
     l_main->addLayout(l_done);
+    if (todos.size() > 0) {
+        // add print button if at least one todo
+        QPushButton *b_print = new QPushButton("Print");
+        connect(b_print, &QPushButton::clicked, this, &GTodoListWidget::print_list);
+        l_main->addWidget(b_print, 0, Qt::AlignRight);
+    }
     this->setLayout(l_main);
 }
 
