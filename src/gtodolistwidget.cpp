@@ -81,6 +81,12 @@ void GTodoListWidget::refresh() {
             l_row->addWidget(b_del_cur, 1);
             l_row->addWidget(b_edit_cur, 1);
             l_row->addWidget(b_toggle_cur, 1);
+            /*
+            // extension bit
+            QPushButton *b_arrow = new QPushButton("↓");
+            b_arrow->setMinimumWidth(20);
+            l_row->addWidget(b_arrow, 1);
+            */
             QLabel *cur_lbl = new QLabel(QString::fromStdString(fmt_str));
             cur_lbl->setWordWrap(true);
             l_row->addWidget(cur_lbl, 100);
