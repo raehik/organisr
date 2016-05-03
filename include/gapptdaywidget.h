@@ -32,6 +32,7 @@ private:
     QGridLayout *grid;
     std::vector<QWidget*> cur_appts;
 
+    void delete_appt(RecAppt appt);
     void edit_appt(RecAppt appt);
 };
 

@@ -4,6 +4,7 @@
 #include <QLabel>
 #include <QDate>
 #include <QPushButton>
+#include <QMessageBox>
 #include "log.h"
 
 using namespace Util;
@@ -78,11 +79,24 @@ int GApptDayWidget::refresh() {
             tmp_3->setWordWrap(true);
             grid->addWidget(tmp_3, grid_y+1, grid_x+1, 1, 1, Qt::AlignTop);
 
+            // BUTTON: delete appt.
+            QHBoxLayout *l_buttons = new QHBoxLayout;
+            QPushButton *b_del = new QPushButton("X");
+            b_del->setFixedWidth(20);
+            l_buttons->addWidget(b_del, Qt::AlignTop);
+            connect(b_del, &QPushButton::clicked, this, [this, a](){ delete_appt(a); });
+
             // BUTTON: edit appt.
             QPushButton *b_edit = new QPushButton("E");
             b_edit->setFixedWidth(20);
-            grid->addWidget(b_edit, grid_y+1, grid_x, 1, 1, Qt::AlignTop);
+            l_buttons->addWidget(b_edit, Qt::AlignTop);
             connect(b_edit, &QPushButton::clicked, this, [this, a](){ edit_appt(a); });
+
+            // GRID: add edit/delete buttons
+            // have to use addWidget b/c my clearing method doesn't work otherwise...
+            QWidget *w_buttons = new QWidget;
+            w_buttons->setLayout(l_buttons);
+            grid->addWidget(w_buttons, grid_y+1, grid_x, 1, 1, Qt::AlignTop);
 
             // stretch the *long row* (= this row + 1)
             grid->setRowStretch(grid_y+1, 1);
@@ -125,6 +139,20 @@ void GApptDayWidget::edit_appt(RecAppt appt) {
                     QTime(0, 0, 0).secsTo(d_time),
                     d_loc.toUtf8().toStdString()
                    );
+        refresh();
+    }
+}
+
+void GApptDayWidget::delete_appt(RecAppt appt) {
+    log("delete appt " + to_string(appt.id));
+    QMessageBox *msgbox = new QMessageBox(this);
+    msgbox->setWindowTitle("Delete appointment");
+    msgbox->setText("Remove this appointment?");
+    msgbox->setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    msgbox->setDefaultButton(QMessageBox::Ok);
+
+    if (msgbox->exec() == QMessageBox::Ok) {
+        db->delete_appt(appt.id);
         refresh();
     }
 }

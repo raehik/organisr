@@ -19,6 +19,7 @@ public:
     int uncomplete_todo(int id);
     int update_todo(int id, std::string text);
     int delete_todo(int id);
+    int delete_appt(int id);
     std::vector<RecTodo> get_todos();
     std::vector<RecAppt> get_appts_where(std::string search_str, std::string field, std::string search_type = "anywhere");
     std::vector<RecAppt> search_appts(
