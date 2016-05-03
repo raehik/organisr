@@ -26,7 +26,7 @@ using namespace Util;
 QString GMainWindow::data_dir = QDir::toNativeSeparators(
             QStandardPaths::writableLocation(QStandardPaths::AppDataLocation)
             + "/organisr");
-QString GMainWindow::db_file = "test.db";
+QString GMainWindow::db_file = "organisr.db";
 
 QString manual_file = "manual.pdf";
 
