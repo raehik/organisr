@@ -43,7 +43,7 @@ bool SQLiteHelper::file_exists(std::string filename) {
 
 int SQLiteHelper::exec_sql(std::string statement) {
     if (statement.size() == 0) {
-        log_msg("exec statement is empty");
+        log_msg("exec statement is empty, doing nothing");
         return 0;
     } else {
         log_msg("exec: '" + statement + "'");

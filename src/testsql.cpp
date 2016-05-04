@@ -64,7 +64,7 @@ void test_sql() {
     t1_cols.push_back("field");
     std::vector<DataRecord> t1_rows;
     DataRecord t1_row1;
-    t1_row1.add(DataObject("ayy lmao"));
+    t1_row1.add(DataObject("test"));
     t1_rows.push_back(t1_row1);
     try {
         db_test.insert_rows(t1, t1_cols, t1_rows);
@@ -76,7 +76,7 @@ void test_sql() {
     std::vector<DataRecord> t1_huge_rows;
     for (int i = 0; i < 1000; i++) {
         DataRecord row_tmp;
-        row_tmp.add(DataObject("ayy lmao"));
+        row_tmp.add(DataObject("test"));
         t1_huge_rows.push_back(row_tmp);
     }
     std::stringstream ss;

@@ -179,8 +179,8 @@ std::vector<RecAppt> DataHandler::search_appts(
 
     std::string pre_op = "%";
     std::string post_op = "%";
-    std::string sql = "title like '" + pre_op + f_title + post_op + "' and \
-description like '" + pre_op + f_desc + post_op + "' and \
+    std::string sql = "(title like '" + pre_op + f_title + post_op + "' or \
+description like '" + pre_op + f_desc + post_op + "') and \
 date <= " + to_string(f_date_before) + " and \
 date >= " + to_string(f_date_after) + " and \
 location like '" + pre_op + f_loc + post_op + "'";

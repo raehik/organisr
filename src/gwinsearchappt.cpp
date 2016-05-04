@@ -70,7 +70,9 @@ void GWinSearchAppt::run_search() {
             s_loc.toStdString()
     );
 
-    if (matches.size() == 0) {
+    if (s_date_after > s_date_before) {
+        GWarningBox("'After' date is later than 'before' date");
+    } else if (matches.size() == 0) {
         GWarningBox("No appointments found for given range and descriptions.");
     } else {
         GWinApptList *win = new GWinApptList(matches, this);
